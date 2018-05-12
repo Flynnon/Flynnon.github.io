@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习之路," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言　　以下记录了第三章及第四章的一些知识点. 语句　　在表达式之后加上一个分号(;),它们就变成了语句;">
+<meta name="keywords" content="学习之路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言复习笔记(2)">
+<meta property="og:url" content="http://flynnon.github.io/2018/02/04-C语言复习笔记(2).html">
+<meta property="og:site_name" content="Flynnon&#39;s Blog">
+<meta property="og:description" content="前言　　以下记录了第三章及第四章的一些知识点. 语句　　在表达式之后加上一个分号(;),它们就变成了语句;">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-12T09:48:26.938Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言复习笔记(2)">
+<meta name="twitter:description" content="前言　　以下记录了第三章及第四章的一些知识点. 语句　　在表达式之后加上一个分号(;),它们就变成了语句;">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://flynnon.github.io/2018/02/04-C语言复习笔记(2).html"/>
+
+
+
+
+
+  <title>C语言复习笔记(2) | Flynnon's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111573728-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flynnon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">平常的一些记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://flynnon.github.io/2018/02/04-C语言复习笔记(2).html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Flynnon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flynnon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言复习笔记(2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-04T00:32:26+08:00">
+                2018-02-04 00:32:26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/04-C语言复习笔记(2).html" class="leancloud_visitors" data-flag-title="C语言复习笔记(2)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　以下记录了第三章及第四章的一些知识点.</p>
+<h2 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h2><p>　　在表达式之后加上一个分号(;),它们就变成了语句;  </p>
+<a id="more"></a>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 语句</span></span><br><span class="line"><span class="keyword">int</span> x;</span><br></pre></td></tr></table></figure>
+<p>　　用一对花括号“{”与“}”把一组声明和语句括在一起就构成了一个复合语句(也叫作程序块), 复合语句在语法上等价于单条语句;  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 复合语句</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line">    x += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　建议在有语句嵌套的情况下使用花括号来显式定义匹配关系;  </p>
+<p>　　switch语句中, default分支是可选的,如果没有 default 分支也没有其它分支与表达式的值匹配,则该switch语句不执行任何动作。在switch 语句中,case的作用只是一个标号,而break/return语句才会使程序的执行立即从switch语句中退出;  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// switch语句</span></span><br><span class="line"><span class="comment">// 注: 中括号，表示此语句可以没有</span></span><br><span class="line"><span class="keyword">switch</span> (表达式) &#123;</span><br><span class="line">　　 <span class="keyword">case</span> 常量表达式<span class="number">1</span>:</span><br><span class="line">        语句<span class="number">1</span>;         <span class="comment">// 可以是多条语句，可以加括号，也可以不加，到下一个case之前，都是本case的语句范围</span></span><br><span class="line">        [<span class="keyword">break</span>;]</span><br><span class="line">　　 <span class="keyword">case</span> 常量表达式<span class="number">2</span>:</span><br><span class="line">        语句<span class="number">2</span>;</span><br><span class="line">        [<span class="keyword">break</span>;]</span><br><span class="line">    ....</span><br><span class="line">　　 <span class="keyword">case</span> 常量表达式n:</span><br><span class="line">        语句n;</span><br><span class="line">        [<span class="keyword">break</span>;]</span><br><span class="line">　　 [<span class="keyword">default</span>：]</span><br><span class="line">        语句n+<span class="number">1</span>;</span><br><span class="line">        [<span class="keyword">break</span>;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　break语句可用于从for、while与do-while等循环中提前退出,continue语句用于使for、while或do-while语句开始下一次循环的执行;  </p>
+<p>　　goto语句可以与标号配合进行程序的任意跳转功能。标号的命名同变量命名的形式相同,标号的后面要紧跟一个冒号。标号可以位于对应的goto语句所在函数的任何语句的前面。标号的作用域是整个函数;  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// goto语句示例</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i, j;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)&#123;</span><br><span class="line">        <span class="built_in">printf</span>( <span class="string">"Outer loop executing. i = %d\n"</span>, i );</span><br><span class="line">        <span class="keyword">for</span> (j = <span class="number">0</span>; j &lt; <span class="number">3</span>; j++)&#123;</span><br><span class="line">            <span class="built_in">printf</span>( <span class="string">" Inner loop executing. j = %d\n"</span>, j );</span><br><span class="line">            <span class="keyword">if</span> ( i == <span class="number">5</span> )</span><br><span class="line">                <span class="keyword">goto</span> stop; <span class="comment">// 进行跳转</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">/* This message does not print: */</span></span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"Loop exited. i = %d\n"</span>, i );</span><br><span class="line">    stop: <span class="built_in">printf</span>( <span class="string">"Jumped to stop. i = %d\n"</span>, i ); <span class="comment">// 定义标号</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><p>　　在函数中可以通过return语句返回一个值,如果没有显式声明返回值类型,则返回值类型为int.此外,在任何情况下,如果函数没有成功地返回一个值,则它的“值”肯定是无用的;   </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 函数返回值样例</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func_demo</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s"</span>, <span class="string">"这条语句不会被执行."</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 未定义返回值的情况下,函数的值</span></span><br><span class="line">xx()&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = xx();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, x); <span class="comment">// 结果是0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　函数的声明与定义必须一致.如果某函数与调用它的主函数放在同一源文件中,并且类型不一致,编译器就会检测到该错误。但是,如果被调用函数是单独编译的(这种可能性更大),这种不匹配的错误就无法检测出来，出现错误的几率会很大;<br>　　如果没有函数原型,则函数将在第一次出现的表达式中被隐式声明.如果先前没有声明过的一个名字出现在某个表达式中,并且其后紧跟一个左圆括号,那么上下文就会认为该名字是一个函数名字,该函数的返回值将被假定为int类型,且上下文并不对其参数作任何假设,即很可能会取到错误的返回值;  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 类型检查错误且函数解析错误的样例</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// demo.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">char</span>* <span class="title">xx</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"lalala"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// demo2.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = xx(<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d   %s"</span>, x, <span class="string">"啦啦啦"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 以如下命令进行编译,会产生warning(而不是error)</span><br><span class="line">gcc demo.c demo2.c -o la</span><br><span class="line"><span class="meta">#</span> 以如下命令对二进制文件进行执行,控制台的输出为         4195868   啦啦啦</span><br><span class="line">./la</span><br></pre></td></tr></table></figure>
+<h2 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h2><p>　　C语言程序可以看成由一系列的外部对象构成, 这些外部对象可能是变量或函数.由于函数内不允许定义函数,因此函数天生是外部对象.那么外部变量就可以认为是定义在所有函数之外的变量,同函数一样,全局共享一个实例.与此相对应,内部变量(自动变量)即为定义在函数内部的变量;  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">1</span>; <span class="comment">// 外部(全局)变量</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> y = <span class="number">1</span>; <span class="comment">// 内部(自动)变量</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, x + y);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　构成C语言程序的函数与外部变量可以分开进行编译。一个程序可以存放在几个文件中,原先已编译过的函数可以从库中进行加载;<br>　　外部变量或函数的作用域从声明它的地方开始,到其所在的(待编译的)文件的末尾结束.如果要在外部变量的定义之前使用该变量,或者外部变量的定义与变量的使用不在同一个源文件中,则必须在相应的变量声明中强制性地使用关键字 extern;  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*外部变量定义与使用分离 及 内部变量默认初始化 的栗子*/</span></span><br><span class="line"><span class="comment">// demo.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">extern</span> <span class="keyword">int</span> x;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, x);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// demo2.c</span></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 以如下命令进行编译,会产生warning(而不是error)</span><br><span class="line">gcc demo.c demo2.c -o la</span><br><span class="line"><span class="meta">#</span> 以如下命令对二进制文件进行执行,若有x有extern定义则控制台的输出为100,若没有则控制台输出为0</span><br><span class="line">./la</span><br></pre></td></tr></table></figure>
+<p>　　变量声明用于说明变量的属性(主要是变量的类型),而变量定义除此以外还将引起存储器的分配.在一个源程序的所有源文件中,一个外部变量只能在某个文件中定义一次,而其它文件可以通过extern声明来访问它(定义外部变量的源文件中也可以包含对该外部变量的extern声明).外部变量的定义中必须指定数组的长度,但 extern 声明则不一定要指定数组的长度.外部变量的初始化只能出现在其定义中;  </p>
+<p>　　当源文件个数很多时,变量/函数的定义位置并不是那么容易找到,很容易造成混乱.为了解决这个问题,可以将定义与实现分离,即使用头文件进行定义的集中管理,而将实现分散在各个文件中.通过这种机制,可以减少变化时错误的产生几率;  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">上面的栗子,通过使用头文件来将共享的部分集中在一起之后变为如下形式,可以去除变量x的声明</span></span><br><span class="line"><span class="comment">很自然的...如果某个包含文件的内容发生了变化,那么所有依赖于该包含文件的源文件都必须重新编译</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在文件test.h中</span></span><br><span class="line"><span class="keyword">int</span> x = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//在文件 demo1.py 中</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta"># <span class="meta-keyword">include</span> <span class="meta-string">"test.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　被static限定符声明的外部变量与函数的作用域被限定为被编译源文件的剩余部分,通过此修饰符可以实现隐藏外部对象的目的.而被static限定的内部变量则只能在该函数中使用但一直占据存储空间,且只在第一次进入程序块时被初始化一次;  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// static变量的栗子, 五次输出值均为14</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"test.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">test</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> y = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">int</span> tmp = x + y;</span><br><span class="line">    y += <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> times = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">while</span>(times-- &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d"</span>, test(times));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　register声明告诉编译器,它所声明的变量在程序中使用频率较高,因此建议将此变量放入寄存器中以使程序更小、执行速度更快(编译器可以忽略此建议).register声明只适用于自动变量以及函数的形式参数.同时,无论寄存器变量实际上是不是存放在寄存器中,它的地址都是不能访问的;  </p>
+<h2 id="变量初始化"><a href="#变量初始化" class="headerlink" title="变量初始化"></a>变量初始化</h2><p>　　1.在不进行显式初始化的情况下,外部变量和静态变量都将被初始化为 0,而自动变量和寄存器变量的初值则没有定义(即初值为无用的信息);<br>　　2.定义标量变量时,可以在变量名后紧跟一个等号和一个表达式来初始化变量;<br>　　3.对于外部变量与静态变量来说,初始化表达式必须是常量表达式,且只初始化一次(从概念上讲是在程序开始执行前进行初始化);<br>　　4.对于自动变量与寄存器变量,初始化表达式可以不是常量表达式:可以包含任意在此表达式之前已经定义的值,包括函数调用.且在每次进入函数或程序块时都会初始化;<br>　　5.对于数组.<br>　　　　(a)初始化表达式列表用花括号括起来,各初始化表达式之间通过逗号分隔.<br>　　　　(b)若初始化表达式元素个数比数组元素数少,则对外部变量、静态变量和自动变量来说,没有初始化表达式的元素将被初始化为0,如果初始化表达式的个数比数组元素数多,则会产生编译错误.<br>　　　　(c)不能一次将一个初始化表达式指定给多个数组元素,也不能跳过前面的数组元素而直接初始化后面的数组元素;<br>　　　　(d)对于字符数组.可以用一个字符串来代替用花括号括起来并用逗号分隔的初始化表达式序列.</p>
+<h2 id="预处理器"><a href="#预处理器" class="headerlink" title="预处理器"></a>预处理器</h2><h3 id="总览"><a href="#总览" class="headerlink" title="总览"></a>总览</h3><p>　　从概念上讲,预处理器是编译过程中单独执行的第一个步骤,大概有以下几种:</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>文件包含预处理器</td>
+<td>#include</td>
+<td>将本行内容替换为path所指的文件的内容</td>
+</tr>
+<tr>
+<td>宏替换预处理器</td>
+<td>#define</td>
+<td>将本文件中的 name(名字记号) 替换为 text(替换文本)</td>
+</tr>
+<tr>
+<td>预处理器运算符</td>
+<td>## (配合#define使用)</td>
+<td>一种连接实际参数的手段</td>
+</tr>
+<tr>
+<td>条件包含</td>
+<td>#if,#elif,#else,#endif,#ifdef,#ifndef</td>
+<td>一种控制编译结果的手段</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文件包含预处理器"><a href="#文件包含预处理器" class="headerlink" title="文件包含预处理器"></a>文件包含预处理器</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在系统目录查找</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 先在用户目录查找</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"test.h"</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>(a)在源文件中,任何形如:#include “文件名”或#include &lt;文件名&gt; 的行都将被替换为由文件名指定的文件的内容.<br>(b)如果文件名用引号引起来,则在源文件所在位置查找该文件.如果在该位置没有找到文件,或者如果文件名是用尖括号&lt;&gt;括起来的,则将根据相应的规则(可能是环境变量)查找该文件.</p>
+</blockquote>
+<h3 id="宏替换预处理器"><a href="#宏替换预处理器" class="headerlink" title="宏替换预处理器"></a>宏替换预处理器</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 常规版本</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> XX 100</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 带参数的版本(格式匹配)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> max(A, B) ((A) &gt; (B) ? (A) : (B))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//使用#的版本</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> dprint(expr) printf(#expr <span class="meta-string">" = %g\n"</span>, expr)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用##的版本</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> paste(front, back) front ## back</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>(1)格式为#define 名字 替换文本 后续所有出现名字记号的地方都将被替换为替换文本;<br>(2)#define 指令定义的名字的作用域从其定义点开始,到被编译的源文件的末尾处结束;<br>(3)宏定义也可以带参数,这样可以对不同的宏调用使用不同的替换文本,最好使用括号指定层次关系;<br>(4)可以通过#undef 指令在本文件中释放被宏定义的名字;<br>(5)如果在替换文本中,参数名以#作为前缀则结果将被扩展为由实际参数替换该参数的带引号的字符串.即第三个示例的作用为:<br>　　将 dprint(x/y) 函数变为 printf(“x/y” “ = &amp;g\n”, x/y); 语句 亦即 printf(“x/y = &amp;g\n”, x/y);<br>(6)##为宏扩展提供了一种连接实际参数的手段.如果替换文本中的参数与##相邻,则该参数将被实际参数替换,##与前后的空白符将被删除,并对替换后的结果重新扫描.即##用来将两个宏参数连接为一个宏参数.以上第四个例子的作用:<br>　　将 paste(name, 1) 转化为 name1   (宏调用 paste(name, 1)的结果将建立记号 name1)<br>(7)一个长的#define语句可用反斜杠分成几行.</p>
+</blockquote>
+<h3 id="条件包含系列"><a href="#条件包含系列" class="headerlink" title="条件包含系列"></a>条件包含系列</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> X 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据条件选择编译内容</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> !defined(X)</span></span><br><span class="line">    code</span><br><span class="line"><span class="meta">#<span class="meta-keyword">elif</span> (X == 0)</span></span><br><span class="line">    code1</span><br><span class="line"><span class="meta">#<span class="meta-keyword">elif</span> X == 1</span></span><br><span class="line">    code2</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    code3</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 简写</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> X</span></span><br><span class="line">    code4</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> X</span></span><br><span class="line">    code5</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>(1)通过这种机制可以修改要被编译的代码.<br>(2)#if 语句对其中的常量整型表达式(其中不能包含 sizeof、类型转换运算符或 enum 常量)进行求值,若该表达式的值不等于 0,则包含其后的各行,直到遇到#endif、#elif或#else语句为止.<br>(3)在条件包含预处理器中可以使用表达式 defined(名字),该表达式的值遵循规则如下:当名字已经定义时,其值为 1;否则,其值为 0.<br>(4)#ifdef与#ifndef是一种简写,用来测试某个名字是否已经定义并执行相应语句.<br>　　#ifdef的使用和#if defined()的用法一致<br>　　#ifndef又和#if !defined()的用法一致<br>(5)最后要使用#endif标识判断结束.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Flynnon
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://flynnon.github.io/2018/02/04-C语言复习笔记(2).html" title="C语言复习笔记(2)">http://flynnon.github.io/2018/02/04-C语言复习笔记(2).html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习之路/" rel="tag"><i class="fa fa-tag"></i> 学习之路</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/24-C语言复习笔记(1).html" rel="next" title="C语言复习笔记(1)">
+                <i class="fa fa-chevron-left"></i> C语言复习笔记(1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/21-C语言复习笔记(3).html" rel="prev" title="C语言复习笔记(3)">
+                C语言复习笔记(3) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Flynnon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Flynnon" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/flynnon.ton" target="_blank" title="Facebook">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                我的朋友
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.tianhao.site/blog/" title="田浩的Blog" target="_blank">田浩的Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语句"><span class="nav-number">2.</span> <span class="nav-text">语句</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数"><span class="nav-number">3.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量"><span class="nav-number">4.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量初始化"><span class="nav-number">5.</span> <span class="nav-text">变量初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预处理器"><span class="nav-number">6.</span> <span class="nav-text">预处理器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#总览"><span class="nav-number">6.1.</span> <span class="nav-text">总览</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件包含预处理器"><span class="nav-number">6.2.</span> <span class="nav-text">文件包含预处理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#宏替换预处理器"><span class="nav-number">6.3.</span> <span class="nav-text">宏替换预处理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件包含系列"><span class="nav-number">6.4.</span> <span class="nav-text">条件包含系列</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-@"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Flynnon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人访问
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次访问
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Cjsr55wJkKKtTeREWcAIW2GA-gzGzoHsz", "9mVWvx06y21SX6Ebqm6Ry5wG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/love.js"></script>

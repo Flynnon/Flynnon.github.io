@@ -1,0 +1,1610 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习之路," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言　　以下记录了第七章的一些知识点. 输入输出　　标准库实现了简单的文本输入/输出模式.在这个模式中,文本流由一系列行组成,每一行的结尾是一个换行符.如果系统没有遵循这种模式,则标准库将通过一些措施使得该系统适应这种模式.例如,标准库可以在输入端将回车符和换行符都转换为换行符,而在输出端进行反向转换.">
+<meta name="keywords" content="学习之路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言复习笔记(5)">
+<meta property="og:url" content="http://flynnon.github.io/2018/04/10-C语言复习笔记(5).html">
+<meta property="og:site_name" content="Flynnon&#39;s Blog">
+<meta property="og:description" content="前言　　以下记录了第七章的一些知识点. 输入输出　　标准库实现了简单的文本输入/输出模式.在这个模式中,文本流由一系列行组成,每一行的结尾是一个换行符.如果系统没有遵循这种模式,则标准库将通过一些措施使得该系统适应这种模式.例如,标准库可以在输入端将回车符和换行符都转换为换行符,而在输出端进行反向转换.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-12T09:48:26.939Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言复习笔记(5)">
+<meta name="twitter:description" content="前言　　以下记录了第七章的一些知识点. 输入输出　　标准库实现了简单的文本输入/输出模式.在这个模式中,文本流由一系列行组成,每一行的结尾是一个换行符.如果系统没有遵循这种模式,则标准库将通过一些措施使得该系统适应这种模式.例如,标准库可以在输入端将回车符和换行符都转换为换行符,而在输出端进行反向转换.">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://flynnon.github.io/2018/04/10-C语言复习笔记(5).html"/>
+
+
+
+
+
+  <title>C语言复习笔记(5) | Flynnon's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111573728-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flynnon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">平常的一些记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://flynnon.github.io/2018/04/10-C语言复习笔记(5).html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Flynnon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flynnon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言复习笔记(5)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-10T00:10:50+08:00">
+                2018-04-10 00:10:50
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/10-C语言复习笔记(5).html" class="leancloud_visitors" data-flag-title="C语言复习笔记(5)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　以下记录了第七章的一些知识点.</p>
+<h2 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h2><p>　　标准库实现了简单的文本输入/输出模式.在这个模式中,文本流由一系列行组成,每一行的结尾是一个换行符.如果系统没有遵循这种模式,则标准库将通过一些措施使得该系统适应这种模式.例如,标准库可以在输入端将回车符和换行符都转换为换行符,而在输出端进行反向转换.<a id="more"></a><br>　　一般输入输出相关的标准函数均定义在<stdio.h>头文件中.</p>
+<h3 id="标准输入输出"><a href="#标准输入输出" class="headerlink" title="标准输入输出"></a>标准输入输出</h3><h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// getchar 与 putchar </span></span><br><span class="line"><span class="comment">// getchar从标准输入进行字符读取.函数在每次被调用时返回下一个输入字符.若遇到文件结尾,则返回EOF.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getchar</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="comment">// putchar将字符输送至标准输出上.如果没有发生错误,则函数putchar返同输出的字符;如果发生了错误,则返回EOF.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">putchar</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>　　符号常量EOF(END OF FILE)在头文件<stdio.h>中定义,其值一般为-1,但程序中应该使用EOF本身来测试文件是否结束,这样才能保证程序同EOF的特定值无关.<br>　　事实上,getchar与putchar都是宏定义而不是函数.</p>
+<h3 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h3><p>　　格式化输出是更高层次上的一种输出方法,通过它可以设定输出格式.</p>
+<h4 id="函数-1"><a href="#函数-1" class="headerlink" title="函数"></a>函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// printf的函数原型</span></span><br><span class="line"><span class="comment">// printf在输出格式format的控制下,将其参数进行转换与格式化,并输出到标准输出.它的返回值为打印的字符数.</span></span><br><span class="line"><span class="comment">// 后面三个小数点代表变长参数表(不定长参数),具体请见下方扩展</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">printf</span><span class="params">(<span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// sprintf的函数原型</span></span><br><span class="line"><span class="comment">// printf在输出格式format的控制下,将其参数进行转换与格式化,并将结果存放到string中.它的返回值为打印的字符数.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sprintf</span><span class="params">(<span class="keyword">char</span> *<span class="built_in">string</span>, <span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意:上述函数使用第一个参数判断后面参数的个数及类型.如果参数的个数不够或者类型错误,则将得到错误的结果.</span></span><br></pre></td></tr></table></figure>
+<h4 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h4><p>　　格式字符串即printf函数与sprint函数的函数定义中的format参数.<br>　　格式字符串包含两种类型的对象:普通字符和转换说明.在输出时,普通字符(不包括%)将原样不动地复制到输出流中,而转换说明则是用于控制上述函数中其余参数(即最后不定长参数表)的转换和打印.<br>　　每个转换说明都由一个百分号字符(即%)开始,并以一个转换字符结束.合法的转换字符列表如下:</p>
+<table>
+<thead>
+<tr>
+<th>转换字符</th>
+<th>参数类型</th>
+<th>输出形式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d, i</td>
+<td>int 类型</td>
+<td>十进制数</td>
+</tr>
+<tr>
+<td>o</td>
+<td>int 类型</td>
+<td>无符号八进制数(没有前导 0)</td>
+</tr>
+<tr>
+<td>x, X</td>
+<td>int 类型</td>
+<td>无符号十六进制数(没有前导0x或0X),即:10~15分别用abcdef或ABCDEF表示</td>
+</tr>
+<tr>
+<td>u</td>
+<td>int 类型</td>
+<td>无符号十进制数</td>
+</tr>
+<tr>
+<td>c</td>
+<td>int 类型</td>
+<td>单个字符</td>
+</tr>
+<tr>
+<td>s</td>
+<td>char *类型</td>
+<td>顺序打印字符串中的字符，直到遇到’\0’或已打印了由精度指定的字符数为止</td>
+</tr>
+<tr>
+<td>f</td>
+<td>double 类型</td>
+<td>十进制小数[-]m.dddddd，其中d的个数由精度指定(默认值为6)</td>
+</tr>
+<tr>
+<td>e, E</td>
+<td>double 类型</td>
+<td>科学计数法[-]m.dddddd e ±xx 或[-]m.dddddd E ±xx，其中d的个数由精度指定(默认值为 6)</td>
+</tr>
+<tr>
+<td>g, G</td>
+<td>double 类型</td>
+<td>如果指数小于-4或大于等于精度,则用 %e/%E 格式输出,否则用 %f 格式输出.尾部的0和小数点不打印</td>
+</tr>
+<tr>
+<td>p</td>
+<td>void *类型</td>
+<td>指针(取决于具体实现)</td>
+</tr>
+<tr>
+<td>%</td>
+<td>无(不转换参数)</td>
+<td>打印一个百分号%</td>
+</tr>
+</tbody>
+</table>
+<h4 id="填充"><a href="#填充" class="headerlink" title="填充"></a>填充</h4><p>　　通过在%与转换字符之间添加一些特定格式的值可以更加细致的控制输出格式(例如指定输出是左对齐还是右对齐).合法的填充如下:</p>
+<table>
+<thead>
+<tr>
+<th>填充格式</th>
+<th>含义(作用)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>负号 -</td>
+<td>指定被转换的参数按照左对齐的形式输出</td>
+</tr>
+<tr>
+<td>数字</td>
+<td>指定最小字段宽度,转换后的参数将打印不小于最小字段宽度的字段.不足则用空格填充</td>
+</tr>
+<tr>
+<td>小数点</td>
+<td>字段宽度与精度的分隔符</td>
+</tr>
+<tr>
+<td>数字</td>
+<td>指定精度.(指定字符串中要打印的最大字符数,浮点数小数点后的位数,整型最少输出的数字数目)</td>
+</tr>
+<tr>
+<td>字母 h 或 l</td>
+<td>只能作用于整形.h表示将整数作为short类型打印. l表示将整数作为long类型打印</td>
+</tr>
+</tbody>
+</table>
+<h4 id="效果示例"><a href="#效果示例" class="headerlink" title="效果示例"></a>效果示例</h4><p>　　下面是一些示例(以printf(format, “hello world”)为例):</p>
+<table>
+<thead>
+<tr>
+<th>格式化字符串(format)</th>
+<th>输出结果</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:%12s:</td>
+<td>: hello world:</td>
+<td>最少输出12个字符(右对齐)</td>
+</tr>
+<tr>
+<td>:%.9s:</td>
+<td>:hello wor:</td>
+<td>.分隔, 最大输出九个字符(超出的截断)</td>
+</tr>
+<tr>
+<td>:%-12s:</td>
+<td>: hello world:</td>
+<td>最少输出12个字符(左对齐)</td>
+</tr>
+<tr>
+<td>:%-11.10s:</td>
+<td>:hello worl :</td>
+<td>.分隔, 最少输出11个字符,后面的字符串输出10位,左对齐</td>
+</tr>
+</tbody>
+</table>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p>　　在printf函数与sprintf函数的声明中均使用了三个小数点(省略号)来作为参数,这种参数叫做变长参数表.它表示参数表中参数的数量和类型是可变的,且它只能出现在参数表的尾部.<br>　　变长参数表的使用: 标准头文件&lt;stdarg.h)中包含一组宏定义,它们对如何遍历参数表进行了定义.具体请见下列示例.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 使用变长参数表实现一个具有printf部分功能的函数 */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"><span class="comment">/* 变长参数表相关的宏有 va_list, va_start, va_arg, va_end. 它们都被定义在 stdarg.h 头文件中  */</span></span><br><span class="line"><span class="comment">/* 适应变长参数表时参数列表中至少应包括一个有名参数(例如以下示例中的fmt), va_start将最后一个有名参数作为起点 */</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">minprintf</span><span class="params">(<span class="keyword">char</span> *fmt, ...)</span></span>&#123; <span class="comment">// 声明不定长参数表</span></span><br><span class="line">    va_list ap;                 <span class="comment">// 使用 va_list宏 来声明一个指向变长参数表的参数指针.</span></span><br><span class="line">    <span class="keyword">char</span> *p, *sval;             <span class="comment">// 定义一些中间变量</span></span><br><span class="line">    <span class="keyword">int</span> ival;</span><br><span class="line">    <span class="keyword">double</span> dval;</span><br><span class="line">    va_start(ap, fmt);          <span class="comment">// 使用 va_start宏 来使上面声明的参数指针ap指向变长参数表中的第一个参数.在使用 ap 之前,该宏必须被调用一次</span></span><br><span class="line">    <span class="keyword">for</span> (p = fmt; *p; p++) &#123;    <span class="comment">// 遍历 fmt 参数(即格式字符串)</span></span><br><span class="line">        <span class="keyword">if</span> (*p != <span class="string">'%'</span>) &#123;        <span class="comment">// 跳过格式字符串中的 % 字符</span></span><br><span class="line">            <span class="built_in">putchar</span>(*p);</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">switch</span> (*++p) &#123;          <span class="comment">// 根据格式字符来选择具体的打印策略</span></span><br><span class="line">            <span class="keyword">case</span> <span class="string">'d'</span>:</span><br><span class="line">                ival = va_arg(ap, <span class="keyword">int</span>);   <span class="comment">// 使用 va_arg宏 来从不定长参数表中读取特定类型的参数,并将参数指针移动相应的步长</span></span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%d"</span>, ival);       <span class="comment">// 为了简单....使用了printf函数来完成输出时的格式转化</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'f'</span>:</span><br><span class="line">                dval = va_arg(ap, <span class="keyword">double</span>);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"%f"</span>, dval);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">'s'</span>:</span><br><span class="line">                <span class="keyword">for</span> (sval = va_arg(ap, <span class="keyword">char</span> *); *sval; sval++)</span><br><span class="line">                    <span class="built_in">putchar</span>(*sval);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="built_in">putchar</span>(*p);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    va_end(ap);  <span class="comment">// 使用结束后,使用 va_end宏 来完成清理工作</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    minprintf(<span class="string">"%d %s %f"</span>, <span class="number">1</span>, <span class="string">"hahaha"</span>, <span class="number">2.5</span>);  <span class="comment">// 调用, 其结果与同参数调用printf函数相同</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="格式化输入"><a href="#格式化输入" class="headerlink" title="格式化输入"></a>格式化输入</h3><p>　　格式化输入是更高层次上的一种输入读取方法,通过它可以对读取到的字符串进行转化,直接得到特定类型的变量.</p>
+<h4 id="函数-2"><a href="#函数-2" class="headerlink" title="函数"></a>函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// scanf的函数原型</span></span><br><span class="line"><span class="comment">// scanf函数从标准输入中读取字符序列,按照format中的格式说明对字符序列进行解释,并把结果保存到其余的参数中</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">scanf</span><span class="params">(<span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// sscanf的函数原型</span></span><br><span class="line"><span class="comment">// sscanf从字符串string中读取字符序列,按照format中的格式说明对字符序列进行解释,并把结果保存到其余的参数中</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sscanf</span><span class="params">(<span class="keyword">char</span> *<span class="built_in">string</span>, <span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意:</span></span><br><span class="line"><span class="comment">// 1.scanf与sscanf函数的所有不定长参数都必须是指针,用于指定经格式转换后的相应输入保存的位置;</span></span><br><span class="line"><span class="comment">// 2.上述函数在扫描完其格式串或者碰到某些输入无法与格式控制说明匹配的情况时,终止执行.</span></span><br><span class="line"><span class="comment">// 3.上述函数的返回值为成功匹配并赋值的输入项的个数,而当达到文件尾时,该函数返回EOF. 即:该函数的返回值可以用来确定已匹配的输入项的个数.</span></span><br><span class="line"><span class="comment">// 4.返回值为0表示下一个输入字符与格式串中的第一个格式说明不匹配.下一次调用scanf函数时将从上一次转换的最后一个字符的下一个字符开始继续搜索.</span></span><br></pre></td></tr></table></figure>
+<h4 id="格式字符串-1"><a href="#格式字符串-1" class="headerlink" title="格式字符串"></a>格式字符串</h4><p>　　格式字符串即scanf函数与sscanf函数的函数定义中的format参数.它通常包含转换说明,用于控制输入的转换.<br>　　格式字符串包含三种类型的对象:空白字符(空格/制表符),普通字符和转换说明.在读取时,空白字符将被忽略,普通字符(不包括%),用于匹配输入流中下一个非空白符字符,而转换说明则是用于控制上述函数中其余参数(即变长参数表中的参数)的读取与转换.<br>　　每个转换说明都由一个百分号字符(即%)开始,并以一个转换字符结束.合法的转换字符列表如下:</p>
+<table>
+<thead>
+<tr>
+<th>转换字符</th>
+<th>参数类型</th>
+<th>读取参数格式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>d</td>
+<td>int *类型</td>
+<td>十进制整数</td>
+</tr>
+<tr>
+<td>i</td>
+<td>int *类型</td>
+<td>可以是八进制(以 0 开头)或十六进制(以 0x 或 0X 开头)</td>
+</tr>
+<tr>
+<td>o</td>
+<td>int *类型</td>
+<td>八进制整数(可以以 0 开头,也可以不以 0 开头)</td>
+</tr>
+<tr>
+<td>x</td>
+<td>int *类型</td>
+<td>十六进制整数(可以 0x 或 0X 开头,也可以不以 0x 或 0X 开头)</td>
+</tr>
+<tr>
+<td>u</td>
+<td>unsigned int *类型</td>
+<td>无符号十进制整数</td>
+</tr>
+<tr>
+<td>c</td>
+<td>char *类型</td>
+<td>字符</td>
+</tr>
+<tr>
+<td>s</td>
+<td>char *类型(指向一个足以存放该字符串(还包括尾部的字符’\0’)的字符数组.字符串的末尾将被添加一个结束符’\0’)</td>
+<td>字符串(不加引号)</td>
+</tr>
+<tr>
+<td>e, f, g</td>
+<td>float *类型</td>
+<td>浮点数,它可以包括正负号(可选)、小数点(可选)及指数部分(可选)</td>
+</tr>
+<tr>
+<td>%</td>
+<td>无(不进行任何赋值操作)</td>
+<td>不进行任何赋值操作</td>
+</tr>
+</tbody>
+</table>
+<h4 id="填充-1"><a href="#填充-1" class="headerlink" title="填充"></a>填充</h4><p>　　通过在%与转换字符之间添加一些特定格式的值可以更加细致的控制读取规则.合法的填充如下:</p>
+<table>
+<thead>
+<tr>
+<th>填充格式</th>
+<th>含义(作用)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>赋值禁止字符 *</td>
+<td>被此字符填充时,跳过该输入字段,不进行赋值</td>
+</tr>
+<tr>
+<td>数字</td>
+<td>指定最大字段宽度</td>
+</tr>
+<tr>
+<td>h</td>
+<td>只能作用于整形.h表明参数表的相应参数是一个指向short类型的指针</td>
+</tr>
+<tr>
+<td>l</td>
+<td>作用于整数时,表明参数表的相应参数是一个指向long类型的指针.作用于浮点数时,表明参数表的相应参数是一个指向double类型的指针</td>
+</tr>
+</tbody>
+</table>
+<h4 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> int_v;</span><br><span class="line"><span class="keyword">char</span> char_v[<span class="number">20</span>];</span><br><span class="line"><span class="keyword">float</span> f_v;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%d %s %*d %f"</span>, &amp;int_v, char_v, &amp;f_v);</span><br><span class="line"><span class="comment">// 运行上述程序片段时,可在标准输入输入 10 lalala 3 2.8, 之后, int_v的值为10, char_v数组的前七个字符为 l a l a l a \0, f_v的值为 2.8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// scanf函数忽略格式串中的空格和制表符.此外,在读取输入值时,它将跳过空白符(空格符、横向制表符、换行符、回车符、纵向制表符以及换页符).如果要读取格式不固定的输入,最好每次读入一行,然后再用sscanf将合适的格式分离出来读入.</span></span><br><span class="line"><span class="comment">// scanf函数可以与其它输入函数混合使用,无论使用哪个输入函数,调用下一个输入函数时将从scanf没有读取的第一个字符处开始读取数据.即:每次使用scanf它的读取都会被消费,而读取失败的会被略过.</span></span><br><span class="line"><span class="comment">// 场景: 在从标准输入读取日期时,支持多种输入格式.</span></span><br><span class="line"><span class="keyword">while</span> (getline(line, <span class="keyword">sizeof</span>(line)) &gt; <span class="number">0</span>) &#123;                    <span class="comment">// 需要保存输入,再一一判断格式</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">sscanf</span>(line, <span class="string">"%d %s %d"</span>, &amp;day, monthname, &amp;year) == <span class="number">3</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"valid: %s\n"</span>, line);                         <span class="comment">// dd mm yy 格式</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">sscanf</span>(line, <span class="string">"%d/%d/%d"</span>, &amp;month, &amp;day, &amp;year) == <span class="number">3</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"valid: %s\n"</span>, line);                         <span class="comment">// mm/dd/yy格式</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"invalid: %s\n"</span>, line);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><p>　　文件也可以看成是一种特殊的输入输出设备.事实上,在Linux系统中一切都被抽象成文件.</p>
+<h3 id="文件的打开"><a href="#文件的打开" class="headerlink" title="文件的打开"></a>文件的打开</h3><p>　　在操作文件之前,我们需要先打开一个文件.这个操作是通过<stdio.h>头文件中的fopen函数实现的.它的介绍如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// fopen函数的函数签名</span></span><br><span class="line"><span class="comment">// 第一个参数name是一个字符串,它包含了文件名(包括绝对路径).</span></span><br><span class="line"><span class="comment">// 第二个参数mode也是一个字符串，它代表了文件的使用模式,用于指定文件的使用方式.这个参数的详细介绍在后面一点.</span></span><br><span class="line"><span class="comment">// 它的返回值是一个可以用于文件读写操作的指针,被成为文件指针.关于文件指针,后面在详细介绍.</span></span><br><span class="line"><span class="function">FILE *<span class="title">fopen</span><span class="params">(<span class="keyword">char</span> *name, <span class="keyword">char</span> *mode)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fopen函数的使用</span></span><br><span class="line"><span class="comment">// 以写模式打开一个文件</span></span><br><span class="line">FILE *fp = fopen(<span class="string">"/home/flynnon/a.txt"</span>, <span class="string">"w"</span>);</span><br></pre></td></tr></table></figure>
+<p>　　fopen函数返回的文件指针实际上指向的是一个包含文件信息的结构.这些所指的信息包括:缓冲区的位置、缓冲区中当前字符的位置、文件的读或写状态、是否出错或是否已经到达文件结尾等等状态.如果发生错误,fopen将返回 NULL.<br>　　幸运的是,我们并不需要直接与这些具体的细节打交道.这些信息已经被<stdio.h>头文件中的FILE封装好了.这里要注意的是FILE像int一样是一个类型名,而不是一个结构标记(它是通过typedef定义的).<br>　　使用fopen打开一个文件有多种模式,见下表:</p>
+<table>
+<thead>
+<tr>
+<th>模式字符串</th>
+<th>名称</th>
+<th>行为</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>w</td>
+<td>写模式</td>
+<td>打开不存在的文件时,会新建.打开已存在的文件时,会将先该文件的内容清空.然后写入.</td>
+</tr>
+<tr>
+<td>r</td>
+<td>读模式</td>
+<td>只能对文件内容进行读取,不能写入.</td>
+</tr>
+<tr>
+<td>a</td>
+<td>追加模式</td>
+<td>打开不存在的文件时,会新建.打开已存在的文件时,会将指针移动到文件末尾.然后写入.</td>
+</tr>
+<tr>
+<td>r</td>
+<td>与上述模式合用,二进制模式</td>
+<td>用来打开二进制类型的文件.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="文件内容的读写"><a href="#文件内容的读写" class="headerlink" title="文件内容的读写"></a>文件内容的读写</h3><p>　　有两个类似于getchar与putchar的从文件中操作字符的函数getc与putc,下面是介绍.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// getc与putc都需要一个文件指针,以得到操作的文件的信息.</span></span><br><span class="line"><span class="comment">// getc函数返回fp指向的输入流中的下一个字符.如果到达文件尾或出现错误,该函数将返回EOF.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getc</span><span class="params">(FILE *fp)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// putc函数将字符c写入到fp指向的文件中,并返回写入的字符.如果发生错误,则返回EOF.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">putc</span><span class="params">(<span class="keyword">int</span> c, FILE *fp)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>　　同样的,也有两个类似于printf与scanf的从文件中操作字符的函数fprintf与fscanf,下面是介绍.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 它们与scanf和printf函数的区别仅仅在于它们的第一个参数是一个指向所要读写的文件的指针</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fscanf</span><span class="params">(FILE *fp, <span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fprintf</span><span class="params">(FILE *fp, <span class="keyword">char</span> *format, ...)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="特殊的文件"><a href="#特殊的文件" class="headerlink" title="特殊的文件"></a>特殊的文件</h3><p>　　启动一个C语言程序时,操作系统环境负责打开3个文件,并将这3个文件的指针提供给该程序.这3个文件分别是标准输入、标准输出和标准错误,它们的文件指针分别为stdin、stdout和stderr.<br>　　stdin,stdout,stderr都是常量,不能为它们重新赋值.<br>　　事实上,前面的标准输入输出函数getchar与putchar可以等同于下列定义宏定义.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 实际上,getchar与putchar只是从标准输入stdin中进行字符的读取与输出.</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> getchar() getc(stdin)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> putchar(c) putc((c),stdout)</span></span><br></pre></td></tr></table></figure>
+<h3 id="关闭文件"><a href="#关闭文件" class="headerlink" title="关闭文件"></a>关闭文件</h3><p>　　文件作为一种资源,长时间占用总是不好的.因此在使用完成之后需要关闭它.这时就会用到fclose函数.<br>　　当文件指针不再需要时及时释放是一个很好的习惯.当程序正常终止时,程序会自动为每个打开的文件调用fclose函数.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// fclose函数关闭一个文件指针所指的文件流,把缓冲区内最后剩余的数据输出到流中,并释放函数指针和有关的缓冲区.</span></span><br><span class="line"><span class="comment">// 如果流成功关闭,fclose返回0,否则返回EOF.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fclose</span><span class="params">(FILE *fp)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h3><p>　　有时候在编写代码时,不想通过硬编码来指定输入输出的文件,此时可以使用freopen函数来进行流的重定向.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// freopen函数可以把预定义的标准流文件定向到以mode模式打开的filename文件的文件指针</span></span><br><span class="line"><span class="function">FILE * <span class="title">freopen</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *filename, <span class="keyword">const</span> <span class="keyword">char</span> *mode, FILE *stream)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 下列语句将标准输出重定向到了normal.log文件中</span></span><br><span class="line">freopen(<span class="string">"normal.log"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span><br><span class="line"><span class="comment">// 此时下列输出语句实际上是将 "lalalal" 输出到normal.log文件中</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"lalalal"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 下列语句将标准输出重定向到了normal.log文件中</span></span><br><span class="line">freopen(<span class="string">"normal.log"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span><br><span class="line"><span class="comment">// 此时下列输出语句实际上是将 "lalalal" 输出到normal.log文件中</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"lalalal"</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="输出错误"><a href="#输出错误" class="headerlink" title="输出错误"></a>输出错误</h3><p>　　前面提到标准输入输出有三种,也给出了使用stdin、stdout(使用printf,scanf,pprintf,pscanf)的例子.下面会给出一个使用stderr的示例,并介绍ferror、feof函数.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> *argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(argc == <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"param is wrong."</span>); <span class="comment">// 将字符串输出到标准错误</span></span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);                            <span class="comment">// 使用exit退出程序</span></span><br><span class="line">    &#125;</span><br><span class="line">    FILE *fp = fopen(<span class="string">"/Users/flynnon/blog/d.json"</span>, <span class="string">"r"</span>);</span><br><span class="line">    <span class="keyword">if</span>(ferror(fp))&#123;                         <span class="comment">// 检查文件流中是否有错误</span></span><br><span class="line">        <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">"ope file error"</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// exit函数被调用时,调用程序将终止执行,任何调用该程序的进程都可以获取exit的参数值.</span></span><br><span class="line"><span class="comment">// 一般以0作为正常的返回值,以其余数字作为错误的标志(可以看看Linux中的规定).</span></span><br><span class="line"><span class="comment">// exit还会为每个已打开的输出文件调用fclose函数,以将缓冲区中的所有输出写到相应的文件中.</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">exit</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果流fp中出现错误,则函数ferror返回一个非0值.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ferror</span><span class="params">(FILE *fp)</span></span>;</span><br><span class="line"><span class="comment">// 如果指定的文件到达文件结尾,它返回一个非0值.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">feof</span><span class="params">(FILE *fp)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="行输出与行输入"><a href="#行输出与行输入" class="headerlink" title="行输出与行输入"></a>行输出与行输入</h3><p>　　在读取文件的时候,常常有读取一行或者输出一行的需求,而使用以上的fgetc/fscanf/fputc/fprintf都不是很方便(傻瓜)…还好,C语言标准库提供了fgets与fputs方法…下面是介绍.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出函数fputs将一个字符串(不需要包含换行符,此函数自己根据平台添加)写入到一个文件中.发生错误时,该函数将返回EOF,否则返回一个非负值.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fputs</span><span class="params">(<span class="keyword">char</span> *line, FILE *fp)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fgets函数从fp指向的文件中读取下一个输入行(包括换行符),并将它存放在字符数组line中,它最多可读取maxline-1个字符.</span></span><br><span class="line"><span class="comment">// fgets读取的行将以'\0'结尾保存到数组中.</span></span><br><span class="line"><span class="comment">// 通常情况下,fgets返回line,但如果遇到了文件结尾或发生了错误,则返回 NULL.</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">fgets</span><span class="params">(<span class="keyword">char</span> *line, <span class="keyword">int</span> maxline, FILE *fp)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>　　同printf与fprintf,scanf与pscanf一样,对于标准输入输出也有一对类似的函数fget与fput.<br>　　puts函数在写入字符串时会在结尾添加一个换行符;而gets函数在读取字符串时会自动删除结尾的换行符(‘\n’).</p>
+<h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><p>　　在C标准库中提供了很多常用的函数.</p>
+<h3 id="字符串操作相关"><a href="#字符串操作相关" class="headerlink" title="字符串操作相关"></a>字符串操作相关</h3><p>　　与字符串操作相关的函数主要定义在<string.h>头文件中,下面是介绍.</p>
+<table>
+<thead>
+<tr>
+<th>函数声明</th>
+<th>作用</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char <em>strcat(char </em>dest, const char *src)</td>
+<td>将src指向的字符串复制到dest指向的字符串的末尾</td>
+<td>指向最终的目标字符串dest的指针</td>
+</tr>
+<tr>
+<td>char <em>strncat(char </em>dest, const char *src, size_t n)</td>
+<td>把src所指向的字符串追加到dest所指向的字符串的结尾,直到n字符长度为止</td>
+<td>指向最终的目标字符串dest的指针</td>
+</tr>
+<tr>
+<td>int strcmp(const char <em>str1, const char </em>str2)</td>
+<td>把str1所指向的字符串和str2所指向的字符串进行比较(按照每一位的ascii比较)</td>
+<td>标志大小的int值,大于(正),小于(负),等于(0)</td>
+</tr>
+<tr>
+<td>int strncmp(const char <em>str1, const char </em>str2, size_t n)</td>
+<td>把str1和str2进行比较,最多比较前n个字节</td>
+<td>同上</td>
+</tr>
+<tr>
+<td>char <em>strcpy(char </em>dest, const char *src)</td>
+<td>把src所指向的字符串复制到dest</td>
+<td>指向最终的目标字符串dest的指针</td>
+</tr>
+<tr>
+<td>char <em>strncpy(char </em>dest, const char *src, size_t n)</td>
+<td>把src所指向的字符串复制到dest,最多复制n个字符,src长度小于n时,使用NULL填充</td>
+<td>指向最终的目标字符串dest的指针</td>
+</tr>
+<tr>
+<td>size_t strlen(const char *str)</td>
+<td>计算字符串str的长度,直到空结束字符,但不包括空结束字符</td>
+<td>长度</td>
+</tr>
+<tr>
+<td>char <em>strchr(const char </em>str, int c)</td>
+<td>在参数str所指向的字符串中搜索第一次出现字符c(一个无符号字符)的位置</td>
+<td>指向第一次出现位置的指针,未找到则返回NULL</td>
+</tr>
+<tr>
+<td>char <em>strrchr(const char </em>str, int c)</td>
+<td>在参数str所指向的字符串中搜索最后一次出现字符c(一个无符号字符)的位置</td>
+<td>指向最后出现位置的指针,未找到则返回NULL</td>
+</tr>
+</tbody>
+</table>
+<h3 id="字符串类别测试与转化函数"><a href="#字符串类别测试与转化函数" class="headerlink" title="字符串类别测试与转化函数"></a>字符串类别测试与转化函数</h3><p>　　头文件<ctype.h>中定义了一些用于字符测试和转换的函数.下面是介绍.</p>
+<table>
+<thead>
+<tr>
+<th>函数签名</th>
+<th>含义</th>
+<th>返回值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>int isalpha(int c)</td>
+<td>判断c是否是字符</td>
+<td>若c是字符,返回一个非零值,否则返回0</td>
+</tr>
+<tr>
+<td>int isupper(int c)</td>
+<td>判断c是否是大写字符</td>
+<td>若c是大写字符,返回一个非零值,否则返回0</td>
+</tr>
+<tr>
+<td>int islower(int c)</td>
+<td>判断c是否是小写字符</td>
+<td>若c是小写字符,返回一个非零值,否则返回0</td>
+</tr>
+<tr>
+<td>int isdigit(int c)</td>
+<td>判断c是否是数字字符</td>
+<td>若c是数字字符,返回一个非零值,否则返回0</td>
+</tr>
+<tr>
+<td>int isalnum(int c)</td>
+<td>判断c是否是字母/数字</td>
+<td>若c是字母/数字,返回一个非零值,否则返回0</td>
+</tr>
+<tr>
+<td>int isspace(int c)</td>
+<td>判断c是否是空白字符(空格、横向制表符、换行符、回车符，换页符或纵向制表符)</td>
+</tr>
+<tr>
+<td>int toupper(int c)</td>
+<td>将c转化成大写字母</td>
+<td>如果c有相对应的大写字母,则该函数返回c的大写字母.否则返回c本身</td>
+</tr>
+<tr>
+<td>int tolower(int c)</td>
+<td>将c转化成小写字母</td>
+<td>如果c有相对应的小写字母,则该函数返回c的小写字母.否则返回c本身</td>
+</tr>
+</tbody>
+</table>
+<h3 id="命令执行函数"><a href="#命令执行函数" class="headerlink" title="命令执行函数"></a>命令执行函数</h3><p>　　函数system(char* s)执行包含在字符申s中的命令,然后继续执行当前程序.<br>　　system函数返回一个整型的状态值,其值来自于执行的命令,并同具体系统有关.</p>
+<h3 id="存储管理函数"><a href="#存储管理函数" class="headerlink" title="存储管理函数"></a>存储管理函数</h3><p>　　函数malloc和calloc用于动态地分配存储块.介绍如下.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// malloc的函数签名</span></span><br><span class="line"><span class="comment">// 当分配成功时,它返回一个指针,设指针指向n字节长度的未初始化的存储空间,否则返回NULL.</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">malloc</span><span class="params">(<span class="keyword">size_t</span> NumBytes)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// calloc的函数签名</span></span><br><span class="line"><span class="comment">// 当分配成功时,它返回一个指针,该指针指向的空闲空间足以容纳由n个指定长度的对象组成的数组,否则返回NULL.该存储空间被初始化为0.</span></span><br><span class="line"><span class="comment">// numElements: 对象个数, sizeOfElement: 每个对象的大小</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">calloc</span><span class="params">(<span class="keyword">size_t</span> numElements,<span class="keyword">size_t</span> sizeOfElement)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 释放p指向的存储空间.其中,p是此前通过调用malloc或calloc函数得到的指针</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free</span><span class="params">(<span class="keyword">void</span> *FirstByte)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h3><p>　　头文件<math.h>中声明了20多个数学函数,感觉用到的时候查就可以了…</p>
+<h3 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h3><p>　　函数rand()生成介于0和RAND_MAX之间的伪随机整数序列(RAND_MAX是在头文件<stdlib.h>中定义的符号常量).<br>　　函数srand(unsigned)设置rand函数生成的序列的种子.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成0-1之间的随机数的宏定义</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> frand() ((double) rand() / (RAND_MAX+1.0))</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Flynnon
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://flynnon.github.io/2018/04/10-C语言复习笔记(5).html" title="C语言复习笔记(5)">http://flynnon.github.io/2018/04/10-C语言复习笔记(5).html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习之路/" rel="tag"><i class="fa fa-tag"></i> 学习之路</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/29-C语言复习笔记(4).html" rel="next" title="C语言复习笔记(4)">
+                <i class="fa fa-chevron-left"></i> C语言复习笔记(4)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/11-《操作系统革命》杂记.html" rel="prev" title="《操作系统革命》杂记">
+                《操作系统革命》杂记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Flynnon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Flynnon" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/flynnon.ton" target="_blank" title="Facebook">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                我的朋友
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.tianhao.site/blog/" title="田浩的Blog" target="_blank">田浩的Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入输出"><span class="nav-number">2.</span> <span class="nav-text">输入输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#标准输入输出"><span class="nav-number">2.1.</span> <span class="nav-text">标准输入输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数"><span class="nav-number">2.1.1.</span> <span class="nav-text">函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化输出"><span class="nav-number">2.2.</span> <span class="nav-text">格式化输出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#格式字符串"><span class="nav-number">2.2.2.</span> <span class="nav-text">格式字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#填充"><span class="nav-number">2.2.3.</span> <span class="nav-text">填充</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#效果示例"><span class="nav-number">2.2.4.</span> <span class="nav-text">效果示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩展"><span class="nav-number">2.2.5.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式化输入"><span class="nav-number">2.3.</span> <span class="nav-text">格式化输入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#函数-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#格式字符串-1"><span class="nav-number">2.3.2.</span> <span class="nav-text">格式字符串</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#填充-1"><span class="nav-number">2.3.3.</span> <span class="nav-text">填充</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用示例"><span class="nav-number">2.3.4.</span> <span class="nav-text">使用示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件操作"><span class="nav-number">3.</span> <span class="nav-text">文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件的打开"><span class="nav-number">3.1.</span> <span class="nav-text">文件的打开</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件内容的读写"><span class="nav-number">3.2.</span> <span class="nav-text">文件内容的读写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特殊的文件"><span class="nav-number">3.3.</span> <span class="nav-text">特殊的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭文件"><span class="nav-number">3.4.</span> <span class="nav-text">关闭文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重定向"><span class="nav-number">3.5.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出错误"><span class="nav-number">3.6.</span> <span class="nav-text">输出错误</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行输出与行输入"><span class="nav-number">3.7.</span> <span class="nav-text">行输出与行输入</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用函数"><span class="nav-number">4.</span> <span class="nav-text">常用函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串操作相关"><span class="nav-number">4.1.</span> <span class="nav-text">字符串操作相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串类别测试与转化函数"><span class="nav-number">4.2.</span> <span class="nav-text">字符串类别测试与转化函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令执行函数"><span class="nav-number">4.3.</span> <span class="nav-text">命令执行函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#存储管理函数"><span class="nav-number">4.4.</span> <span class="nav-text">存储管理函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数学函数"><span class="nav-number">4.5.</span> <span class="nav-text">数学函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机数"><span class="nav-number">4.6.</span> <span class="nav-text">随机数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-@"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Flynnon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人访问
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次访问
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Cjsr55wJkKKtTeREWcAIW2GA-gzGzoHsz", "9mVWvx06y21SX6Ebqm6Ry5wG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/love.js"></script>

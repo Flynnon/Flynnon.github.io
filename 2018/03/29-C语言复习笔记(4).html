@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习之路," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言　　以下记录了第六章的一些知识点. 结构语义　　结构是一个或多个变量的集合,这些变量可能为不同的类型.也就是说:为了处理的方便而将这些变量组织在一个名字之下,这个名字被称作结构.">
+<meta name="keywords" content="学习之路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言复习笔记(4)">
+<meta property="og:url" content="http://flynnon.github.io/2018/03/29-C语言复习笔记(4).html">
+<meta property="og:site_name" content="Flynnon&#39;s Blog">
+<meta property="og:description" content="前言　　以下记录了第六章的一些知识点. 结构语义　　结构是一个或多个变量的集合,这些变量可能为不同的类型.也就是说:为了处理的方便而将这些变量组织在一个名字之下,这个名字被称作结构.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/c_note/union_in_c.png">
+<meta property="og:updated_time" content="2018-05-12T09:48:26.939Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言复习笔记(4)">
+<meta name="twitter:description" content="前言　　以下记录了第六章的一些知识点. 结构语义　　结构是一个或多个变量的集合,这些变量可能为不同的类型.也就是说:为了处理的方便而将这些变量组织在一个名字之下,这个名字被称作结构.">
+<meta name="twitter:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/c_note/union_in_c.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://flynnon.github.io/2018/03/29-C语言复习笔记(4).html"/>
+
+
+
+
+
+  <title>C语言复习笔记(4) | Flynnon's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111573728-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flynnon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">平常的一些记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://flynnon.github.io/2018/03/29-C语言复习笔记(4).html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Flynnon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flynnon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言复习笔记(4)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-29T23:28:50+08:00">
+                2018-03-29 23:28:50
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/29-C语言复习笔记(4).html" class="leancloud_visitors" data-flag-title="C语言复习笔记(4)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　以下记录了第六章的一些知识点.</p>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><h3 id="语义"><a href="#语义" class="headerlink" title="语义"></a>语义</h3><p>　　结构是一个或多个变量的集合,这些变量可能为不同的类型.也就是说:为了处理的方便而将这些变量组织在一个名字之下,这个名字被称作结构.<a id="more"></a></p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>　　关键字 struct 引入结构声明.结构声明由包含在花括号内的一系列声明组成.<br>　　struct后面的名字是可选的,称为结构标记.结构标记用于为结构命名,在定义之后,结构标记就代表花括号内的声明,可以用它作为该声明的简写形式.<br>　　结构中定义的变量称为成员.<br>　　结构成员、结构标记和普通变量(即非成员)可以采用相同的名字,它们之间不会冲突.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 结构的声明</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> &#123;</span>     <span class="comment">// struct是关键字.point被称作结构标记</span></span><br><span class="line">    <span class="keyword">int</span> x;         <span class="comment">// x,y,point 被称为成员</span></span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">int</span> point;     <span class="comment">// 通过分析上下文,可以很明显的分辨出两个point代表的含义</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>　　struct声明定义了一种数据类型.在标志结构成员表结束的右花括号之后可以跟一个变量表,这与其它基本类型的变量声明方式是相同的.<br>　　如果结构声明的后面不带变量表,则不需要为它分配存储空间,它仅仅描述了一个结构的模板或轮廓.<br>　　如果结构声明中带有标记,那么在以后定义结构实例时也可以使用该标记定义.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 结构实例的声明</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span> <span class="keyword">int</span> x; &#125; x, y, z; <span class="comment">// 直接跟变量表声明结构实例</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">pt</span>;</span>           <span class="comment">// 通过标记定义声明结构实例</span></span><br></pre></td></tr></table></figure>
+<p>　　结构的初始化可以在定义的后面使用初值表进行.使用这种方式初始化时,初值表中同每个成员对应的初值必须是常量表达式.<br>　　自动结构也可以通过赋值初始化,还可以通过调用返回相应类型结构的函数进行初始化.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 结构实例的初始化</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">int</span> point;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">struct point <span class="title">get_point</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">pt</span> = &#123;</span><span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>&#125;;</span><br><span class="line">    <span class="keyword">return</span> pt;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">p1</span> = &#123;</span><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;     <span class="comment">// 使用初值表初始化</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">p2</span> = <span class="title">p1</span>;</span>            <span class="comment">// 赋值初始化</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">p3</span> = <span class="title">get_point</span>();</span>   <span class="comment">// 通过函数返回值初始化</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">p4</span>;</span>                 <span class="comment">// 自动初始化.此时: p4.x == p4.y == p4.point == 0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　在表达式中，可以通过 结构名.成员 这样的形式来引用某个特定结构中的成员.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">    <span class="keyword">int</span> point;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">p</span> = &#123;</span><span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d "</span>, p.x, p.y, p.point);  <span class="comment">// 访问成员</span></span><br><span class="line">    p.x = <span class="number">100</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d %d"</span>, p.x, p.y, p.point);  <span class="comment">// 也可以为成员赋值</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 很明显,输出是: 1 2 3 100 2 3</span></span><br></pre></td></tr></table></figure>
+<p>　　结构可以嵌套,即:结构中可以包含结构(不能嵌套自身的结构体).</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># <span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">inner</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">outer</span>&#123;</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">inner</span> <span class="title">y</span>;</span>   <span class="comment">// 结构体的嵌套</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">outer</span> <span class="title">o</span> = &#123;</span>&#123;<span class="number">1</span>&#125;, <span class="number">2</span>&#125;;   <span class="comment">// 嵌套型结构体的初始化</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d %d"</span>, o.y.x, o.x); <span class="comment">// 很明显,输出为 1 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="运算"><a href="#运算" class="headerlink" title="运算"></a>运算</h3><p>　　结构仅支持如下操作:<br>　　1.作为一个整体复制和赋值(包括向函数传递参数以及从函数返回值);<br>　　2.通过&amp;运算符取地址;<br>　　3.通过”.”操作符访问成员.  </p>
+<p>　　结构之间不允许比较.</p>
+<h2 id="指向结构的指针"><a href="#指向结构的指针" class="headerlink" title="指向结构的指针"></a>指向结构的指针</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span>&#123;</span>                <span class="comment">// 声明一个结构</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> *<span class="title">p</span>;</span>             <span class="comment">// 声明一个指向point结构类型的指针</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">tmp</span> = &#123;</span><span class="number">1</span>, <span class="number">2</span>&#125;;   <span class="comment">// 定义一个point结构类型的变量</span></span><br><span class="line">p = &amp;tmp;                    <span class="comment">// 通过取地址符&amp;使p指向tmp变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> y = (*p).x + <span class="number">1</span>;          <span class="comment">// 通过指针操作结构成员的写法(注意: 结构成员运算符“.”的优先级比“*”的优先级高,因此括号必须存在)</span></span><br><span class="line">                             <span class="comment">// 此时y的值为2</span></span><br><span class="line">y = p-&gt;x + <span class="number">1</span>;                <span class="comment">// 通过指针操作结构成员的简写方法.</span></span><br><span class="line">                             <span class="comment">// 此时y的值为3</span></span><br></pre></td></tr></table></figure>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>　　由于”.”(用于结构体),”-&gt;”(用于结构体),”[]”(用于下标),”()”(用于函数调用)的操作符优先级是最高的,因此在不熟悉时可能对语句的结果判断失误,因此,最好使用括号来显式定义操作顺序.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 优先级的示例</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span>&#123;</span></span><br><span class="line">        <span class="keyword">int</span> *s;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> z = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">tmp</span> = &#123;</span>&amp;z&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> *<span class="title">p</span> = &amp;<span class="title">tmp</span>;</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> r = *p++-&gt;s; <span class="comment">// 这个语句的含义是: 先读取p指向的结构体中的str指针所指向的值对象(即z)的值,然后再将p加1</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, r);  <span class="comment">// 此时的r的值为0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　结构体中可以嵌套指针(包括指向自身类型的指针).</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 结构体中嵌套自身类型的指针示例</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">office</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> chair;</span><br><span class="line">    <span class="keyword">int</span> computer;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">office</span> *<span class="title">o</span>;</span>                 <span class="comment">// 结构体中嵌套指向本类型的指针</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">office</span> <span class="title">o1</span> = &#123;</span><span class="number">10</span>, <span class="number">10</span>, <span class="literal">NULL</span>&#125;;    <span class="comment">// 使用空指针进行初始化</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">office</span> <span class="title">o2</span> = &#123;</span><span class="number">10</span>, <span class="number">10</span>, &amp;o1&#125;;     <span class="comment">// 使用正常的指向某个结构实例的指针进行初始化</span></span><br></pre></td></tr></table></figure>
+<h2 id="结构数组"><a href="#结构数组" class="headerlink" title="结构数组"></a>结构数组</h2><h3 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 变量数组的声明与初始化(以下两种声明方式是等价的)</span></span><br><span class="line"><span class="comment">// 先声明结构体,再声明结构体数组</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">p_array</span>[2];</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明结构体的同时声明数组</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">&#125; p_array[<span class="number">2</span>];</span><br></pre></td></tr></table></figure>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 结构体数组的初始化</span></span><br><span class="line"><span class="comment">// 精确的做法,将每一行(即每个结构)的初值都括在花括号内进行初始化</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">p_array</span>[2] = &#123;</span></span><br><span class="line">    &#123;<span class="number">1</span>, <span class="number">2</span>&#125;, &#123;<span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 简单做法,在定义的后面通过一个用圆括号括起来的初值表进行初始化</span></span><br><span class="line"><span class="comment">// 即: 如果初值是简单变量或字符串,并且其中的任何值都不为空,则内层的花括号可以省略</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">p_array</span>[2] = &#123;</span></span><br><span class="line">    <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 同普通数组一样,如果初值存在并且方括号[ ]中没有数值,编译程序将自动计算数组 p_array 中的项数.</span></span><br></pre></td></tr></table></figure>
+<h3 id="扩展-1"><a href="#扩展-1" class="headerlink" title="扩展"></a>扩展</h3><p>　　C语言提供了一个编译时(compile-time)一元运算符sizeof,可用来计算任一对象的长度.<br>　　表达式 sizeof 对象 以及 sizeof(类型名) 将返回一个整型值(严格地说,返回值是无符号整型值,其类型为 size_t),它等于指定对象或类型占用的存储空间字节数.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sizeof的用法</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">test</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s"</span>, <span class="string">"exec"</span>);   <span class="comment">// 这里并不会被执行</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">point</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">int</span> y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">special</span>&#123;</span></span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">    <span class="keyword">char</span> y;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> <span class="title">p</span> = &#123;</span><span class="number">1</span>, <span class="number">2</span>&#125;;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">special</span> <span class="title">sp</span> = &#123;</span><span class="number">1</span>, <span class="string">'x'</span>&#125;;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">point</span> *<span class="title">p_p</span> = &amp;<span class="title">p</span>;</span></span><br><span class="line">    <span class="keyword">int</span> tmp_array[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%ld"</span>, <span class="keyword">sizeof</span> tmp_array);  <span class="comment">// 当sizeof的对象是数组时,返回数组总大小.</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%ld"</span>, <span class="keyword">sizeof</span> p_p);        <span class="comment">// 当对象是指针时,返回指针本身的大小,而不是指示内存空间的大小.</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%ld"</span>, <span class="keyword">sizeof</span> p);          <span class="comment">// 一般而言,结构体的大小为所有元素的大小之和.</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%ld"</span>, <span class="keyword">sizeof</span>(sp));        <span class="comment">// 然而,由于需要对齐,因此实际长度可能会有变化.</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%ld"</span>, <span class="keyword">sizeof</span>(<span class="number">1</span>+<span class="number">1</span>));       <span class="comment">// 对象是表达式时,求的大小是表达式返回值的类型大小,但并不计算表达式的值.</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%ld"</span>, <span class="keyword">sizeof</span>(test()));    <span class="comment">// 如果对象是函数,则返回函数返回值类型大小,不实际执行,因此函数中的输出并不会出现.</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%ld"</span>, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));       <span class="comment">// 作用于类型时,返回该类型所占空间大小.</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%ld"</span>, <span class="keyword">sizeof</span>(<span class="string">"123"</span>));     <span class="comment">// 由于字符串结尾总有一个'\0',因此计算空间时会比实际长度大一.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 结果为: 12 8 8 8 4 4 4 4</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　不同的对象有不同的对齐要求,所以,结构中可能会出现未命名的“空穴“(hole).<br>　　通过使用sizeof可以很容易的算出数组中元素的个数.<br>　　条件编译语句 #if 中不能使用sizeof,因为预处理器不对类型名进行分析.但预处理器并不计算 #define 语句中的表达式,因此,在#define中使用sizeof是合法的.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 利用sizeof求数组元素个数的方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> tmp[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 数组的长度除以单个元素的长度</span></span><br><span class="line"><span class="keyword">int</span> length = <span class="keyword">sizeof</span>(tmp) / <span class="keyword">sizeof</span>(<span class="keyword">int</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 数组的长度除以指定元素的长度</span></span><br><span class="line"><span class="keyword">int</span> length = <span class="keyword">sizeof</span>(tmp) / <span class="keyword">sizeof</span>(<span class="keyword">sizeof</span>(tmp[<span class="number">0</span>]));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 一个利用sizeof求数组长度的宏定义</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ARR_LEN(x) (sizeof(x) / sizeof(x[0]))</span></span><br></pre></td></tr></table></figure>
+<p>　　C语言提供了一个称为 typedef 的功能,它用来建立新的数据类型名.<br>　　从任何意义上讲,typedef 声明并没有创建一个新类型,它只是为 某个已存在的类型增加了一个新的名称而已.typedef声明也没有增加任何新的语义,即通过这种方式声明的变量与通过普通声明方式声明的变量具有完全相同的属性.<br>　　优点:1.可以使程序参数化,以提高程序的可移植性(如果typedef声明的数据类型同机器有关,那么当程序移植到其它机器上时,只需改变typedef类型定义就可以了);2.通过使用更恰当的名称为程序提供更好的说明性.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> Length; <span class="comment">// 给int一个别名Length</span></span><br><span class="line">Length x = <span class="number">0</span>;       <span class="comment">// 相当于 int x = 0;</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> &#123;</span></span><br><span class="line">    <span class="keyword">char</span> *word;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">tnode</span> *<span class="title">right</span>;</span></span><br><span class="line">&#125; Treenode;         <span class="comment">// 复杂声明</span></span><br></pre></td></tr></table></figure>
+<h2 id="联合"><a href="#联合" class="headerlink" title="联合"></a>联合</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>　　联合(union)是可以(在不同时刻)保存不同类型和长度的对象的变量,由编译器负责跟踪对象的长度和对齐要求.<br>　　联合提供了一种方式,以在单块存储区中管理不同类型的数据,而不需要在程序中嵌入任何同机器有关的信息(通过使用联合,一个变量可以合法地保存多种数据类型中任何一种类型的对象).  </p>
+<h3 id="定义方式"><a href="#定义方式" class="headerlink" title="定义方式"></a>定义方式</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用联合的场景示例: 假设一个常量可能是int,f1oat或字符指针.</span></span><br><span class="line"><span class="comment">// 若该常量的不同类型占据相同大小的存储空间,且保存在同一个地方的话,使用将最方便.通过将该常量定义为联合可以实现.</span></span><br><span class="line"><span class="keyword">union</span> u_demo &#123;</span><br><span class="line">    <span class="keyword">int</span> ival;</span><br><span class="line">    <span class="keyword">float</span> fval;</span><br><span class="line">    <span class="keyword">char</span> *sval;</span><br><span class="line">&#125; u;  <span class="comment">// 变量u必须足够大,以保存这3种类型中最大的一种,具体长度同具体的实现有关.</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>　　同结构类似,可以使用 联合名.成员 或 联合指针-&gt;成员 的方法来访问联合中的成员.<br>　　读取的类型必须是最近一次存入的类型.由程序员负责跟踪当前保存在联合中的类型,如果保存的类型与读取的类型不一致,其结果取决于具体的实现.<br>　　联合只能用其第一个成员类型的值进行初始化.<br>　　实际上,联合就是一个结构,它的所有成员相对于基地址的偏移量都为0.对联合允许的操作与对结构允许的操作相同:作为一个整体单元进行赋值、复制、取地址及访问其中一个成员.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义宏来标识当前union变量的类型</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> INT 1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CAHR 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义union类型</span></span><br><span class="line"><span class="keyword">union</span> u_d&#123;</span><br><span class="line">    <span class="keyword">char</span> y;</span><br><span class="line">    <span class="keyword">int</span> x;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过校验当前union变量的类型来进行针对性处理(这里是输出)</span></span><br><span class="line"><span class="comment">// 以下两个带注释行的用法是不规范的,很可能得不到预期的结果</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_u_demo</span><span class="params">(<span class="keyword">union</span> u_d u, <span class="keyword">int</span> u_type)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (u_type == INT)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, u.x);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%c\n"</span>, u.y);      <span class="comment">// 这里会输出 u.x 对应的 ASCII 字符</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (u_type == CAHR)&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d\n"</span>, u.x);      <span class="comment">// 这里不能得到有意义的输出</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%c\n"</span>, u.y);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"bad type %d in utype\n"</span>, u_type);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> u_type = <span class="number">0</span>;       <span class="comment">// 用变量来记录结构成员当前的类型</span></span><br><span class="line">    <span class="keyword">union</span> u_d u = &#123;<span class="string">'A'</span>&#125;;  <span class="comment">// 使用第一个成员类型来初始化</span></span><br><span class="line">    u_type = CAHR;</span><br><span class="line">    print_u_demo(u, u_type);</span><br><span class="line">    u.x = <span class="number">100</span>;</span><br><span class="line">    u_type = INT;</span><br><span class="line">    print_u_demo(u, u_type);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="内存模型"><a href="#内存模型" class="headerlink" title="内存模型"></a>内存模型</h3><p>　　union变量占用的内存等于最长的成员占用的内存.本质上只是对一段大内存的不同解读方式.如下图所示:<br><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/c_note/union_in_c.png" alt="union内存示例"></p>
+<h2 id="位字段"><a href="#位字段" class="headerlink" title="位字段"></a>位字段</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>　　在存储空间很宝贵的情况下,有可能需要将多个对象保存在一个机器字中(机器字指计算机一次能处理数据的bit位数).<br>　　一种常用的方法:使用类似于编译器符号表的单个二进制位标志集合.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用一个char或int对象中的位标志集合来标识一个对象的属性的示例</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里使用int型变量来标识某标识符的特定信息的集合.</span></span><br><span class="line"><span class="keyword">int</span> flags;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义一个与相关位的位置对应的"屏蔽码"的集合,其中的每一个元素代表一种属性</span></span><br><span class="line"><span class="comment">// 这些数字必须是2的幂.这样,访问这些位就变成了用移位运算、屏蔽运算及补码运算进行简单的位操作</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用宏定义</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> KEYWORD 01</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> EXTRENAL 02</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> STATIC 04</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用枚举定义</span></span><br><span class="line"><span class="keyword">enum</span> &#123; KEYWORD = <span class="number">01</span>, EXTERNAL = <span class="number">02</span>, STATIC = <span class="number">04</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为该标识符的属性设值</span></span><br><span class="line">flags |= EXTERNAL | STATIC;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断该标识符是否有特定属性</span></span><br><span class="line"><span class="keyword">if</span> ((flags &amp; (EXTERNAL | STATIC)) == <span class="number">0</span>)&#123;</span><br><span class="line">    doSomething();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="C语言语法层面的支持"><a href="#C语言语法层面的支持" class="headerlink" title="C语言语法层面的支持"></a>C语言语法层面的支持</h3><p>　　这种做法的本质是利用一位来存储一种信息,但是每种信息只能有简单的 是/否 概念.这样就在很大限度上减少了内存使用,并且判断效率也很高.至于使用什么方法来实现这种思路就无关紧要了.<br>　　也许是C语言中类似的做法很多.因此,它在语法层面为这种操作提供了支持.即:位字段(位域).<br>　　位字段允许我们定义一个由位组成的段,并可为它赋以一个名字.通过这种方式可以更高效的利用内存.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 位字段的声明</span></span><br><span class="line"><span class="comment">// 位字段只能定义为 int, signed int, unsigned int中的一种</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> is_keyword : <span class="number">1</span>;   <span class="comment">// 冒号“:”后的数字为该位字段所占的bit位数</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> : <span class="number">1</span>;              <span class="comment">// 可以使用无名字段来占位,仅起填充作用,该字段所在的位不能被使用</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> : <span class="number">0</span>;              <span class="comment">// 0字段,不实际占用位,仅起标记作用(下一个位字段在下一个字边界开始).</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> is_static : <span class="number">1</span>;</span><br><span class="line">&#125; flags;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 位字段的访问</span></span><br><span class="line"><span class="comment">// 位字段没有独立的地址,不能进行取址操作</span></span><br><span class="line"><span class="comment">// 位字段没有独立的存储空间,不能进行sizeof()操作</span></span><br><span class="line">flags.is_keyword</span><br><span class="line"></span><br><span class="line"><span class="comment">// 内存分配</span></span><br><span class="line"><span class="comment">// 规则: 1.位字段按声明顺序在机器字内存储; </span></span><br><span class="line"><span class="comment">//      2.位字段不能跨越机器字存储,上一个机器字空间不足时,该位字段将全部存到下一个机器字</span></span><br><span class="line"><span class="comment">// 假设当前机器是32位</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> a  :<span class="number">20</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> b  : <span class="number">6</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> c  : <span class="number">2</span>;</span><br><span class="line">&#125;demo;       <span class="comment">// 20+6+2 &lt; 32, 故可在1个机器字内存储</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> d  :<span class="number">20</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> e  :<span class="number">6</span>;   <span class="comment">// 32 -（20+6）= 6, 该机器字剩余6bit</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> f  :<span class="number">20</span>;  <span class="comment">// 6bit不够存储f,则f将在下一个机器字边界开始存储</span></span><br><span class="line">&#125;flagscopy;  <span class="comment">//整体来看, 20+6+20&gt;32 故需在2个机器字内存储</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> g : <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span>   : <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> h : <span class="number">1</span>;   <span class="comment">// 由于前面是一个0字段标记,因此h将在下一个机器字边界开始存储</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Flynnon
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://flynnon.github.io/2018/03/29-C语言复习笔记(4).html" title="C语言复习笔记(4)">http://flynnon.github.io/2018/03/29-C语言复习笔记(4).html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习之路/" rel="tag"><i class="fa fa-tag"></i> 学习之路</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/21-C语言复习笔记(3).html" rel="next" title="C语言复习笔记(3)">
+                <i class="fa fa-chevron-left"></i> C语言复习笔记(3)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/10-C语言复习笔记(5).html" rel="prev" title="C语言复习笔记(5)">
+                C语言复习笔记(5) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Flynnon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Flynnon" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/flynnon.ton" target="_blank" title="Facebook">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                我的朋友
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.tianhao.site/blog/" title="田浩的Blog" target="_blank">田浩的Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构"><span class="nav-number">2.</span> <span class="nav-text">结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语义"><span class="nav-number">2.1.</span> <span class="nav-text">语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">2.2.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运算"><span class="nav-number">2.3.</span> <span class="nav-text">运算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指向结构的指针"><span class="nav-number">3.</span> <span class="nav-text">指向结构的指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展"><span class="nav-number">3.2.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结构数组"><span class="nav-number">4.</span> <span class="nav-text">结构数组</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#声明"><span class="nav-number">4.1.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">4.2.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#扩展-1"><span class="nav-number">4.3.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#联合"><span class="nav-number">5.</span> <span class="nav-text">联合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">5.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义方式"><span class="nav-number">5.2.</span> <span class="nav-text">定义方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">5.3.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存模型"><span class="nav-number">5.4.</span> <span class="nav-text">内存模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位字段"><span class="nav-number">6.</span> <span class="nav-text">位字段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">6.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C语言语法层面的支持"><span class="nav-number">6.2.</span> <span class="nav-text">C语言语法层面的支持</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-@"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Flynnon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人访问
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次访问
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Cjsr55wJkKKtTeREWcAIW2GA-gzGzoHsz", "9mVWvx06y21SX6Ebqm6Ry5wG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/love.js"></script>

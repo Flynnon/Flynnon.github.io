@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习之路," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言　　以下记录了第五章的一些知识点. 指针概念语义　　一般来说,内存可以看作是一系列连续编号或编址的存储单元,我们将不可再分的最小单位定义为位(bit,一个位大小的内存中只能存储0/1两种状态之一).我们可以将一些信息转化为二进制(0/1的序列)进行存储,这就是编码.">
+<meta name="keywords" content="学习之路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言复习笔记(3)">
+<meta property="og:url" content="http://flynnon.github.io/2018/03/21-C语言复习笔记(3).html">
+<meta property="og:site_name" content="Flynnon&#39;s Blog">
+<meta property="og:description" content="前言　　以下记录了第五章的一些知识点. 指针概念语义　　一般来说,内存可以看作是一系列连续编号或编址的存储单元,我们将不可再分的最小单位定义为位(bit,一个位大小的内存中只能存储0/1两种状态之一).我们可以将一些信息转化为二进制(0/1的序列)进行存储,这就是编码.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/c_note/array_and_pointer.png">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/c_note/command_line_parameter.png">
+<meta property="og:updated_time" content="2018-05-12T09:48:26.938Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言复习笔记(3)">
+<meta name="twitter:description" content="前言　　以下记录了第五章的一些知识点. 指针概念语义　　一般来说,内存可以看作是一系列连续编号或编址的存储单元,我们将不可再分的最小单位定义为位(bit,一个位大小的内存中只能存储0/1两种状态之一).我们可以将一些信息转化为二进制(0/1的序列)进行存储,这就是编码.">
+<meta name="twitter:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/c_note/array_and_pointer.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://flynnon.github.io/2018/03/21-C语言复习笔记(3).html"/>
+
+
+
+
+
+  <title>C语言复习笔记(3) | Flynnon's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111573728-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flynnon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">平常的一些记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://flynnon.github.io/2018/03/21-C语言复习笔记(3).html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Flynnon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flynnon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言复习笔记(3)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-21T23:51:50+08:00">
+                2018-03-21 23:51:50
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/21-C语言复习笔记(3).html" class="leancloud_visitors" data-flag-title="C语言复习笔记(3)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　以下记录了第五章的一些知识点.</p>
+<h2 id="指针概念"><a href="#指针概念" class="headerlink" title="指针概念"></a>指针概念</h2><h3 id="语义"><a href="#语义" class="headerlink" title="语义"></a>语义</h3><p>　　一般来说,内存可以看作是一系列连续编号或编址的存储单元,我们将不可再分的最小单位定义为位(bit,一个位大小的内存中只能存储0/1两种状态之一).我们可以将一些信息转化为二进制(0/1的序列)进行存储,这就是编码.<a id="more"></a><br>　　在第一个较通用的编码表ASCII编码诞生后,我们将其中能存储一个英文字符的空间称为一字节(Byte),其中,1Byte=8bit.<br>　　而一般把存储器中的一个字节(Byte)称为一个内存单元.如果我们将这些存储单元看作有序的(例如,按照物理顺序排序),那么就可以用某个值表示每一个内存单元的地址,又由于字节大小是固定的,因此我们可以通过记录某字节在这个字节序列中的位置来计算位置,也就是说,这个位置信息可以等价为内存单元的地址.<br>　　我们将某个内存单元A的地址(也就是位置信息)也存储到内存单元B(也可能是一组内存单元)之后,就可以通过取出B单元的信息来计算出A的地址,从而间接的取出A的信息.其中,B中的值被称为A的地址,B被称为指针.<br>　　也就是:指针是能够存放一个地址的一组存储单元.</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p>　　1.ANSI C使用类型void <em>(指向 void的指针)代替在原来使用char </em>作为通用指针的类型. 也就是说:任何类型的指针都可以转换为 oid <em>类型，并且在将它转换回原来的类型时不会丢失信息;<br>　　2.在C语言中,通过一元运算符&amp;来取某变量的地址.又由以上推导可得:地址运算符&amp;只能应用于内存中的对象,即变量与数组元素.它不能作用于表达式,常量或register类型的变量;<br>　　3.一元运算符</em>是间接寻址或间接引用运算符.当它作用于指针时,将访问指针所指向的对象;<br>　　4.为了安全,指针只能指向某种特定类型的对象.也就是说,每个指针都必须指向某种特定的数据类型;<br>　　5.由于指针也是变量,所以在程序中可以直接使用,而不必通过间接引用的方法使用;<br>　　6.对指针有意义的初始化值只能是空(NULL/0)或者是表示地址的表达式(表达式所代表的地址必须是在此前已定义的具有适当类型的数据的地址).</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">int</span> *y = &amp;x, *z; <span class="comment">// 定义一个指向变量x的内存地址的指针y</span></span><br><span class="line"><span class="keyword">void</span> *p = &amp;x;    <span class="comment">// void* 类型的变量可以作为通用指针</span></span><br><span class="line">z = y;           <span class="comment">// 指针可以直接使用</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *t = <span class="literal">NULL</span>; <span class="comment">// 指针定义时,可以指向NULL/0.此时,它被称为 空指针.</span></span><br><span class="line"><span class="keyword">int</span> *u = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 指针数组初始化</span></span><br><span class="line"><span class="comment">// name数组中的每个元素都是一个指针,它指向某一个字符串常量(该常量存在于内存中的某个位置).</span></span><br><span class="line"><span class="keyword">char</span> *name[] = &#123;</span><br><span class="line">    <span class="string">"January"</span>, <span class="string">"February"</span>, <span class="string">"March"</span>, <span class="string">"April"</span>, <span class="string">"May"</span>, <span class="string">"June"</span>, <span class="string">"July"</span>, <span class="string">"August"</span>, <span class="string">"September"</span>, <span class="string">"October"</span>, <span class="string">"November"</span>, <span class="string">"December"</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><h3 id="指针与函数参数"><a href="#指针与函数参数" class="headerlink" title="指针与函数参数"></a>指针与函数参数</h3><p>　　将指针作为参数的优点:<br>　　1. 指针参数使得被调用函数能够访问和修改主调函数中对象的值;<br>　　2. 在函数需要返回多种不同含义的值时,可以利用指针参数进行接收.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当is_valid函数返回1时,输出为:swap success,当is_valid函数返回0时,输出为swap fail.</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">is_valid</span><span class="params">(<span class="keyword">int</span> *x)</span></span>&#123; <span class="comment">// 这里虚构is_valid函数进行参数检查,它的返回值表示参数是否合法</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> *x, <span class="keyword">int</span> *y)</span></span>&#123;  <span class="comment">//这里的swap函数实现了如下功能:1.修改交换传递的参数的值;2.通过返回值标识了交换是否成功</span></span><br><span class="line">    <span class="keyword">if</span> (!(is_valid(x) &amp;&amp; is_valid(y)))&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> temp = *x;;</span><br><span class="line">    *x = *y;</span><br><span class="line">    *y = temp;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x = <span class="number">1</span>, y = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (swap(&amp;x, &amp;y))&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s"</span>, <span class="string">"swap success"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s"</span>, <span class="string">"swap fail"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="指针与数组"><a href="#指针与数组" class="headerlink" title="指针与数组"></a>指针与数组</h3><p>　　通过查询维基百科可以得到:数组(Array)是由相同类型的元素(element)的集合所组成的资料结构,分配一块连续的内存来存储.很容易联想到:若数组A中存在多个元素,那么其中某个元素b的地址可以在首元素地址的基础上,通过位移(指针运算)来得到.而根据定义,数组类型的变量或表达式的值即是该数组第0个元素的地址.因此有:<br><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/c_note/array_and_pointer.png" alt="指针与数组的关系"><br>　　A[i]与*(A+i)是等价的,即通过数组和下标实现的表达式可等价地通过指针和偏移量实现.且若确信相应的元素存在,也可以通过下标访问数组第一个元素之前的元素(即i可以为负数).<br>　　指针是一个变量,而数组名并不是变量(它是常指针).因此可以为指向数组的指针重新赋值,而不可以更改数组名所指向的地址(即不能更改A的值).  </p>
+<p>　　一般来说,用指针编写的程序比用数组下标编写的程序执行速度快,但另一方面,用指针实现的程序理解起来稍微困难一些.<br>　　当把数组名传递给一个函数时,实际上传递的是该数组第一个元索的地址.由于在被调用函数中,该参数是一个局部变量,因此,数组名参数必须是一个指针,也就是一个存储地址值的变量.  </p>
+<p>　　C语言规范保证,0永远不是有效的数据地址.因此,可以返回地址0来表示发生了异常事件.  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span>* <span class="title">test</span><span class="params">(<span class="keyword">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> &amp;x; <span class="comment">// 正常情况</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>; <span class="comment">// 用0来表示异常情况</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="字符指针与函数"><a href="#字符指针与函数" class="headerlink" title="字符指针与函数"></a>字符指针与函数</h3><p>　　字符串常量是一个数组(字符数组),因此字符串常量可通过一个指向其第一个元素的指针访问.<br>　　将字符串常量作为参数时,实际是传递了字符指针,函数中是通过使用这个指针来访问字符串常量.C语言没有提供将整个字符串作为一个整体进行处理的运算符.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> amessage[] = <span class="string">"now is the time"</span>;  <span class="comment">// 定义一个数组</span></span><br><span class="line"><span class="comment">// amessage 是一个仅仅足以存放初始化字符串以及空字符'\0'的一维数组.其中作为数组名的amessage是一个常指针,它始终指向该内存区域.然而,数组中的单个字符可以进行修改.</span></span><br><span class="line"><span class="keyword">char</span> *pmessage = <span class="string">"now is the time"</span>;   <span class="comment">// 定义一个指针</span></span><br><span class="line"><span class="comment">// 在字符串的内部表示中,字符数组以空字符'\0'结尾.</span></span><br><span class="line"><span class="comment">// pmessage是一个指针,其初值指向一个字符串常量.它的值可以被修改(可以指向不同的位置).但这个字符串常量不能被改变(结果未定义).</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 进栈和出栈的标准用法</span></span><br><span class="line">*p++=val;   <span class="comment">// 将val压入栈</span></span><br><span class="line">val=*--p;   <span class="comment">// 将栈顶元素弹出到val中</span></span><br></pre></td></tr></table></figure>
+<h3 id="指针数组"><a href="#指针数组" class="headerlink" title="指针数组"></a>指针数组</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//指针数组的声明</span></span><br><span class="line"><span class="keyword">char</span> *lineptr[<span class="number">10</span>]; </span><br><span class="line"><span class="comment">// lineptr是一个具有10个元素的一维数组, 其中数组的每个元素都是一个指向字符类型对象的指针.</span></span><br><span class="line"><span class="comment">// 注意, lineptr是一个常指针</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 指针数组的初始化</span></span><br><span class="line"><span class="keyword">char</span> *name[] = &#123;</span><br><span class="line">    <span class="string">"Illegal month"</span>, <span class="string">"January"</span>, <span class="string">"February"</span>, <span class="string">"March"</span>, <span class="string">"April"</span>, <span class="string">"May"</span>, <span class="string">"June"</span>, <span class="string">"July"</span>,<span class="string">"August"</span>, <span class="string">"September"</span>, <span class="string">"October"</span>, <span class="string">"November"</span>, <span class="string">"December"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 说明: name数组的初始化通过一个字符串列表实现，列表中的每个字符串赋值给数组相应位置的元素. 第i个字符串的所有字符存储在存储器中的某个位置, 指向它的指针存储在name[i]中. 由于上述声明中没有指明name的长度, 因此, 编译器编译时将对初值个数进行统计, 并将结果填入数组的长度.</span></span><br></pre></td></tr></table></figure>
+<h3 id="二维数组"><a href="#二维数组" class="headerlink" title="二维数组"></a>二维数组</h3><p>　　在C语言中,二维数组实际上是一种特殊的一维数组,即:它的每个元素也是一个一维数组.<br>　　一般来说,除数组的第一维(下标)可以不指定大小外,其余各维都必须明确指定大小.初始化时,没有指定的元素会被默认初始化.<br>　　一般来说,二维数组在内存中也是按照一维数组的形式排列的.在C语言中,二维数组是按行排列的.<br>　　二维数组(多维数组)中每一个一维数组的长度是固定的,而指针数组的每一行长度(该指针指向的元素的大小/数组的长度)可以不同.<br>　　指针数组最频繁的用处是存放具有不同长度的字符串.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 二维数组的声明与定义</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 按行分段赋值</span></span><br><span class="line"><span class="keyword">int</span> daytab[<span class="number">2</span>][<span class="number">12</span>] = &#123;</span><br><span class="line">    &#123;<span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>&#125;,</span><br><span class="line">    &#123;<span class="number">31</span>, <span class="number">29</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 上述声明的第一维大小的定义可以省略,即</span></span><br><span class="line"><span class="keyword">int</span> daytab[][<span class="number">12</span>] = &#123;</span><br><span class="line">    &#123;<span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>&#125;,</span><br><span class="line">    &#123;<span class="number">31</span>, <span class="number">29</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 按行连续赋值</span></span><br><span class="line"><span class="keyword">int</span> daytab[<span class="number">2</span>][<span class="number">12</span>] = &#123;</span><br><span class="line">    <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">29</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 同理</span></span><br><span class="line"><span class="keyword">int</span> daytab[][<span class="number">12</span>] = &#123;</span><br><span class="line">    <span class="number">31</span>, <span class="number">28</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">29</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">30</span>, <span class="number">31</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 访问二维(多维)数组中某元素</span></span><br><span class="line"><span class="comment">// 实际是通过常规的矩阵下标计算公式 n×row+col(其中,n表示每一个一位数组的长度,row表示行下标,col表示列下标)计算得到元素 array[row][col]的位置</span></span><br><span class="line"><span class="keyword">int</span> tmp = daytab[<span class="number">0</span>][<span class="number">1</span>];   <span class="comment">// 此时,tmp的值为28</span></span><br></pre></td></tr></table></figure>
+<h3 id="函数指针"><a href="#函数指针" class="headerlink" title="函数指针"></a>函数指针</h3><p>　　在C语言中,函数本身不是变量.但我们可以定义指向函数的指针,这种指针被称作函数指针.<br>　　声明格式: 类型说明符 (*函数名)(参数), 示例如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 函数指针的声明 */</span></span><br><span class="line"> <span class="keyword">int</span> (* sort)(<span class="keyword">int</span>, <span class="keyword">int</span>);</span><br><span class="line"><span class="comment">// 这里的sort更恰当的说应该叫做函数指针的变量名.这个特殊的指针指向一个接收两个int型变量,并返回整型值的函数</span></span><br></pre></td></tr></table></figure>
+<p>　　调用格式: (*func)(params…) /  func(params…)</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 函数指针的赋值与调用示例 */</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>; <span class="comment">// 声明一个函数</span></span><br><span class="line"></span><br><span class="line">void test_test(void (* t)(void))&#123;  // 参数声明为函数指针</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"hahah "</span>);</span><br><span class="line">    t();                           <span class="comment">// 通过传入的函数指针对函数进行调用</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">void</span> (*tmp)();  <span class="comment">// 声明一个函数指针</span></span><br><span class="line">    tmp = test;     <span class="comment">// 初始化函数指针</span></span><br><span class="line">    tmp();          <span class="comment">// 调用方法一</span></span><br><span class="line">    (*tmp)();       <span class="comment">// 调用方法二</span></span><br><span class="line">    test_test(tmp); <span class="comment">// 将函数指针作为参数传递</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">int</span> x = <span class="number">1</span>;            <span class="comment">// 声明静态变量</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%s%d "</span>, <span class="string">"test"</span>, x);  <span class="comment">// 通过打印静态变量来直观表示打印次数</span></span><br><span class="line">    x += <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出: test1 test2 hahah test3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="指针的运算"><a href="#指针的运算" class="headerlink" title="指针的运算"></a>指针的运算</h2><p>　　指针与整数之间不能相互转换.0是惟一的例外:常量0可以赋值给指针,指针也可以和常量0进行比较.程序中经常用符号常量NULL(定义在标准头文件<stddef.h>中)代替常量0.<br>　　指针的运算:<br>　　1.如果指针p和q指向同一个数组的成员,那么它们之间就可以进行类似于==、!=、&lt;、&gt;=的关系比较运算。这里实际比较的是它们的位置关系(数组下标的大小);<br>　　2.任何指针与0进行相等或不等的比较运算都有意义,用来校验当前指针是否是空指针;<br>　　3.如果p和q指向相同数组中的元素,且 p&lt;q ,那么 q-p+1 就是位于 p和q 指向的元索之间的元素的数目;<br>　　4.指针可以和整数进行相加或相减运算.例如: p为指针,则 p+n 表示指针p当前指向的对象之后第n个对象的地址.具体计算时,n将根据p指向的对象的长度按比例缩放,而p指向的对象的长度则取决于p的声明.<br>　　5.相同类型指针之间的赋值运算是合法的,void* 类型的指针与其它指针的赋值运算是合法的;<br>　　6.指针的算术运算中指向不同数组元素之间的运算没有定义,但是可以使用数组最后一个元素的下一个元素的地址(这个地址可以赋给指向数组元素的指针,但仅允许它进行赋值或比较运算,不能对保存这个地址的指针进行解引用或下标运算).</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> tmp[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;;</span><br><span class="line"><span class="keyword">int</span> *x = tmp + <span class="number">1</span>; <span class="comment">// x指向2</span></span><br><span class="line"><span class="keyword">int</span> *y = tmp + <span class="number">4</span>; <span class="comment">// y指向5</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> *p = &amp;tmp[<span class="number">7</span>]; <span class="comment">// 数组tmp最后一个元素的下一个元素的地址</span></span><br><span class="line"><span class="keyword">int</span> z = p - y; <span class="comment">// 可以使用p进行运算,此时z的值为p与y下标的距离3</span></span><br><span class="line"></span><br><span class="line">z = x &lt; y; <span class="comment">// z的值为1</span></span><br><span class="line">z = x == <span class="number">0</span>; <span class="comment">// z的值为0</span></span><br><span class="line">z = x != <span class="number">0</span>; <span class="comment">// z的值为1</span></span><br><span class="line"></span><br><span class="line">x = y + <span class="number">1</span>; <span class="comment">// x现在指向y所指元素的后一个元素,即6</span></span><br><span class="line"></span><br><span class="line">y = z; <span class="comment">//赋值操作</span></span><br><span class="line"><span class="keyword">void</span>* p = y; <span class="comment">// 赋值操作</span></span><br></pre></td></tr></table></figure>
+<h2 id="特殊"><a href="#特殊" class="headerlink" title="特殊"></a>特殊</h2><h3 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h3><p>　　在支持C语言的环境中, 可以在程序开始执行时将命令行参数传递给程序.<br>　　C语言中的参数约定如下:<br>　　main函数的第一个参数argc的值表示运行程序时命令行中参数的数目; 第二个参数argv是一个指向字符串数组的指针，数组中的每个字符串对应一个参数.另外，ANSI标准要求argv[argc]的值必须为一个空指针.<br>　　图示如下:<br><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/c_note/command_line_parameter.png" alt="C语言中的命令行参数"></p>
+<blockquote>
+<p>扩展:<br>UNIX系统中的C语言程序有一个公共的约定:以负号开头的参数表示一个可选标志或参数.<br>例如: ls -l 这样的shell命令.<br>实现: 通过校验argv所指向的数组中的某个字符串是否以’-‘开头,再在这个基础上通过switch来得到其后跟随的字符,并进行特殊处理.</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Flynnon
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://flynnon.github.io/2018/03/21-C语言复习笔记(3).html" title="C语言复习笔记(3)">http://flynnon.github.io/2018/03/21-C语言复习笔记(3).html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习之路/" rel="tag"><i class="fa fa-tag"></i> 学习之路</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/04-C语言复习笔记(2).html" rel="next" title="C语言复习笔记(2)">
+                <i class="fa fa-chevron-left"></i> C语言复习笔记(2)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/29-C语言复习笔记(4).html" rel="prev" title="C语言复习笔记(4)">
+                C语言复习笔记(4) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Flynnon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Flynnon" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/flynnon.ton" target="_blank" title="Facebook">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                我的朋友
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.tianhao.site/blog/" title="田浩的Blog" target="_blank">田浩的Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针概念"><span class="nav-number">2.</span> <span class="nav-text">指针概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语义"><span class="nav-number">2.1.</span> <span class="nav-text">语义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">2.2.</span> <span class="nav-text">语法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用场景"><span class="nav-number">3.</span> <span class="nav-text">应用场景</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#指针与函数参数"><span class="nav-number">3.1.</span> <span class="nav-text">指针与函数参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针与数组"><span class="nav-number">3.2.</span> <span class="nav-text">指针与数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符指针与函数"><span class="nav-number">3.3.</span> <span class="nav-text">字符指针与函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指针数组"><span class="nav-number">3.4.</span> <span class="nav-text">指针数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二维数组"><span class="nav-number">3.5.</span> <span class="nav-text">二维数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数指针"><span class="nav-number">3.6.</span> <span class="nav-text">函数指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针的运算"><span class="nav-number">4.</span> <span class="nav-text">指针的运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特殊"><span class="nav-number">5.</span> <span class="nav-text">特殊</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行参数"><span class="nav-number">5.1.</span> <span class="nav-text">命令行参数</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-@"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Flynnon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人访问
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次访问
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Cjsr55wJkKKtTeREWcAIW2GA-gzGzoHsz", "9mVWvx06y21SX6Ebqm6Ry5wG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/love.js"></script>

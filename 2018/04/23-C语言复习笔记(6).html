@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习之路," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前言　　以下记录了第八章的一些知识点.这一章主要介绍了UNIX系统中用于输入和输出的系统调用,以及如何通过它们实现标准库函数(没细写).">
+<meta name="keywords" content="学习之路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C语言复习笔记(6)">
+<meta property="og:url" content="http://flynnon.github.io/2018/04/23-C语言复习笔记(6).html">
+<meta property="og:site_name" content="Flynnon&#39;s Blog">
+<meta property="og:description" content="前言　　以下记录了第八章的一些知识点.这一章主要介绍了UNIX系统中用于输入和输出的系统调用,以及如何通过它们实现标准库函数(没细写).">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-05-12T09:48:26.939Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C语言复习笔记(6)">
+<meta name="twitter:description" content="前言　　以下记录了第八章的一些知识点.这一章主要介绍了UNIX系统中用于输入和输出的系统调用,以及如何通过它们实现标准库函数(没细写).">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://flynnon.github.io/2018/04/23-C语言复习笔记(6).html"/>
+
+
+
+
+
+  <title>C语言复习笔记(6) | Flynnon's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111573728-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flynnon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">平常的一些记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archives"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://flynnon.github.io/2018/04/23-C语言复习笔记(6).html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Flynnon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flynnon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">C语言复习笔记(6)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-23T00:14:50+08:00">
+                2018-04-23 00:14:50
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/04/23-C语言复习笔记(6).html" class="leancloud_visitors" data-flag-title="C语言复习笔记(6)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　以下记录了第八章的一些知识点.这一章主要介绍了UNIX系统中用于输入和输出的系统调用,以及如何通过它们实现标准库函数(没细写).<a id="more"></a></p>
+<h2 id="输入-输出"><a href="#输入-输出" class="headerlink" title="输入/输出"></a>输入/输出</h2><p>　　在UNIX操作系统中,所有的外围设备(包括键盘和显示器)都被看作是文件系统中的文件.因此,所有的输入/输出都要通过读文件或写文件完成.也就是说,通过一个单一的接口就可以处理外围设备和程序之间的所有通信.</p>
+<h3 id="文件描述符"><a href="#文件描述符" class="headerlink" title="文件描述符"></a>文件描述符</h3><p>　　用户程序并不能直接操作文件(实际上文件仅仅是一种抽象),这部分权力被系统所接管.用户程序只能通过与系统交互得到一个文件描述符来对对应文件进行操作.</p>
+<h4 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h4><p>　　<strong>文件描述符(File Descriptor)</strong>通常是一个小的非负整数,内核用以标识一个特定进程正在访问的文件.当打开一个现有文件或创建一个新文件时,内核向进程返回一个文件描述符.系统负责维护已打开文件的所有信息,用户程序只能通过文件描述符引用文件.</p>
+<h4 id="特殊的文件描述符"><a href="#特殊的文件描述符" class="headerlink" title="特殊的文件描述符"></a>特殊的文件描述符</h4><p>　　针对大多数的输入/输出是通过键盘和显示器来进行的这一现象,UNIX中的shell程序进行了优化.即:<br>　　把文件描述符0与进程的<strong>标准输入(standard input)</strong>关联,文件描述符1与<strong>标准输出(standard output)</strong>关联,文件描述符2与<strong>标准错误(standard error)</strong>关联.<br>　　这样的话,只要shell程序使用文件0作为输入,文件1和2作为输出,它就不会也无需知道程序的输入从哪里来,并输出到哪里去。</p>
+<p>　　事实上,当我们通过shell进行简单的读写时,并不需要考虑什么文件描述符,直接使用read函数读取文本,再使用echo函数输出即可.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># demo.sh</span></span><br><span class="line"><span class="built_in">read</span> text</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$&#123;text&#125;</span></span><br></pre></td></tr></table></figure>
+<p>　　而使用者可以很方便的使用管道与0,1,2这三个文件描述符来进行重定向.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 运行demo.sh文件</span></span><br><span class="line">./demo.sh                     <span class="comment"># 从标准输入读取,并输出到标准输出</span></span><br><span class="line">./demo.sh &lt; la.txt &gt; xx.txt   <span class="comment"># 从la.txt进行读取,并输出到xx.txt</span></span><br><span class="line"><span class="comment"># 通常,文件描述符2仍与显示器相关联.这样,出错信息会输出到显示器上</span></span><br></pre></td></tr></table></figure>
+<h3 id="低级I-O"><a href="#低级I-O" class="headerlink" title="低级I/O"></a>低级I/O</h3><p>　　输入与输出是通过read和write系统调用实现的.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 系统调用 */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 两个系统调用的函数都是类似的:</span></span><br><span class="line"><span class="comment">// 参数:  第一个参数都是文件描述符,第二个参数是程序中存放读或写的数据的字符数组,第三个参数是要传输的字节数.</span></span><br><span class="line"><span class="comment">// 返回值: 每个调用返回的都是实际传输的字节数,具体不同如下.</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">char</span> *buf, <span class="keyword">int</span> n)</span></span>; <span class="comment">// 函数的返回值可能会小于请求的字节数.如果返回值为0,则表示已到达文件的结尾;如果返回值为-1,则表示发生了某种错误.</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">write</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">char</span> *buf, <span class="keyword">int</span> n)</span></span>; <span class="comment">// 返回值是实际写入的字节数.如果返回值与请求写入的字节数不相等,则说明发生了错误</span></span><br></pre></td></tr></table></figure>
+<p>　　在一次调用中,读出或写入的数据的字节数可以为任意大小.但是,用更大的值调用该函数可以获得更高的效率,因为系统调用的次数减少了.但是一次读取太多的话,占用内存又会变多….所以需要权衡…</p>
+<h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><h3 id="读取"><a href="#读取" class="headerlink" title="读取"></a>读取</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// open的函数签名</span></span><br><span class="line"><span class="comment">// 参数: name为文件名, flags为打开方式, perms代表权限</span></span><br><span class="line"><span class="comment">// 返回值: 所打开的文件的文件描述符,打开失败则返回-1.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">open</span><span class="params">(<span class="keyword">char</span> *name, <span class="keyword">int</span> flags, <span class="keyword">int</span> perms)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>open函数主要支持的几种打开方式:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">名称</th>
+<th style="text-align:left">含义</th>
+<th style="text-align:left">对应</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">O_RDONLY</td>
+<td style="text-align:left">只读模式打开</td>
+<td style="text-align:left">r</td>
+</tr>
+<tr>
+<td style="text-align:left">O_WRONLY</td>
+<td style="text-align:left">只写方式打开</td>
+<td style="text-align:left">w</td>
+</tr>
+<tr>
+<td style="text-align:left">O_RDWR</td>
+<td style="text-align:left">读写方式打开</td>
+<td style="text-align:left">a</td>
+</tr>
+</tbody>
+</table>
+<h3 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h3> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// create的函数签名</span></span><br><span class="line"><span class="comment">// 参数: name代表文件名, perms代表所创建的文件的权限.</span></span><br><span class="line"><span class="comment">// 返回值: 所创建文件的文件描述符,打开失败则返回-1.</span></span><br><span class="line"><span class="comment">// 如果此文件已存在,create将把该文件的长度截断为0,从而丢弃原先已有的内容(也就是覆盖).这个过程并不会报错,且权限不会更改.</span></span><br><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">create</span><span class="params">(<span class="keyword">char</span> *name, <span class="keyword">int</span> perms)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="关闭"><a href="#关闭" class="headerlink" title="关闭"></a>关闭</h3><p>　　一个程序能同时打开的文件数目是有限制的(一般为20),因此当一个程序需要同时处理许多文件时,要么更改系统的限制数目要么重用文件描述符.<br>　　作为一个合格的程序,不应该擅自更改一些系统变量.因此,比较好的方法是重用文件标识符.其实也就是释放原来占用的文件标识符,再申请新的文件标识符.<br>　　close用来断开文件描述符和已打开文件之间的连接,并释放此文件描述符,以供其它文件使用.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// close的函数签名</span></span><br><span class="line"><span class="comment">// 参数: 要关闭的文件的文件标识符</span></span><br><span class="line"><span class="comment">// 返回值: 成功返回0,出错返回-1.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">close</span><span class="params">(<span class="keyword">int</span> fd)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>　　close的功能与fclose类似,但是fclose会刷新缓冲区,而close不会.<br>　　当一个进程终止时,内核对该进程所有尚未关闭的文件描述符调用close关闭,所以即使用户程序不调用close,在终止时内核也会自动关闭它打开的所有文件.</p>
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><p>　　unlink将一个名称(这个涉及到软连接与硬链接..)从系统中删除.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// unlink的函数签名</span></span><br><span class="line"><span class="comment">// 参数: 要删除的文件名</span></span><br><span class="line"><span class="comment">// 返回值: 成功执行时,返回0;失败返回-1.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">unlink</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *pathname)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="随机访问"><a href="#随机访问" class="headerlink" title="随机访问"></a>随机访问</h3><p>　　上面介绍的read和write方法在访问文件时时顺序进行的,也就是在访问第1000个字符时需要先顺序访问前999个,但是对于我们的需求来说,这就有点浪费了,我们实际上需要一种可以直接从开头跳到第1000个字符的方法,也就是随机访问.<br>　　正好,系统调用lseek与fseek可以在文件中任意移动位置而不实际读写任何数据.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lseek的函数签名</span></span><br><span class="line"><span class="comment">// 参数: fd -&gt; 要操作的文件的文件描述符</span></span><br><span class="line"><span class="comment">//      offset -&gt; 偏移量(相对于origin而言的),当origin参数不为0时,offset参数可以为负值</span></span><br><span class="line"><span class="comment">//      origin -&gt; 定位符(0表示以文件开头位置为基点,1表示以当前位置为基点,2表示以文件结束位置为基点).</span></span><br><span class="line"><span class="comment">// 返回值: 调用成功时返回目前的读写位置,也就是距文件开头的字节数.若有错误则返回-1.</span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">lseek</span><span class="params">(<span class="keyword">int</span> fd, <span class="keyword">long</span> offset, <span class="keyword">int</span> origin)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例: 指向文件的末尾</span></span><br><span class="line">lseek(fd, <span class="number">0L</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// fseek的函数签名</span></span><br><span class="line"><span class="comment">// 参数: stream -&gt; 代表要操作的文件的文件指针</span></span><br><span class="line"><span class="comment">//      offset -&gt; 与上同</span></span><br><span class="line"><span class="comment">//      origin -&gt; 与上同</span></span><br><span class="line"><span class="comment">// 返回值: 调用成功时返回0,若有错误则返回一个非零值.</span></span><br><span class="line"><span class="comment">// 附加说明: fseek不像lseek会返回读写位置,因此必须使用ftell()来取得目前读写的位置</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fseek</span><span class="params">(FILE * stream, <span class="keyword">long</span> offset, <span class="keyword">int</span> origin)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 示例: 指向文件的末尾</span></span><br><span class="line">fseek(FILE *stream, <span class="number">0</span>, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// ftell的函数签名</span></span><br><span class="line"><span class="comment">// 参数: stream -&gt; 代表要操作的文件的文件指针</span></span><br><span class="line"><span class="comment">// 返回值: 调用成功时返回目前的读写位置,也就是距文件开头的字节数.出错则返回-1.</span></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">ftell</span><span class="params">(FILE *stream)</span></span>;</span><br></pre></td></tr></table></figure>
+<h3 id="获取文件信息"><a href="#获取文件信息" class="headerlink" title="获取文件信息"></a>获取文件信息</h3><p>　　UNIX中,文件的信息是存储在inode表中的,而文件名仅仅是inode的一个别称.<br>　　也就是说,在UNIX中通过文件名打开文件需要经历以下步骤:<br>　　1.系统找到这个文件名对应的inode号码;<br>　　2.系统通过inode号码,获取到对应的inode信息;<br>　　3.根据inode信息,定位文件数据所在的block,读出数据. </p>
+<p>　　在UNIX系统中,目录就是文件.目录文件的结构非常简单,就是一系列目录项(dirent)的列表.每个目录项,由两部分组成:所包含文件的文件名,以及该文件名对应的inode号码.</p>
+<p>　　我们可以通过系统调用stat来获取某文件的信息.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stat的函数签名</span></span><br><span class="line"><span class="comment">// 参数: path -&gt; 代表要操作的文件的路径</span></span><br><span class="line"><span class="comment">//      buf -&gt; 用来承载文件信息的stat结构体对象的指针</span></span><br><span class="line"><span class="comment">// 返回值: 返回文件的i结点中的所有信息;若出错,则返回-1.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">stat</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span> *path, struct stat *buf)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 头文件&lt;sys/stat.h&gt;中包含了描述stat的返回值的结构</span></span><br><span class="line"><span class="comment">// 这个就不细写了,用到的时候查就可以了~(Flynnon还是太懒了...)</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">stat</span> &#123;</span></span><br><span class="line">        <span class="keyword">mode_t</span>     st_mode;       <span class="comment">//文件对应的模式,文件,目录等信息.</span></span><br><span class="line">        <span class="keyword">ino_t</span>      st_ino;        <span class="comment">//inode节点号</span></span><br><span class="line">        <span class="keyword">dev_t</span>      st_dev;        <span class="comment">//设备号码</span></span><br><span class="line">        <span class="keyword">dev_t</span>      st_rdev;       <span class="comment">//特殊设备号码</span></span><br><span class="line">        <span class="keyword">nlink_t</span>    st_nlink;      <span class="comment">//文件的连接数</span></span><br><span class="line">        <span class="keyword">uid_t</span>      st_uid;        <span class="comment">//文件所有者</span></span><br><span class="line">        <span class="keyword">gid_t</span>      st_gid;        <span class="comment">//文件所有者对应的组</span></span><br><span class="line">        <span class="keyword">off_t</span>      st_size;       <span class="comment">//普通文件,对应的文件字节数</span></span><br><span class="line">        <span class="keyword">time_t</span>     st_atime;      <span class="comment">//文件最后被访问的时间</span></span><br><span class="line">        <span class="keyword">time_t</span>     st_mtime;      <span class="comment">//文件内容最后被修改的时间</span></span><br><span class="line">        <span class="keyword">time_t</span>     st_ctime;      <span class="comment">//文件状态改变时间</span></span><br><span class="line">        <span class="keyword">blksize_t</span> st_blksize;     <span class="comment">//文件内容对应的块大小</span></span><br><span class="line">        <span class="keyword">blkcnt_t</span>   st_blocks;     <span class="comment">//伟建内容对应的块数量</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>　　下面给出一个使用stat系统调用的例子.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">stat</span> <span class="title">buf</span>;</span></span><br><span class="line">    stat(<span class="string">"/etc/hosts"</span>, &amp;buf);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"/etc/hosts file size = %d\n"</span>, buf.st_size); <span class="comment">// 通过stat系统调用得到了某个文件的大小并打印</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p> 　　UNIX系统中的权限是由九位二进制数字控制的,具体如下:<br> 　　1.从左至右,1-3位数字代表文件所有者的权限,4-6位数字代表同组用户的权限,7-9数字代表其他用户的权限.<br> 　　2.每三位中,第一位代表读权限,第二位代表写权限,第三位代表执行权限.<br> 　　也就是:代表权限的二进制的取值范围为:000 000 000 - 111 111 111,换算为八进制就是 0000 - 0777.方便起见,一般使用三个八进制的值来表示权限,例如777代表所有人拥有所有权限.</p>
+<p>　　在Linux中更改文件权限的方式如下.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># 将某个文件的权限换成777(所有人都可读可写可执行)</span></span><br><span class="line">sudo chmod 777 <span class="variable">$&#123;file_path&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使某文件对于其所属用户组可执行.</span></span><br><span class="line">sudo chmod g+x <span class="variable">$&#123;file_path&#125;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Flynnon
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://flynnon.github.io/2018/04/23-C语言复习笔记(6).html" title="C语言复习笔记(6)">http://flynnon.github.io/2018/04/23-C语言复习笔记(6).html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习之路/" rel="tag"><i class="fa fa-tag"></i> 学习之路</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/11-《操作系统革命》杂记.html" rel="next" title="《操作系统革命》杂记">
+                <i class="fa fa-chevron-left"></i> 《操作系统革命》杂记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/25-C语言复习笔记(7).html" rel="prev" title="C语言复习-总结">
+                C语言复习-总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Flynnon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Flynnon" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/flynnon.ton" target="_blank" title="Facebook">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                我的朋友
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.tianhao.site/blog/" title="田浩的Blog" target="_blank">田浩的Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输入-输出"><span class="nav-number">2.</span> <span class="nav-text">输入/输出</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件描述符"><span class="nav-number">2.1.</span> <span class="nav-text">文件描述符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#概念"><span class="nav-number">2.1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#特殊的文件描述符"><span class="nav-number">2.1.2.</span> <span class="nav-text">特殊的文件描述符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#低级I-O"><span class="nav-number">2.2.</span> <span class="nav-text">低级I/O</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件操作"><span class="nav-number">3.</span> <span class="nav-text">文件操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#读取"><span class="nav-number">3.1.</span> <span class="nav-text">读取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建"><span class="nav-number">3.2.</span> <span class="nav-text">创建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭"><span class="nav-number">3.3.</span> <span class="nav-text">关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-number">3.4.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#随机访问"><span class="nav-number">3.5.</span> <span class="nav-text">随机访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取文件信息"><span class="nav-number">3.6.</span> <span class="nav-text">获取文件信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">4.</span> <span class="nav-text">扩展</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-@"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Flynnon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人访问
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次访问
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Cjsr55wJkKKtTeREWcAIW2GA-gzGzoHsz", "9mVWvx06y21SX6Ebqm6Ry5wG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/love.js"></script>
