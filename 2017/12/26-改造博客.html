@@ -83,18 +83,20 @@
 
 
 
-<meta name="description" content="我所在的公司为了保证迭代速度，因此在初期选用了功能强大的Django框架进行开发。因此目前公司后端所用到的技术大多是与Django能很好的合作的。Celery就是这样一个工具，可以使用它来进行一些异步处理。　　为了能跟上公司技术进步的脚步，这段时间一直在看Celery与RabbitMQ的官方文档进行学习。然而，Flynnon的英语并不是很好….因此学习的很慢。">
+<meta name="description" content="前言　　在写了一段时间的博客后,感觉一直使用 Github Page 默认的地址优点不好记,因此产生了使用自己域名的想法.下面是实际操作过程中的一些记录.">
 <meta name="keywords" content="杂记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="重启博客记">
-<meta property="og:url" content="http://flynnon.github.io/2017/12/26-改造博客.html">
+<meta property="og:title" content="改造博客(1)">
+<meta property="og:url" content="http://www.flynnon.com/2017/12/26-改造博客.html">
 <meta property="og:site_name" content="Flynnon&#39;s Blog">
-<meta property="og:description" content="我所在的公司为了保证迭代速度，因此在初期选用了功能强大的Django框架进行开发。因此目前公司后端所用到的技术大多是与Django能很好的合作的。Celery就是这样一个工具，可以使用它来进行一些异步处理。　　为了能跟上公司技术进步的脚步，这段时间一直在看Celery与RabbitMQ的官方文档进行学习。然而，Flynnon的英语并不是很好….因此学习的很慢。">
+<meta property="og:description" content="前言　　在写了一段时间的博客后,感觉一直使用 Github Page 默认的地址优点不好记,因此产生了使用自己域名的想法.下面是实际操作过程中的一些记录.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-05-12T09:48:26.941Z">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/blog_setting/dns_setting.png">
+<meta property="og:updated_time" content="2018-05-21T14:13:48.432Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="重启博客记">
-<meta name="twitter:description" content="我所在的公司为了保证迭代速度，因此在初期选用了功能强大的Django框架进行开发。因此目前公司后端所用到的技术大多是与Django能很好的合作的。Celery就是这样一个工具，可以使用它来进行一些异步处理。　　为了能跟上公司技术进步的脚步，这段时间一直在看Celery与RabbitMQ的官方文档进行学习。然而，Flynnon的英语并不是很好….因此学习的很慢。">
+<meta name="twitter:title" content="改造博客(1)">
+<meta name="twitter:description" content="前言　　在写了一段时间的博客后,感觉一直使用 Github Page 默认的地址优点不好记,因此产生了使用自己域名的想法.下面是实际操作过程中的一些记录.">
+<meta name="twitter:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/blog_setting/dns_setting.png">
 
 
 
@@ -124,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://flynnon.github.io/2017/12/26-改造博客.html"/>
+  <link rel="canonical" href="http://www.flynnon.com/2017/12/26-改造博客.html"/>
 
 
 
 
 
-  <title>重启博客记 | Flynnon's Blog</title>
+  <title>改造博客(1) | Flynnon's Blog</title>
   
 
 
@@ -290,7 +292,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://flynnon.github.io/2017/12/26-改造博客.html">
+    <link itemprop="mainEntityOfPage" href="http://www.flynnon.com/2017/12/26-改造博客.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Flynnon">
@@ -307,7 +309,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">重启博客记</h1>
+          <h1 class="post-title" itemprop="name headline">改造博客(1)</h1>
         
 
         <div class="post-meta">
@@ -337,7 +339,7 @@
 
           
           
-             <span id="/2017/12/26-改造博客.html" class="leancloud_visitors" data-flag-title="重启博客记">
+             <span id="/2017/12/26-改造博客.html" class="leancloud_visitors" data-flag-title="改造博客(1)">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -368,9 +370,26 @@
       
 
       
-        <p>　　我所在的公司为了保证迭代速度，因此在初期选用了功能强大的Django框架进行开发。因此目前公司后端所用到的技术大多是与Django能很好的合作的。Celery就是这样一个工具，可以使用它来进行一些异步处理。<br>　　为了能跟上公司技术进步的脚步，这段时间一直在看Celery与RabbitMQ的官方文档进行学习。然而，Flynnon的英语并不是很好….因此学习的很慢。<br><a id="more"></a><br>　　其实RabbitMQ还好，示例清楚明了，在跟着Tutorials走了一遍后，感觉对于它有什么作用，以及如何使用Python进行开发有了一定的了解。然而这一套在Celery这里就行不通了，看了很久都没弄懂它是怎么用的…<br>　　于是就通过百度搜索了一下Celery，在结果中看到了很多博主写的博客。虽然有很多纯粹是复制粘贴的，质量很差，但是也有不少质量很高的博客，使我茅塞顿开。<br>　　在这个过程中就萌生了写一些东西的想法，其实在16年的时候就搭建了博客(虽然处于半废弃状态…)，于是就想着把他捡起来，重新开始Flynnon的博客之旅。  </p>
-<p>　　重建博客大约花费了四天，这段时间大约做了以下工作:<br>　　1. 建立博客。通过查看Hexo的官方文档(<a href="https://hexo.io/zh-cn/docs/)，重新构建了对Hexo的认知，并建立了新的博客，并对之前的博文进行了迁移操作；">https://hexo.io/zh-cn/docs/)，重新构建了对Hexo的认知，并建立了新的博客，并对之前的博文进行了迁移操作；</a><br>　　2. 选择主题。这一步花费了很长时间，我之前使用的主题是vno，它很不错，但是既然是重新来过，就把主题也一起换了…，最后选择了NexT主题，感觉它看起来很简洁，并且用户很活跃；<br>　　3. 定制化。主要是通过查看NexT的文档(<a href="http://theme-next.iissnan.com/getting-started.html)对博客进行配置，也添加了很多很使用的功能(Google">http://theme-next.iissnan.com/getting-started.html)对博客进行配置，也添加了很多很使用的功能(Google</a> Analytics etc.)。在这里主要参考了Ele的博客(<a href="http://ictar.github.io/)，构图什么的都是从那里偷的">http://ictar.github.io/)，构图什么的都是从那里偷的</a>….<br>　　4. 完善细节。这一步始终在进行….</p>
-<p>希望我可以坚持下去，搭建一个不错的博客吧….</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　在写了一段时间的博客后,感觉一直使用 Github Page 默认的地址优点不好记,因此产生了使用自己域名的想法.下面是实际操作过程中的一些记录.<a id="more"></a>  
+　　</p>
+<h2 id="购买域名"><a href="#购买域名" class="headerlink" title="购买域名"></a>购买域名</h2><p>　　这一步是很简单的,直接从<a href="https://wanwang.aliyun.com">阿里云(万网)</a>购买了心仪的域名 www.flynnon.com.  </p>
+<h2 id="配置域名解析"><a href="#配置域名解析" class="headerlink" title="配置域名解析"></a>配置域名解析</h2><p>　　因为是从阿里云购买的域名,因此顺理成章的配置了域名解析(免费版),这里很简单的配置了一下,大概就是将域名本身指向我购买的服务器的IP地址.  </p>
+<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/blog_setting/dns_setting.png" alt="域名解析简单配置"></p>
+<p>　　由于Flynnon的主机是从<a href="https://bwh1.net/">搬瓦工</a>购买的,因此无法备案(当然也不需要备案).但是没有备案总感觉不保险,因此专门配置了CNAME类型的解析规则将blog.flynnon.com这个域名指向我的Github Page的地址了….<br>　　注意: 这一步的时候,需要在source文件夹下创建一个CNAME文件,并将你配置的域名写入其中(比如我就写了blog.flynnon.com),否则Github Page会认为从该URL来的访问不合法.  </p>
+<h2 id="折腾"><a href="#折腾" class="headerlink" title="折腾"></a>折腾</h2><p>　　在进行完上面几步后,就可以通过blog.flynnon.com来访问Flynnon的博客了,但Flynnon还想用自己购买的云主机来发布博客.因此又在这个基础上进行了一些折腾.  </p>
+<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><p>　　首先,需要一个服务器软件,这里Flynnon选择了Nginx.原因是它既是一个Web服务器(作为启动博客的服务器程序),也可以做反向代理(Flynnon想用它来为其余的服务分配一个好记的URL).当然,更重要的是,Flynnon想学习一下Nginx的使用….<br>　　Nginx使用apt包管理工具进行安装十分方便,配置也十分简单.下面是我最终的配置.  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">upstream jenkins  &#123;</span><br><span class="line">    server 127.0.0.1:8080;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  listen 80;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 设置监听的端口号</span></span><br><span class="line">  server_name www.flynnon.com;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 设置默认的hexo文件的目录位置</span></span><br><span class="line">  root /var/www/hexo;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 设置hexo的index文件名</span></span><br><span class="line">  index index.html index.htm;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 当找不到url对应的文件时返回404</span></span><br><span class="line">  location / &#123;</span><br><span class="line">      try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ =404;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment"># 这个是访问jenkins的设置,然后就可以通过 www.flynnon.com/jenkins 来访问jenkins了</span></span><br><span class="line">  location /jenkins &#123;</span><br><span class="line">      proxy_pass http://jenkins;</span><br><span class="line">      proxy_set_header X-real-ip <span class="variable">$remote_addr</span>;</span><br><span class="line">      proxy_set_header Host <span class="variable">$host</span>:<span class="variable">$server_port</span>;</span><br><span class="line">      proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">      proxy_set_header Request-Url <span class="variable">$request_uri</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h3><p>　　然后需要考虑的是,博客内容如何更新到服务器上.当然…每次更新博客的时候手动从Github上下载也不是不可以(但是太low了)…考虑了一下之后选择了使用Jenkins来进行自动构建.<br>　　下面记录一下Jenkins的配置过程.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Jenkins是基于Java的,因此使用前需要先安装Java.</span></span><br><span class="line">sudo add-apt-repository ppa:webupd8team/java</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install oracle-java8-installer</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我们按照Jenkins官网的介绍(https://jenkins.io/doc/pipeline/tour/getting-started/)使用即可,它的war包自带Jetty服务器</span></span><br><span class="line">wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war</span><br><span class="line"><span class="comment"># 然后就可以直接运行了(jenkins.war中自带了jetty服务器), 使用--httpPort指定它监听的端口.</span></span><br><span class="line">java -jar jenkins.war --httpPort=8080</span><br></pre></td></tr></table></figure>
+<p>　　运行完以上两步后,通过浏览器访问 www.flynnon.com/jenkins 进行配置即可.这里网上的教程很多,就不一步步展示了.<br>　　接下来比较重要的是配置Hooks来同步代码,这里有两种思路,一种是直接从Github Page所在的项目中同步,直接就可以访问.另一种是从存放Hexo博客源码的项目同步代码,然后使用 hexo -g 生成HTML文件.这两种方式都可以.就不细写了..需要注意的是文件需要放置到nginx配置的目录中.<br>　　##补充:##实际使用时发现,jenkins默认的登录页面是 ip:port/login?from=..,也就是说访问 www.flynnon.com/jenkins 时会自动跳转到 www.flynnon.com/login?from=%2Fjenkins…这样肯定是不行的,查了半天之后还是没解决,后来通过请教同事(师傅)发现了<a href="https://wiki.jenkins.io/display/JENKINS/Starting+and+Accessing+Jenkins">参数介绍</a>.使用 –prefix 可以解决这个问题.  </p>
+<h3 id="supervisor"><a href="#supervisor" class="headerlink" title="supervisor"></a>supervisor</h3><p>　　其实进行完以上步骤之后就可以用了,但是每次都得手动/半自动(执行写好的shell脚本)对jenkins进行启动,并且挂了也没法自动重启.因此针对这个需求又使用了supervisor来进行管理.  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#　安装supervisor</span></span><br><span class="line">sudo apt install supervisor</span><br><span class="line"></span><br><span class="line"><span class="comment"># supervisor的配置文件位于此目录下</span></span><br><span class="line"><span class="built_in">cd</span> /etc/supervisor/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里图简单,直接修改了主配置文件.更好的做法是在conf.d目录下新建一个自定义的配置文件</span></span><br><span class="line">vim supervisord.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下面是一些常用命令. 其中后面四个命令均可以省略 -c 参数</span></span><br><span class="line"><span class="comment"># supervisord -c supervisor.conf                       通过配置文件启动supervisor</span></span><br><span class="line"><span class="comment"># supervisorctl -c supervisor.conf status              查看状态</span></span><br><span class="line"><span class="comment"># supervisorctl -c supervisor.conf start [all]|[x]     启动所有/指定的程序进程</span></span><br><span class="line"><span class="comment"># supervisorctl -c supervisor.conf stop [all]|[x]      关闭所有/指定的程序进程</span></span><br><span class="line"><span class="comment"># supervisorctl -c supervisor.conf reload              重新载入配置文件</span></span><br><span class="line"><span class="comment"># 这里我们只需要重新载入配置文件即可</span></span><br><span class="line">sudo supervisorctl reload</span><br></pre></td></tr></table></figure>
+<p>　　我的supervisor配置如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[program:jenkins]</span><br><span class="line"><span class="built_in">command</span>=java -jar /opt/jenkins.war --httpPort=8080 --prefix=/jenkins</span><br><span class="line">user=flynnon</span><br><span class="line">autostart=<span class="literal">true</span></span><br><span class="line">autorestart=<span class="literal">true</span></span><br><span class="line">startsecs=30</span><br><span class="line">startretries=8</span><br></pre></td></tr></table></figure>
+<h3 id="docker-npm"><a href="#docker-npm" class="headerlink" title="docker+npm"></a>docker+npm</h3><p>　　如果在同步那一步选择了同步源码的话,还需要安装npm,但是作为一个后端开发,本人对于npm并不是很熟悉,而且怕被弄乱系统,因此选择了使用docker来启动一个npm的容器,这样就简单很多(反正它也只是用来安装hexo和生成博客的).<br>　　Dockerfile如下:</p>
+<figure class="highlight docker"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:<span class="number">6</span></span><br><span class="line"><span class="keyword">MAINTAINER</span> tangfei_cn@foxmail.com</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"><span class="bash"></span></span><br><span class="line"><span class="bash">CMD <span class="string">"npm install &amp;&amp; hexo generate"</span></span></span><br></pre></td></tr></table></figure>
+<p>　　然后只需要在博客源码所在的页面执行 docker build -t hexo ./ &amp;&amp; docker run hexo -v /app:./</p>
+<p>　　因此又选择了Nginx+Jenkins+Supervisor+Bitbucket来完成这个构想.  </p>
 
       
     </div>
@@ -391,7 +410,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://flynnon.github.io/2017/12/26-改造博客.html" title="重启博客记">http://flynnon.github.io/2017/12/26-改造博客.html</a>
+    <a href="http://www.flynnon.com/2017/12/26-改造博客.html" title="改造博客(1)">http://www.flynnon.com/2017/12/26-改造博客.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -419,8 +438,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/02/27-以字符串某一位置为界，交换其之前与之后的部分(Java实现).html" rel="next" title="Java控制访问权限的方法">
-                <i class="fa fa-chevron-left"></i> Java控制访问权限的方法
+              <a href="/2017/12/26-重启博客.html" rel="next" title="重启博客记">
+                <i class="fa fa-chevron-left"></i> 重启博客记
               </a>
             
           </div>
@@ -481,8 +500,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -497,7 +525,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -563,6 +591,10 @@
                     <a href="http://www.tianhao.site/blog/" title="田浩的Blog" target="_blank">田浩的Blog</a>
                   </li>
                 
+                  <li class="links-of-blogroll-item">
+                    <a href="https://evilinf.github.io/" title="Evilinf的Blog" target="_blank">Evilinf的Blog</a>
+                  </li>
+                
               </ul>
             </div>
           
@@ -572,6 +604,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#购买域名"><span class="nav-number">2.</span> <span class="nav-text">购买域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置域名解析"><span class="nav-number">3.</span> <span class="nav-text">配置域名解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#折腾"><span class="nav-number">4.</span> <span class="nav-text">折腾</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx"><span class="nav-number">4.1.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jenkins"><span class="nav-number">4.2.</span> <span class="nav-text">Jenkins</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#supervisor"><span class="nav-number">4.3.</span> <span class="nav-text">supervisor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-npm"><span class="nav-number">4.4.</span> <span class="nav-text">docker+npm</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
