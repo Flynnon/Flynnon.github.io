@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习之路,RabbitMQ,消息队列," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Flynnon's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言　　公司的一些异步任务是通过Django+RabbitMQ+Celery实现的,编写的时候感觉真的蛮简单的,刚开始了解它只是简单的看了下RabbitMQ的入门教程并实现了这些demo,通过这些我明白了如何使用RabbitMQ,但是一些细节并没有弄的很清楚,于是这段时间就看了下《RabbitMQ实战  高效部署分布式消息队列》这本书.　　为了避免忘记….记一下笔记…..">
+<meta name="keywords" content="学习之路,RabbitMQ,消息队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《RabbitMQ实战》笔记(一)">
+<meta property="og:url" content="http://www.flynnon.com/2018/06/26-RabbitMQ_1.html">
+<meta property="og:site_name" content="Flynnon&#39;s Blog">
+<meta property="og:description" content="前言　　公司的一些异步任务是通过Django+RabbitMQ+Celery实现的,编写的时候感觉真的蛮简单的,刚开始了解它只是简单的看了下RabbitMQ的入门教程并实现了这些demo,通过这些我明白了如何使用RabbitMQ,但是一些细节并没有弄的很清楚,于是这段时间就看了下《RabbitMQ实战  高效部署分布式消息队列》这本书.　　为了避免忘记….记一下笔记…..">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/producter_and_consumer.png">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_exchanges_demo.png">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_bindings_demo.png">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_queues_demo.png">
+<meta property="og:updated_time" content="2018-07-01T12:56:02.921Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《RabbitMQ实战》笔记(一)">
+<meta name="twitter:description" content="前言　　公司的一些异步任务是通过Django+RabbitMQ+Celery实现的,编写的时候感觉真的蛮简单的,刚开始了解它只是简单的看了下RabbitMQ的入门教程并实现了这些demo,通过这些我明白了如何使用RabbitMQ,但是一些细节并没有弄的很清楚,于是这段时间就看了下《RabbitMQ实战  高效部署分布式消息队列》这本书.　　为了避免忘记….记一下笔记…..">
+<meta name="twitter:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/producter_and_consumer.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.flynnon.com/2018/06/26-RabbitMQ_1.html"/>
+
+
+
+
+
+  <title>《RabbitMQ实战》笔记(一) | Flynnon's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111573728-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flynnon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">平常的一些记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.flynnon.com/2018/06/26-RabbitMQ_1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Flynnon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flynnon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《RabbitMQ实战》笔记(一)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-26T00:15:39+08:00">
+                2018-06-26 00:15:39
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/06/26-RabbitMQ_1.html" class="leancloud_visitors" data-flag-title="《RabbitMQ实战》笔记(一)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　公司的一些异步任务是通过Django+RabbitMQ+Celery实现的,编写的时候感觉真的蛮简单的,刚开始了解它只是简单的看了下<a href="http://www.rabbitmq.com/getstarted.html">RabbitMQ的入门教程</a>并实现了这些demo,通过这些我明白了如何使用RabbitMQ,但是一些细节并没有弄的很清楚,于是这段时间就看了下《RabbitMQ实战  高效部署分布式消息队列》这本书.<br>　　为了避免忘记….记一下笔记…..<a id="more"></a></p>
+<h2 id="天降奇兵-RabbitMQ简史"><a href="#天降奇兵-RabbitMQ简史" class="headerlink" title="天降奇兵(RabbitMQ简史)"></a>天降奇兵(RabbitMQ简史)</h2><p>　　这一章主要介绍了消息队列、AMQP、RabbitMQ的历史,并且介绍了如何安装RabbitMQ.<br>　　安装这一步可以参考<a href="https://www.rabbitmq.com/install-debian.html">RabbitMQ安装</a>,当然我更倾向于使用docker来启动实例,这样我们就可以忽略一些安装时的细节,相应的会简单很多.  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="comment"># Ubuntu下正常安装Erlang和RabbitMQ</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载安装包</span></span><br><span class="line"><span class="comment"># 这里注意下版本,我是在https://packages.erlang-solutions.com/erlang/#tabs-debian找的,在我使用的时候21.0有点问题</span></span><br><span class="line">wget http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_general/esl-erlang_20.1-1~ubuntu~xenial_amd64.deb -O erlang.deb &amp;&amp; sudo dpkg -i erlang.deb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 补全依赖,并再次安装</span></span><br><span class="line">apt-get -f -y install &amp;&amp; sudo dpkg -i erlang.deb</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加RabbitMQ的源</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">"deb https://dl.bintray.com/rabbitmq/debian xenial main"</span> | sudo tee /etc/apt/sources.list.d/bintray.rabbitmq.list</span><br><span class="line"><span class="comment"># 添加公钥</span></span><br><span class="line">wget -O- https://dl.bintray.com/rabbitmq/Keys/rabbitmq-release-signing-key.asc | apt-key add -</span><br><span class="line"><span class="comment"># 更新仓库并进行安装</span></span><br><span class="line">apt update &amp;&amp; sudo apt install rabbitmq-server</span><br><span class="line"></span><br><span class="line"><span class="comment"># 后续扫尾工作</span></span><br><span class="line">apt -y autoremove &amp;&amp; apt -y autoclean</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#! /bin/bash</span></span><br><span class="line"><span class="comment"># 通过Docker启动RabbitMQ</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置RabbitMQ文件的目录地址</span></span><br><span class="line">RABBITMQ_DIR=<span class="string">'/home/flynnon/docker_volumes/rabbitmq'</span></span><br><span class="line"><span class="comment"># 启动容器,并映射目录及开放端口号</span></span><br><span class="line"><span class="comment"># 这里使用了 rabbitmq-management 的镜像,感觉这个插件还是很好用的.</span></span><br><span class="line">docker run -d -e RABBITMQ_NODENAME=rabbit --name rabbit -p 4369:4369 -p 5671:5671 -p 5672:5672 -p 15671:15671 -p 15672:15672 -p 25672:25672 -v <span class="variable">$RABBITMQ_DIR</span>:/var/lib/rabbitmq rabbitmq:3.6-management</span><br></pre></td></tr></table></figure>
+<h2 id="理解消息通信"><a href="#理解消息通信" class="headerlink" title="理解消息通信"></a>理解消息通信</h2><p>　　这一章介绍了消费者、生产者、代理、交换机、队列、绑定、虚拟主机、消息持久化的概念及实现方法,并介绍了一条消息从产生到被消费都发生了什么(也就是生命周期).</p>
+<h3 id="一些概念"><a href="#一些概念" class="headerlink" title="一些概念"></a>一些概念</h3><p>　　先来写一些比较虚的东西,这种虚是指RabbitMQ提供的抽象.实际上,我们无需了解具体实现(Erlang代码),只需要了解这些抽象的概念就可以着手进行开发了.</p>
+<h4 id="角色划分"><a href="#角色划分" class="headerlink" title="角色划分"></a>角色划分</h4><p>　　使用RabbitMQ(消息队列)时,有三种角色需要区分:<br>　　代理: 在使用消息队列的场景中,消息队列服务器可以看做代理.<br>　　生产者: 而生产者是产生消息并将消息发送到代理服务器的角色(A program that sends messages is a producer.).<br>　　消费者: 连接到代理服务器,并订阅相应的队列,在有新的消息到达时,接收并处理的角色(A consumer is a program that mostly waits to receive messages).  </p>
+<h4 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h4><p>　　在RabbitMQ中传输的是消息,消息包含有效负载(payload)与标签(label)两部分.其中有效荷载是指实际要传递的数据(可以是任意支持的格式),而标签则描述了有效荷载,RabbitMQ会根据标签来对消息进行分发.  </p>
+<p>　　消息路由过程中实际分发的只是payload.也就是说,消费者接收到的只是payload部分,这样可以实现一定程度上的解耦,即生产者和消费者互相并不知道彼此的存在,尤其是消费者并不知道消息是如何来的(如果发送者的信息很重要的话,将它放到payload部分也是可以的).  </p>
+<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/producter_and_consumer.png" alt="RabbitMQ模型中的定位"></p>
+<h4 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h4><p>　　实际上,对于生产者与消费者都是通过Connection与Channel与RabbitMQ服务器进行通信的.<br>　　Connection实际上是一个TCP连接.<br>　　而Channel则是建立在真实的TCP连接(Connection)中的虚拟连接.所有AMQP命令都是通过Channel发送出去的.  </p>
+<p>　　为什么使用Channel?<br>　　对于操作系统来说,由于建立和关闭Connection(TCP连接)是有一定代价的.在生产者为多个线程时,如果只有Connection,那么为了发送消息就需要频繁的创建销毁Connection,这会极大的浪费系统资源,并且操作系统每秒能创建的TCP连接数是有上限的,这就会导致性能瓶颈.<br>　　但是RabbitMQ又得基于TCP,因此在TCP的基础上抽象出了Channel的概念,Channel可以认为是轻量级的连接,一个Connection可以创建多个Channel,并且各个Channel间互相隔离.在Connection上创建和销毁Channel的代价很低,也不会对操作系统造成太大影响(不是没影响).<br>　　对于Connection与Channel的关系,本书中有一个形象的比喻:Connection好比电缆,而Channel好比光纤束,一条电缆可以有多条光纤束,且各个光纤束可以独立的传输数据.<br>　　建议客户端线程之间不要共用Channel,至少要保证共用Channel的线程发送消息必须是串行的,但是建议尽量共用Connection.</p>
+<h4 id="消息存储"><a href="#消息存储" class="headerlink" title="消息存储"></a>消息存储</h4><p>　　生产者将消息投递给RabbitMQ后,RabbitMQ还没有将消息发送给消费者时,消息被存放在Queue中(A queue is the name for a post box which lives inside RabbitMQ. Although messages flow through RabbitMQ and your applications, they can only be stored inside a queue. A queue is only bound by the host’s memory &amp; disk limits, it’s essentially a large message buffer.).</p>
+<h4 id="消费"><a href="#消费" class="headerlink" title="消费"></a>消费</h4><p>　　消费者从队列中获取存储的消息,目前有两种方法:<br>　　a. 使用AMQP的 channel.consume 命令订阅某个队列,此时channel被设置为接收模式,这样当队列中有消息且RabbitMQ认为消费者有能力进行消费时,就会将改消息分给消费者;<br>　　b. 使用AMQP的 channel.get 命令获取某个队列中的一条消息.通过这样的主动获取方式,消费者可以得到队列中可用的下一条消息.大致上讲,这样的行为类似于订阅某个队列,从中取一个消息,然后取消订阅.因此在需要获取大量消息时,循环get会比consume性能差很多.  </p>
+<p>　　然后就是一些具体的细节:<br>　　a. 消息到了一个没有消费者监听的队列之后,会发生什么事?<br>　　答案是,消息被放到该队列后,会堆积,直到有消费者监听该队列时,才会进行分发.<br>　　b. 在多个消费者监听一个队列时,消息如何分发?<br>　　答案是,消息会被轮询分发(round-robin)给所有消费者,每条消息只会被发送给一个消费者.<br>　　c. 消息到达一个不存在的队列时,会发生什么?<br>　　答案是,消息会被丢弃.</p>
+<h4 id="消费者确认机制"><a href="#消费者确认机制" class="headerlink" title="消费者确认机制"></a>消费者确认机制</h4><p>　　RabbitMQ会一直向消费者中投递消息么?<br>　　想一想就知道,不会.否则可能压垮消费者,并且会导致无效消费.事实上,RabbitMQ会根据消费者的状态来决定要不要向它投递消息.<br>　　那么,问题又来了,RabbitMQ如何确认消费者的状态呢?<br>　　答案是,由消费者主动告知(也是最符合直觉的方法).这句话的含义是:消费者在接收到一条消息后必须对此消息进行确认.  </p>
+<p>　　这里所指的确认包括以下两种:<br>　　确认成功:  basic.ack命令<br>　　　　在订阅队列时,开启自动确认(设置auto_ack参数为true)后,RabbitMQ在将消息发送给消费者后自动认为消费者已进行了确认.<br>        在收到某个消费者的确认之前,RabbitMQ不会向其投递更多消息.如果消费者在确认之前取消了对队列的订阅(或断开了连接),那么RabbitMQ会认为这条消息没有被消费.会将这条消息重新投递到别的消费者那里去.<br>　　拒绝:     basic.reject命令(此命令在2.0.0之后才支持)<br>　　　　在接到拒绝的命令后,RabbitMQ会认为此消费者无法处理这条命令,然后根据此命令附带的requeue参数决定接下来的行为.当requeue参数被设置为true时,消息会被重新发送给下一个订阅者,否则,消息会被丢弃.扩展:<a href="http://www.rabbitmq.com/dlx.html">死信队列</a>.<br>　　　　也可以简单粗暴的通过断开连接的方式达到上述目的,此时RabbitMQ会将消息重新入队并发送给下一个消费者.但是这样与使用basic.reject命令相比性能消耗太大.  </p>
+<h4 id="谁来分发"><a href="#谁来分发" class="headerlink" title="谁来分发"></a>谁来分发</h4><p>　　现在又有了一个新的问题.消费者将消息投递给RabbitMQ后,RabbitMQ按照什么规则将消息分发到Queue中?由谁来进行这个操作呢?<br>　　先来回答后一个问题,这里有几种方案,例如:消费者在进行消息投递时直接指定Queue;由各个Queue来对消息进行拉取(此种情况需要定义多久拉取一次,或者说如何知道有新消息的问题)等等..<br>　　但是这两种方式都不是很好,由消费者直接指定Queue的话,使得消费者所发送的消息与Queue产生了强耦合(生产者明确知道了自己所发送的消息的用途),而事实上这些信息生产者并不需要关心.由Queue来进行拉取的话,拉取时间不好设置(太短的话性能不好,太长的话可能会导致消息传递有延时),拉取结束之后消息还存不存不好判断(有可能多个Queue都需要拉取某条消息).<br>　　事实上,RabbitMQ在消息到达与Queue之间设置了一个交换机(Exchange).这个也许与RabbitMQ产生的背景有关系,但是不得不说,个人感觉这是一个很好的实践.通过Exchange解耦了生产者和Queue,即:生产者只需要在消息中指定某个Exchange与此消息的规则(路由键Routing Key)即可,具体的转发操作则不用关心.而Queue只用接收从Exchange传过来的消息并投递消息给相应的Queue即可.  </p>
+<h4 id="建立分发规则"><a href="#建立分发规则" class="headerlink" title="建立分发规则"></a>建立分发规则</h4><p>　　在有了上述的概念后,就很容易理解绑定(Binding)的含义了.<br>　　绑定实际上就是建立Queue与Exchange之间的联系,也就是告诉RabbitMQ中的某个Exchange将符合某种条件(规则)的消息发送到某个Queue.通过绑定,生产者或消费者可以建立Exchange和Queue之间的多对多关系.  </p>
+<p>　　那么,绑定的过程中设置的规则是指什么?<br>　　这里的规则由Exchange类型和绑定键(Binding Key)两部分组成.下面分别介绍:<br>　　绑定键是由句点”.”分隔的字符串,被分隔的每一部分被称为一个单词.其中可以存在两种通配符”<em>“与”#”，用于做模糊匹配，其中”</em>“用于匹配一个单词，”#”用于匹配多个单词(可以是零个).例如: “payment.notify”, “payment.#”等等.  </p>
+<p>　　生产者发送消息时,需要指定发送给哪个Exchange,并需要指定本消息的路由键.可以简单的认为路由键是用来与绑定键进行匹配的.  </p>
+<p>　　那么,Exchange的类型是什么意思?分发规则跟类型有啥关系?<br>　　粗略的说,这里的类型实际上是指路由算法.即: 将Exchange分为多种类型,每种类型都实现了独特的路由算法(这部分可以在RabbitMQ的教程中看到,有详尽的代码示例).目前有以下四种(路由键的含义见后面):<br>　　　　direct: 若消息中的路由键能匹配到某个队列的名称,就将消息投递到该队列.否则,丢弃.<br>　　　　fanout: 消息会被发送到所有绑定到此Exchange的Queue中(广播),路由键会被忽略.<br>　　　　topic:  若消息的路由键能够匹配到此Exchange上绑定的某些绑定建,则将消息分发到对应的Queue中.<br>　　　　　　这里的匹配可以是完全匹配,也可以是模糊匹配(使用通配符).绑定键中的通配符”#”,”.”只在此种情况下生效.<br>　　　　headers: 若消息的headers中的键值对能匹配(可以定义设置部分匹配或者全部匹配)到某个绑定键,则将消息分发到对应队列.这个用的蛮少的,资料也比较少,可以参考<a href="https://blog.csdn.net/hry2015/article/details/79188615">RabbitMQ Header Exchange用法</a>.</p>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>　　了解完抽象之后,我们需要知道该如何进行开发.也就是,我们如何基于这个抽象实现我们的自定义功能.</p>
+<h4 id="声明队列"><a href="#声明队列" class="headerlink" title="声明队列"></a>声明队列</h4><p>　　创建(声明)队列必须使用一个处于”传输模式”的channel.也就是说,生产者或消费者都可以声明队列.<br>　　可以使用queue.declare命令创建队列(注意:当消费者在channel上订阅了一个队列时,就无法再无法创建队列了).此命令会返回队列的名称.被创建的每一个队列被创建时都会被自动绑定到默认交换机(名称为””),并以队列名作为路由键(详见后面的绑定).<br>　　使用这个命令时可以设置如下几个参数:<br>　　exclusive,代表私有,当设置此参数时,队列只能被当前应用消费.可用来限制队列的消费者数目.<br>　　auto-delete,代表自动销毁,当设置此参数时,在最后一个消费者取消订阅此队列时,队列会被自动移除(当然,队列中的消息也就不存在了).<br>　　name,代表队列的名称(唯一标识),当设置此参数时,队列会被命名.没有设置时,RabbitMQ会为队列随机生成一个名字.  </p>
+<p>　　既然,生产者和消费者都可以声明队列,那么就无法保证队列的声明顺序,重复创建队列会引发问题么?事实上是会的.当多次声明的队列的属性不同时,就会产生错误.</p>
+<h4 id="声明交换机"><a href="#声明交换机" class="headerlink" title="声明交换机"></a>声明交换机</h4><p>　　声明交换机与声明队列的规则基本相同.</p>
+<h4 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h4><p>　　我们使用Python语言来操作RabbitMQ.pika是RabbitMQ官方的连接库.  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取Connection,pika封装了多种Connection,这里选择使用比较简单的BlockingConnection来写示例</span></span><br><span class="line">connection = pika.BlockingConnection(pika.ConnectionParameters(<span class="string">'localhost'</span>))</span><br><span class="line"><span class="comment"># 从Connection获取Channel</span></span><br><span class="line">channel = connection.channel()</span><br><span class="line"><span class="comment"># 使用channel创建队列</span></span><br><span class="line">channel.queue_declare(queue=<span class="string">'test_queue'</span>, durable=<span class="keyword">True</span>, exclusive=<span class="keyword">False</span>, auto_delete=<span class="keyword">False</span>,)</span><br><span class="line"><span class="comment"># 使用channel声明exchange</span></span><br><span class="line">channel.exchange_declare(exchange=<span class="string">'test_exchange'</span>, exchange_type=<span class="string">'topic'</span>, auto_delete=<span class="keyword">False</span>, durable=<span class="keyword">True</span>)</span><br><span class="line"><span class="comment"># 建立绑定关系</span></span><br><span class="line">channel.queue_bind(<span class="string">'test_queue'</span>, <span class="string">'test'</span>, routing_key=<span class="string">'test.#'</span>,)</span><br><span class="line"><span class="comment"># 发送消息</span></span><br><span class="line"><span class="comment"># properties中可以放置一些设置,例如: delivery_mode=2时表示消息需要持久化,delivery_mode=1时,代表不用持久化..</span></span><br><span class="line">channel.basic_publish(exchange=<span class="string">'test_exchange'</span>, routing_key=<span class="string">'test.test.test'</span>, body=<span class="string">'Hello World!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置回调函数,用于在有消息到达时进行处理</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">callback</span><span class="params">(ch, method, properties, body)</span>:</span></span><br><span class="line">    print(<span class="string">" [x] Received %r"</span> % body)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始监听队列,此方法为阻塞方法</span></span><br><span class="line">channel.basic_consume(callback, queue=<span class="string">'test_queue'</span>, no_ack=<span class="keyword">False</span>, exclusive=<span class="keyword">False</span>,)</span><br></pre></td></tr></table></figure>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h3 id="虚拟主机vhost"><a href="#虚拟主机vhost" class="headerlink" title="虚拟主机vhost"></a>虚拟主机vhost</h3><p>　　可能是因为起源于电信行业,因此租户比较多,而各个租户之间的数据肯定是不能串的.<br>　　当然,多起几个示例肯定是可以满足需要的,但是一点也不经济.因此RabbitMQ提供了一种类似命名空间的机制:vhost.vhost之于RabbitMQ相当于虚拟机之于物理机.初始时只存在一个vhost: “/“.各个vhost之间是绝对隔离的,这个特性也使得vhost可以很方便的迁移到别的RabbitMQ实例中而不用担心对其余vhost造成影响.<br>　　vhost在建立连接是必须指定,缺省为”/“.</p>
+<p>　　我们如何管理vhost呢?由于建立连接是要指定vhost,因此肯定不是在channel或者connection中管理.此时 <a href="http://www.rabbitmq.com/rabbitmqctl.8.html">rabbitmqctl</a> 就登场了.rabbitmqctl是RabbitMQ自带的命令行管理工具.与vhost相关的有以下几个命令:<br>　　创建: rabbitmqctl add_vhost [vhost_name]    例如: rabbitmqctl add_vhost flynnon_host<br>　　删除: rabbitmqctl delete_vhost [vhost_name] 例如: rabbitmqctl delete_vhost flynnon_host<br>　　列出vhost列表: rabbitmqctl list_vhosts</p>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><p>　　默认情况下,RabbitMQ中的一切(消息、队列、交换机)都不是持久化的.也就是说,一旦重启,一切都会丢失.<br>　　对我们而言,这显然是不可接受的,那么,如何进行持久化?<br>　　队列和交换机的持久化比较简单,只需要在声明时设置其durable属性为true就可以了(见上方demo).这样,当RabbitMQ重启时,会自动创建队列与交换机.<br>　　消息的持久化: 需要在发送时指定消息的投递模式为2,以将消息标记为持久化.  </p>
+<p>　　当然,为了使得消息持久化更加安全,因此需要:<br>　　1. 将消息标记为持久化(投递模式设置为2);<br>　　2. 发送到持久化的交换机;<br>　　3. 到达持久化的队列.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"></span><br><span class="line"><span class="comment"># 队列,交换机持久化</span></span><br><span class="line">channel.queue_declare(queue=<span class="string">'test_queue'</span>, durable=<span class="keyword">True</span>, exclusive=<span class="keyword">False</span>, auto_delete=<span class="keyword">False</span>,)</span><br><span class="line">channel.exchange_declare(exchange=<span class="string">'test_exchange'</span>, exchange_type=<span class="string">'topic'</span>, auto_delete=<span class="keyword">False</span>, durable=<span class="keyword">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 消息持久化</span></span><br><span class="line">channel.basic_publish(exchange=<span class="string">'test_exchange'</span>, routing_key=<span class="string">'test.test.test'</span>, body=<span class="string">'Hello World!'</span>, properties=&#123;<span class="string">'delivery_mode'</span>: <span class="number">2</span>&#125;)</span><br></pre></td></tr></table></figure>
+<p>　　任何事情都是有代价的,如果没有代价,那RabbitMQ就直接默认开启持久化了…<br>　　这种代价也是可以想象的,因为一般持久化都需要把消息写到硬盘里,而磁盘读写比内存读写慢很多,也就是说:消息持久化会导致性能急速降低.<br>　　消息持久化机制:  当一个持久化消息到达一个持久化交换机时,RabbitMQ会将它写入一个持久化日志文件,并在写入成功后才发送响应(被路由到非持久化队列的消息,对应的记录会被自动删除),在消息被消费后,这条记录才会被标记删除.</p>
+<h3 id="消息确认"><a href="#消息确认" class="headerlink" title="消息确认"></a>消息确认</h3><p>　　使用这种模型还有一个需要处理的问题,即: 生产者如何确定消息已经成功到达RabbitMQ呢?如果没有到达,在什么情况下进行重试?<br>　　有以下两种方法可以达到这个目的:  </p>
+<p>　　第一种方法是事务.<br>　　生产者可以在发送消息时开启事务,然后在消息全部发送完成后进行事务提交,如果RabbitMQ接收消息成功,则流程会正常走下去,否则RabbitMQ会停止执行这一系列的任务.同样,在产生错误时生产者也可以手动进行事务回滚,这样RabbitMQ会像没有收到这些消息一样工作.  </p>
+<p>　　第二种方法是发送方确认.<br>　　这种情况下,生产者需要将channel设置成Confirm模式(这个模式不可取消),然后该channel发送的所有消息都会被分配一个唯一ID号.然后当消息成功到达Queue时,RabbitMQ会发送一个确认(包含了唯一ID)给生产者,当RabbitMQ发生了内部错误导致消息丢失时,也会发送一个nack消息(未确认)给生产者.<br>　　由于channel只能被单线程使用(不是线程安全的),因此可以确定,一条channel上的消息时连续的.基于这个前提,RabbitMQ实现了简单的消息ID生成方式.即:每条channel上的第一条消息的ID为1,以后的消息ID逐渐递增.这样RabbitMQ就无需在每次消息发送时返回消息ID了(由生产者自己进行记录即可).<br>　　生产者在接收到这个消息后就可以根据情况进行特殊处理了(比如消息重发等等).由于回调对于发送方来说可以是异步的(设置回调函数接收),因此效率影响不大.  </p>
+<p>　　两种方法各有什么优缺点呢?在需要这个功能时,我们该如何选择呢?下面列出两种方法的一些差异.<br>　　通用性: 事务&gt;发送方确认. 事务是AMQP标准中的协议,而发送方确认机制则是RabbitMQ自己实现的.且发送方确认机制是在2.3.1才开始支持的,因此一些历史版本无法使用(感觉对于今天来说,可以忽略…).<br>　　性能: 由于事务支持回滚,因此需要在一段时间内保存状态,而发送方确认不需要,因此但是事务相对来说比较重量级且性能低下(会降低2-10倍的吞吐量).且事务会导致同步,而发送方确认为异步,因此可以认为发送方确认对于生产者影响很小.  </p>
+<!-- RabbitMQ返回的通知类型:
+当将channel设置为Confirm模式时,RabbitMQ服务器会返回一个Confirm.SelectOK类型的确认消息,通知生产者channel已经准备就绪接收消息了.
+当消息由于RabbitMQ内部错误丢失时,服务器会返回Basic.Nack消息.
+当消息正常到达Queue时,服务器会返回Basic.Ack消息.
+通过在回调函数中校验返回的消息类型,可以进行定制化开发. -->
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># RabbitMQ事务</span></span><br><span class="line"><span class="comment"># 开启事务</span></span><br><span class="line">channel.tx_select()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># 发送消息</span></span><br><span class="line">    channel.basic_publish(exchange=<span class="string">'test_exchange'</span>, routing_key=<span class="string">'test.test.test'</span>, body=<span class="string">'Hello World!'</span>)</span><br><span class="line">    <span class="comment"># 逻辑处理</span></span><br><span class="line">    do_something()</span><br><span class="line">    <span class="comment"># 提交事务</span></span><br><span class="line">    channel.tx_commit()</span><br><span class="line"><span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">    print(e)</span><br><span class="line">    <span class="comment"># 手动回滚</span></span><br><span class="line">    channel.tx_rollback()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># RabbitMQ发送方确认</span></span><br><span class="line"><span class="comment"># 开启确认模式.由于Connection为BlockingConnection,因此此处无需设置回调函数(消息发布时同步返回True/False)</span></span><br><span class="line">channel.confirm_delivery()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加成功时的回调函数</span></span><br><span class="line">channel.add_on_return_callback(success_call_back)</span><br><span class="line"><span class="comment"># 增加失败时的回调函数</span></span><br><span class="line">channel.add_on_cancel_callback(fail_call_back)</span><br><span class="line"><span class="comment"># 发布消息,并得到消息处理成功或失败的标志</span></span><br><span class="line">success_flag = channel.basic_publish(body=<span class="string">'test'</span>, exchange=<span class="string">'test_exchange'</span>, routing_key=<span class="string">'test.test.test'</span>,)</span><br></pre></td></tr></table></figure>
+<h3 id="服务器管理"><a href="#服务器管理" class="headerlink" title="服务器管理"></a>服务器管理</h3><p>　　RabbitMQ是使用Erlang编写的,因此有一些很有趣的特征.这里会介绍与之相关的一些知识点与管理方法.  </p>
+<h4 id="管理命令"><a href="#管理命令" class="headerlink" title="管理命令"></a>管理命令</h4><p>　　Erlang的虚拟机类似Java的虚拟机,而一个节点则是虚拟机的一个实例.一个节点上可以运行多个Erlang应用程序,也就是可以在一个节点上启动多个RabbitMQ服务.<br>　　一般我们可以使用RabbitMQ自带的rabbitmqctl工具与RabbitMQ进行通信并进行管理.下面是服务器管理相关的一些命令:<br>　　启动rabbitmq服务: rabbitmq-server -detachd(以守护进程的方式在后台运行)<br>　　停止整个节点: rabbitmqctl stop -n rabbit@[hostname]<br>　　停止RabbitMQ实例: rabbitmqctl stop_app</p>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>　　RabbitMQ的配置文件可以在启动时配置 CONFIG_FILE 环境变量指定.缺省情况下,配置文件为 /etc/rabbitmq/rabbitmq.config.<br>　　它的配置格式是原始的Erlang数据结构,示例如下:  </p>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">% 大概含义是: []之中包含多个配置(用&#123;&#125;指定)</span></span><br><span class="line">[</span><br><span class="line">    &#123;mnesia, [&#123;dump_log_write_threshold, <span class="number">1000</span>&#125;]&#125;,</span><br><span class="line">    &#123;rabbit, [&#123;sss:sss&#125;]&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>　　上面的mnesia项是Erlang内建的非SQL型数据库.RabbitMQ使用它存储Queue,Exchange,Binding的元数据.<br>　　Mnesia会将RabbitMQ的元数据写入到一个仅可增加的日志文件中,以保证其完整性.然后再定期将信息从日志文件转存到真实的Mnesia数据文件中.<br>　　目前本人已知的,常用的配置项如下:</p>
+<p>；这里是为了调整表格首列的宽度</p>
+<style>
+table th:first-of-type {
+    width: 210px;
+}
+</style>
+
+<table>
+<thead>
+<tr>
+<th>可配置项名称</th>
+<th>类型</th>
+<th>含义</th>
+<th>默认值</th>
+<th>所属应用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dump_log_write_threshold</td>
+<td>整型</td>
+<td>转储的频度(超过多少行才可能进行转存).</td>
+<td>100</td>
+<td>Mnesia</td>
+</tr>
+<tr>
+<td>tcp_listeners</td>
+<td>{“ip”: port }数组</td>
+<td>RabbitMQ应该监听的非SSL加密通信的IP和端口</td>
+<td>[{“0.0.0.0”: 5672}, ]</td>
+<td>RabbitMQ</td>
+</tr>
+<tr>
+<td>ssl_listeners</td>
+<td>{“ip”: port }数组</td>
+<td>RabbitMQ应该监听的SSL加密通信的IP和端口</td>
+<td>空</td>
+<td>RabbitMQ</td>
+</tr>
+<tr>
+<td>ssl_options</td>
+<td>{“key”: value }数组</td>
+<td>SSL有关的选项(cacertfile-CA证书文件, certfile-服务器CA证书文件, keyfile-服务器密钥文件, fail_if_no_peer_cert-客户端是否需要安装有效证书True/False)</td>
+<td>空</td>
+<td>RabbitMQ</td>
+</tr>
+<tr>
+<td>vm_memory_high_watermark</td>
+<td>十进制百分数</td>
+<td>控制RabbitMQ允许消耗的安装内存百分比</td>
+<td>0.4(代表40%)</td>
+<td>RabbitMQ</td>
+</tr>
+<tr>
+<td>msg_store_file_size_limit</td>
+<td>整形(字节数)</td>
+<td>控制RabbitMQ垃圾收集存储内容之前,消息存储数据库的最大大小</td>
+<td>16777216(16M)</td>
+<td>RabbitMQ</td>
+</tr>
+<tr>
+<td>queue_index_max_journal_entries</td>
+<td>整形</td>
+<td>转储到消息存储数据库并提交之前,消息存储日志中的最大条目数</td>
+<td>262144</td>
+<td>RabbitMQ</td>
+</tr>
+<tr>
+<td>hipe_compile</td>
+<td>布尔类型</td>
+<td>是否开启Erlang HiPE编译选项(JIT技术),可以提高性能</td>
+<td>false</td>
+<td>Erlang</td>
+</tr>
+</tbody>
+</table>
+<h4 id="权限控制"><a href="#权限控制" class="headerlink" title="权限控制"></a>权限控制</h4><p>　　RabbitMQ的权限控制是基于用户的,各个vhost的权限互相独立,也就是:针对一个或多个vhost,用户可以拥有不同的权限.<br>　　很自然的,权限也必须使用rabbitmqctl工具来进行管理(因为建立连接是需要指定用户,一般而言用户没有给别人权限的能力).  </p>
+<h5 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h5><p>　　RabbitMQ存在用户,其初始用户用户名为guest,密码也为guest.<br>　　用户是全局唯一的,且创建时至少需要指定一个vhost(RabbitMQ的权限是以vhost为单位的).</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建用户</span></span><br><span class="line">rabbitmqctl add_user username password</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除用户</span></span><br><span class="line"><span class="comment"># 注意: 删除用户时,所有引用了该用户的权限控制条目都会被一并删除,且没有警告!</span></span><br><span class="line">rabbitmqctl delete_user username</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出所有用户</span></span><br><span class="line">rabbitmqctl list_users</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改用户密码</span></span><br><span class="line">rabbitmqctl change_password username new_password</span><br></pre></td></tr></table></figure>
+<h5 id="权限"><a href="#权限" class="headerlink" title="权限"></a>权限</h5><p>　　从1.6.0开始,RabbitMQ实现了一套访问控制列表(ACL)风格的权限系统.针对每一个vhost,权限分为读、写、配置三种,可以分开授予用户.<br>　　三种权限的差别如下:<br>　　　　读 – 有关消费消息的任何操作,包括清除队列中的消息(需要先绑定成功).<br>　　　　写 – 发布消息(也需要先绑定成功).<br>　　　　配置 – 队列和交换机的创建和删除.  </p>
+<p>　　常用命令与权限的映射关系表如下:</p>
+<table>
+<thead>
+<tr>
+<th>AMQP命令</th>
+<th>配置权限</th>
+<th>写权限</th>
+<th>读权限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>exchange.declare</td>
+<td>exchange</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>exchange.delete</td>
+<td>exchange</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>queue.declare</td>
+<td>queue</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>queue.delete</td>
+<td>queue</td>
+<td>-</td>
+<td>-</td>
+</tr>
+<tr>
+<td>queue.bind</td>
+<td>-</td>
+<td>queue</td>
+<td>exchange</td>
+</tr>
+<tr>
+<td>basic.publish</td>
+<td>-</td>
+<td>exchange</td>
+<td>-</td>
+</tr>
+<tr>
+<td>basic.get</td>
+<td>-</td>
+<td>-</td>
+<td>queue</td>
+</tr>
+<tr>
+<td>basic.consume</td>
+<td>-</td>
+<td>-</td>
+<td>queue</td>
+</tr>
+<tr>
+<td>basic.purge</td>
+<td>-</td>
+<td>-</td>
+<td>queue</td>
+</tr>
+</tbody>
+</table>
+<p>　　以第一条为例,含义为: 用户想执行exchange.declare命令,需要在exchange上具有配置权限.</p>
+<h5 id="权限控制条目"><a href="#权限控制条目" class="headerlink" title="权限控制条目"></a>权限控制条目</h5><p>　　每一条访问控制条目(规则)都由四部分组成: 谁(用户)在哪里(vhost)的那些部分(权限范围,交换机/队列)具有什么权限(读、写、配置权限的组合).<br>　　访问控制条目无法跨越vhost,也就是说:如果想让用户在多个vhost上具有权限,需要设置多条控制条目(规则).  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 为用户分配权限</span></span><br><span class="line"><span class="comment"># 需要更改某用户的权限时,直接重新分配即可(也只能重新分配..)</span></span><br><span class="line"><span class="comment"># 最后面的三个权限模式是三个正则表达式. 例:".*" 代表所有权限, "" 代表无权限, "xx.*"代表以xx开头的队列或者交换机上有权限</span></span><br><span class="line">rabbitmqctl set_permissions -p &#123;vhost_name&#125; username &#123;conf_permission&#125; &#123;write_permission&#125; &#123;read_permission&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看权限分配情况</span></span><br><span class="line"><span class="comment"># 查看某vhost上的权限分配</span></span><br><span class="line">rabbitmqctl list_permissions  -p  &#123;vhost_name&#125;</span><br><span class="line"><span class="comment"># 查看某用户在所有vhost上的权限</span></span><br><span class="line">rabbitmqctl list_user_permissions &#123;username&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清除某用户在某vhost上的所有权限</span></span><br><span class="line">rabbitmqctl clear_permissions -p &#123;vhost_name&#125; &#123;username&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="状态检查"><a href="#状态检查" class="headerlink" title="状态检查"></a>状态检查</h4><p>　　我们该如何查看RabbitMQ的运行状态呢?</p>
+<h5 id="查看基本信息"><a href="#查看基本信息" class="headerlink" title="查看基本信息"></a>查看基本信息</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出某vhost上的queue的信息</span></span><br><span class="line"><span class="comment"># 中间的状态貌似是指queue在集群中的信息</span></span><br><span class="line"><span class="comment"># 这里的 queueinfoitem 表示想展示的项目列表,有效值包括name, druable, auto_delete等等,用到时现查即可.缺省状态下,此命令展示 队列名及其上的消息数</span></span><br><span class="line">list_queues [-p &lt;vhost&gt;] [--offline|--online|--<span class="built_in">local</span>] [&lt;queueinfoitem&gt; ...]</span><br></pre></td></tr></table></figure>
+<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_exchanges_demo.png" alt="查看队列信息示例"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出某vhost上的exchange的信息</span></span><br><span class="line"><span class="comment"># 这里的 exchangeinfoitem 含义同上,有效值包括 name, type, durable, auto_delete, internal, arguments, policy</span></span><br><span class="line">rabbitmqctl list_exchanges [-p &lt;vhost&gt;] [&lt;exchangeinfoitem&gt; ...]</span><br></pre></td></tr></table></figure>
+<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_bindings_demo.png" alt="查看交换机信息示例"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出某vhost上的绑定信息</span></span><br><span class="line"><span class="comment"># 这里的 bindinginfoitem 含义同上,有效值包括 source_name, source_kind, destination_name, destination_kind, routing_key, arguments</span></span><br><span class="line">rabbitmqctl list_bindings [-p &lt;vhost&gt;] [&lt;bindinginfoitem&gt; ...]</span><br></pre></td></tr></table></figure>
+<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_queues_demo.png" alt="查看绑定信息示例"></p>
+<h5 id="日志信息"><a href="#日志信息" class="headerlink" title="日志信息"></a>日志信息</h5><p>　　RabbitMQ的日志文件有如下两个:<br>　　RABBITMQ_NODENAME.log         RabbitMQ运行相关日志. 可以通过它得到RabitMQ的运行信息.<br>　　RABBITMQ_NODENAME-sasl.log    Erlang相关日志.       可以通过它查看Erlang的崩溃报告.  </p>
+<p>　　另外,RabbitMQ会将运行相关日志信息发布到 amq.rabbitmq.log这个交换机上,并以日志等级作为路由键(error, warning, info),因此我们自己定义好队列与绑定后,就可以通过消费者监听RabbitMQ的运行信息了.</p>
+<h5 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h5><h6 id="rabbitmqctl"><a href="#rabbitmqctl" class="headerlink" title="rabbitmqctl"></a>rabbitmqctl</h6><p>　　有时,RabbitMQ运行的好好的,但是我们在使用rabbitmqctl命令的时候就是会出现badrpc或者nodedown问题.这是为什么?<br>　　先来看看rabbitmqctl的工作原理.rabbitmqctl会启动一个Erlang节点,并使用Erlang的分布式系统尝试连接RabbitMQ节点.达成这个步骤需要两个条件:合适的Erlang Cookie和合适的节点名称.<br>　　首先来看看Erlang Coolie:<br>　　　　为了能使用rabbitmqctl连接RabbitMQ节点,需要共享相同的cookie.因此,碰到上述问题时,看看当前用户的Erlang Cookie与RabbitMQ的Erlang Cookie是否相同.<br>　　　　Erlang节点之间通过交换作为秘钥的Erlang Cookie来进行认证(由于连接到某节点时就可以执行命令,因此需要确保连接者可信).而Erlang将令牌存储在用户主目录下的.erlang.cookie文件中.<br>　　再来看看节点名:<br>　　　　在启动Erlang节点时,可以指定一个节点名称(name或者sname之一).<br>　　　　如果两边的节点名不同,那么rabbitmqctl也无法正常连接到RabbitMQ服务器.  </p>
+<h6 id="Mnesia"><a href="#Mnesia" class="headerlink" title="Mnesia"></a>Mnesia</h6><p>　　有时,Mnesia启动老是失败,这是什么原因?<br>　　常见的原因如下两个:<br>　　1. RabbitMQ没有MNESIA_BASE(这是个环境变量)文件夹的写权限;<br>　　2. 主机名更改了或者服务器运行在集群模式下且启动时无法连接到其它节点.<br>　　　　Mnesia会基于Erlang节点名与当前机器的主机名创建数据库schema,如果主机名更改了,它就无法加载旧的schema.同理,使用Erlang sname更改节点名,也会产生这个问题.<br>　　　　如果我们更改了Mnesia建立的文件夹的名称,Mnesia会重新创建新的schema文件夹并加载.</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Flynnon
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.flynnon.com/2018/06/26-RabbitMQ_1.html" title="《RabbitMQ实战》笔记(一)">http://www.flynnon.com/2018/06/26-RabbitMQ_1.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习之路/" rel="tag"><i class="fa fa-tag"></i> 学习之路</a>
+          
+            <a href="/tags/RabbitMQ/" rel="tag"><i class="fa fa-tag"></i> RabbitMQ</a>
+          
+            <a href="/tags/消息队列/" rel="tag"><i class="fa fa-tag"></i> 消息队列</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/03-红包算法.html" rel="next" title="红包算法">
+                <i class="fa fa-chevron-left"></i> 红包算法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/02-RabbitMQ_2.html" rel="prev" title="《RabbitMQ实战》笔记(二)">
+                《RabbitMQ实战》笔记(二) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjg2Ni8xMzQwMg=="></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Flynnon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Flynnon" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/flynnon.ton" target="_blank" title="Facebook">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                我的朋友
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.tianhao.site/blog/" title="田浩的Blog" target="_blank">田浩的Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://evilinf.github.io/" title="Evilinf的Blog" target="_blank">Evilinf的Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#天降奇兵-RabbitMQ简史"><span class="nav-number">2.</span> <span class="nav-text">天降奇兵(RabbitMQ简史)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理解消息通信"><span class="nav-number">3.</span> <span class="nav-text">理解消息通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一些概念"><span class="nav-number">3.1.</span> <span class="nav-text">一些概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#角色划分"><span class="nav-number">3.1.1.</span> <span class="nav-text">角色划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息"><span class="nav-number">3.1.2.</span> <span class="nav-text">消息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通信"><span class="nav-number">3.1.3.</span> <span class="nav-text">通信</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息存储"><span class="nav-number">3.1.4.</span> <span class="nav-text">消息存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消费"><span class="nav-number">3.1.5.</span> <span class="nav-text">消费</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消费者确认机制"><span class="nav-number">3.1.6.</span> <span class="nav-text">消费者确认机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#谁来分发"><span class="nav-number">3.1.7.</span> <span class="nav-text">谁来分发</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#建立分发规则"><span class="nav-number">3.1.8.</span> <span class="nav-text">建立分发规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作"><span class="nav-number">3.2.</span> <span class="nav-text">操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#声明队列"><span class="nav-number">3.2.1.</span> <span class="nav-text">声明队列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#声明交换机"><span class="nav-number">3.2.2.</span> <span class="nav-text">声明交换机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#代码示例"><span class="nav-number">3.2.3.</span> <span class="nav-text">代码示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">4.</span> <span class="nav-text">扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟主机vhost"><span class="nav-number">4.1.</span> <span class="nav-text">虚拟主机vhost</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#持久化"><span class="nav-number">4.2.</span> <span class="nav-text">持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息确认"><span class="nav-number">4.3.</span> <span class="nav-text">消息确认</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器管理"><span class="nav-number">4.4.</span> <span class="nav-text">服务器管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#管理命令"><span class="nav-number">4.4.1.</span> <span class="nav-text">管理命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件"><span class="nav-number">4.4.2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限控制"><span class="nav-number">4.4.3.</span> <span class="nav-text">权限控制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#用户管理"><span class="nav-number">4.4.3.1.</span> <span class="nav-text">用户管理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#权限"><span class="nav-number">4.4.3.2.</span> <span class="nav-text">权限</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#权限控制条目"><span class="nav-number">4.4.3.3.</span> <span class="nav-text">权限控制条目</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#状态检查"><span class="nav-number">4.4.4.</span> <span class="nav-text">状态检查</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#查看基本信息"><span class="nav-number">4.4.4.1.</span> <span class="nav-text">查看基本信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#日志信息"><span class="nav-number">4.4.4.2.</span> <span class="nav-text">日志信息</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#常见问题"><span class="nav-number">4.4.4.3.</span> <span class="nav-text">常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#rabbitmqctl"><span class="nav-number">4.4.4.3.1.</span> <span class="nav-text">rabbitmqctl</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Mnesia"><span class="nav-number">4.4.4.3.2.</span> <span class="nav-text">Mnesia</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-@"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Flynnon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人访问
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次访问
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Cjsr55wJkKKtTeREWcAIW2GA-gzGzoHsz", "9mVWvx06y21SX6Ebqm6Ry5wG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/love.min.js"></script>

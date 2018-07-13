@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习之路,RabbitMQ,消息队列," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Flynnon's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言　　这是笔记的第三部分…..　　由于Flynnon并不是专业运维人员,因此很多细节就略过不表了(例如:负载均衡具体实现,主备机制等等),真到了用到的时候,再百度/Google吧…">
+<meta name="keywords" content="学习之路,RabbitMQ,消息队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《RabbitMQ实战》笔记(三)">
+<meta property="og:url" content="http://www.flynnon.com/2018/07/11-RabbitMQ_3.html">
+<meta property="og:site_name" content="Flynnon&#39;s Blog">
+<meta property="og:description" content="前言　　这是笔记的第三部分…..　　由于Flynnon并不是专业运维人员,因此很多细节就略过不表了(例如:负载均衡具体实现,主备机制等等),真到了用到的时候,再百度/Google吧…">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/hard_coded.png">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_proxy.png">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_message_delivery.png">
+<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_queue_declare.png">
+<meta property="og:updated_time" content="2018-07-13T00:33:14.505Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《RabbitMQ实战》笔记(三)">
+<meta name="twitter:description" content="前言　　这是笔记的第三部分…..　　由于Flynnon并不是专业运维人员,因此很多细节就略过不表了(例如:负载均衡具体实现,主备机制等等),真到了用到的时候,再百度/Google吧…">
+<meta name="twitter:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/hard_coded.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.flynnon.com/2018/07/11-RabbitMQ_3.html"/>
+
+
+
+
+
+  <title>《RabbitMQ实战》笔记(三) | Flynnon's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111573728-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flynnon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">平常的一些记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.flynnon.com/2018/07/11-RabbitMQ_3.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Flynnon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flynnon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《RabbitMQ实战》笔记(三)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-11T23:03:39+08:00">
+                2018-07-11 23:03:39
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/11-RabbitMQ_3.html" class="leancloud_visitors" data-flag-title="《RabbitMQ实战》笔记(三)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　这是笔记的第三部分…..<br>　　由于Flynnon并不是专业运维人员,因此很多细节就略过不表了(例如:负载均衡具体实现,主备机制等等),真到了用到的时候,再百度/Google吧…<br><a id="more"></a></p>
+<h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>　　这里简单了解一下负载均衡技术和RabbitMQ集群的协作方法,也就是使用为什么使用负载均衡,使用之后代码需要变化多少.<br>　　这部分的操作本质上是对负载均衡软件/硬件的配置,使得它可以对请求进行转发与均衡.</p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>　　上一篇提到的集群实现在使用的过程中还有很多可以优化的地方,其中一个就是在访问集群中的节点的时候需要指定IP,这样就会造成硬编码,且节点变更的时候不好维护.客户端必须对集群中的每一个节点IP做手动配置(也就是得有一个可用IP列表),并处理集群节点的选择和故障服务器的检测.由于节点的选择是由各个客户端自行进行选择的,因此负载也不会平均.  </p>
+<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/hard_coded.png" alt="硬编码模式图示"></p>
+<p>　　对于这种不太好的实践,可以使用负载均衡(感觉也有反向代理思路)技术来进行处理,即:使用一个单独的负载均衡器(代理)来接收所有请求,然后将请求转发到集群中的某一个节点.而这些对于客户端都是透明的,客户端只需要硬编码代理节点的IP地址(可以使用域名进一步进行配置解耦)即可.<br>　　代理节点还可以实现一些定制化功能,例如:故障节点检测(根据不同的算法对后端节点进行检测,剔除挂掉的节点),负载均衡(根据不同的算法进行转发,使得各个后端节点的负载相近),请求分析等等.</p>
+<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_proxy.png" alt="负载均衡模式图示"></p>
+<p>　　由于RabbitMQ与客户端通信使用的是TCP,因此负载均衡软件需要能够做到<a href="http://network.51cto.com/art/201211/364614.htm">四层负载均衡</a>.本书使用的是HAProxy.</p>
+<h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p>　　接下来看看,我们的编码会产生什么样的变化.<br>　　对于生产者来说,本书的意思是无需特殊处理(消费者每次都会建立新的连接).但我并不是很认同….pika库的channel对象有一个add_on_cancel_callback方法,应该是为了处理这种情况的,但是还没有找到示例…先放着吧…  </p>
+<p>　　对于消费者来说,由于需要处理连接异常(所连接的节点故障或者实际监听的队列所在的节点故障)的情况.因此需要做异常处理与重试.本书给出的处理方式也是很简单粗暴(不断的重建连接).下面的示例中所做的假设为当出现故障时(无论是上述哪一个),都会引发异常.  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">connection = <span class="keyword">None</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        connection = pika.BlockingConnection(pika.ConnectionParameters(host=<span class="string">'rabbitmq'</span>))</span><br><span class="line">        channel = connection.channel()</span><br><span class="line">        method_ = channel.queue_declare(queue=<span class="string">'order_queue'</span>)</span><br><span class="line"></span><br><span class="line">        queue_name = method_.method.queue</span><br><span class="line">        channel.exchange_declare(exchange=<span class="string">'payment'</span>, exchange_type=<span class="string">'topic'</span>, auto_delete=<span class="keyword">False</span>, durable=<span class="keyword">True</span>)</span><br><span class="line">        channel.queue_bind(queue_name, <span class="string">'payment'</span>, routing_key=<span class="string">'ordering.create'</span>,)</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">on_request</span><span class="params">(ch, method, props, body)</span>:</span></span><br><span class="line">            do_something()</span><br><span class="line"></span><br><span class="line">        channel.basic_consume(on_request, queue=queue_name, no_ack=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line">        channel.start_consuming()</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="comment"># 这里忽略产生的异常,重建连接</span></span><br><span class="line">        <span class="keyword">if</span> connection:</span><br><span class="line">            connection.close()</span><br></pre></td></tr></table></figure>
+<h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><p>　　插件是一种扩展作者未能预见到的服务器的行为方式,RabbitMQ的插件也是使用Erlang编写的,且和服务器一同运行在同一个Erlang VM中.细节可以参考<a href="https://www.rabbitmq.com/plugins.html">官方文档</a>.<br>　　这部分介绍了RabbitMQ Management插件的使用,感觉这个用处不大,就不详细写了.可以参考<a href="https://www.rabbitmq.com/management.html">官方文档</a>.</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>　　对于直接集成好的插件,无需安装.<br>　　对于没有集成的插件,需要下载(文件的后缀为.ez)后将其拷贝到插件目录(基本是在RabbitMQ安装目录下有一个plugins目录).  </p>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出所有插件</span></span><br><span class="line">sudo rabbitmq-plugins list</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启用某插件,然后,需要重启RabbitMQ</span></span><br><span class="line">sudo rabbitmq-plugins <span class="built_in">enable</span> <span class="variable">$&#123;plugin_name&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 禁用某插件</span></span><br><span class="line">sudo rabbitmq-plugins <span class="built_in">disable</span> <span class="variable">$&#123;plugin_name&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h2><p>　　这部分介绍的主要是一些性能优化(取舍)技巧与安全相关的内容.  </p>
+<h3 id="消息持久化"><a href="#消息持久化" class="headerlink" title="消息持久化"></a>消息持久化</h3><p>　　消息持久化可以避免由于RabbitMQ异常宕机(系统异常、软件bug等等原因)引起的消息丢失,是一个蛮好的扩展.<br>　　然而,由于持久化需要将消息写入磁盘(无需持久化的消息只需存在于内存中),因此会产生大量的磁盘IO,并降低消息周转速度.因此,一个比较好的实践是,对于不重要(可以容忍部分丢失)的消息,可以不做持久化处理.</p>
+<h3 id="消息确认"><a href="#消息确认" class="headerlink" title="消息确认"></a>消息确认</h3><p>　　消息确认机制可以使得RabbitMQ对于消费者的消费情况有一个感知,从而在消费者发生故障的时候对消息进行重新投递,以保证消息一定会被消费成功(开启自动确认模式时,消费者故障/连接中断都会使得消息丢失).并且可以通过这个机制来控制消息的投递速率.<br>　　然而,相应的,这个机制也会使得消费者的消费速度变慢(在消费成功/失败后需要返回状态),且使得RabbitMQ的处理逻辑变复杂(在每一条消息投递出去后,都需要关注其结果).  </p>
+<p>　　因此,一个比较好的实践是,对于可以容忍部分丢失的消息,消费者可以开启自动应答以加快处理速度.</p>
+<h3 id="消费路由"><a href="#消费路由" class="headerlink" title="消费路由"></a>消费路由</h3><p>　　这部分主要是回顾了下fanout,direct和topic三种交换机的特性,并简单介绍了交换机及绑定的存储方式.<br>　　主要介绍了功能最强大的topic交换机的一些细节.例如:使用Trie树(字典树)来存储绑定路由键模式,以支持快速查询.并给出了RabbitMQ官网的<a href="https://www.rabbitmq.com/blog/2010/09/14/very-fast-and-scalable-topic-routing-part-1/">博客一</a>和<a href="https://www.rabbitmq.com/blog/2011/03/28/very-fast-and-scalable-topic-routing-part-2/">博客二</a>两篇参考资料.<br>　　通常情况下,topic模式相比其余两种,会慢一些,并且内存占用会多一些.</p>
+<h3 id="投递消息"><a href="#投递消息" class="headerlink" title="投递消息"></a>投递消息</h3><p>　　本书给出了一个RabbitMQ中消息投递的流程图.</p>
+<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_message_delivery.png" alt="消息投递流程图"></p>
+<p>　　这个过程有如下需要注意的地方:<br>　　1. 从客户端的角度来看,异步投递会比同步投递快一些;<br>　　2. 如果队列是空的,且消费者准备好接受消息,那么,消息不会被放到队列中,而是被直接投递给消费者,这会极大的提升消息处理速度(当然,开启消息投递,且消费者没有及时返回确认时,还需要进行其它处理逻辑);<br>　　3. 在持久化消息到达持久化队列时,会被写入磁盘(持久存储),同时内存中也会存储一份以提升消息投递速度.否则,消息会被写入瞬态存储.在RabbitMQ服务器内存不足的情况下,一部分消息会被刷到磁盘上(瞬态存储);<br>　　4. 当RabbitMQ需要重启并恢复持久化队列时,只会查看持久存储中的内容,瞬态存储会被清空;<br>　　5. 为了保证投递速率,应该尽可能保证队列为空.</p>
+<h3 id="内存使用率"><a href="#内存使用率" class="headerlink" title="内存使用率"></a>内存使用率</h3><p>　　关于内存占用,官方文档为: <a href="https://www.rabbitmq.com/memory-use.html">memory-use</a>.当然…Flynnon没有看…  </p>
+<p>　　队列声明: 当声明队列时,如果队列的durable属性设置为true的话,会在rabbit_queue和rabbit_durable_queue两个表中增加记录,否则只会在rabbit_queue表中增加记录.以上每一条记录大约占用29个字的大小(这里的字是Erlang中的概念,与操作系统相关,32位系统中,字长为4字节,64位系统中,字长为8字节).并且,依据AMQP规范,队列会被绑定到匿名交换机上.综上,大致流程如下:</p>
+<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_queue_declare.png" alt="队列声明处理步骤"></p>
+<p>　　交换机声明: 当声明交换机时,RabbitMQ会在rabbit_exchange表创建一条大约29字的记录.若交换机进行了持久化声明,也会在rabbit_durable_exchange上创建一条记录.图示如下:</p>
+<table>
+<thead>
+<tr>
+<th>交换机类型</th>
+<th>rabbit_exchange</th>
+<th>rabbit_durable_exchange</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>持久化交换机</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>瞬时交换机</td>
+<td>x</td>
+<td></td>
+</tr>
+<tr>
+<td>字/记录</td>
+<td>29</td>
+<td>29</td>
+</tr>
+</tbody>
+</table>
+<p>　　绑定声明:<br>　　fanout与direct类型的交换机的绑定内存占用如下:</p>
+<table>
+<thead>
+<tr>
+<th>绑定类型(队列-交换机)</th>
+<th>rabbit_route</th>
+<th>rabbit_durable_route</th>
+<th>rabbit_semi_durable_route</th>
+<th>rabbit_reverse_route</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>持久化-持久化</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>持久化-瞬时</td>
+<td>x</td>
+<td></td>
+<td>x</td>
+<td>x</td>
+</tr>
+<tr>
+<td>瞬时-瞬时</td>
+<td>x</td>
+<td></td>
+<td></td>
+<td>x</td>
+</tr>
+<tr>
+<td>瞬时-持久化</td>
+<td>x</td>
+<td></td>
+<td></td>
+<td>x</td>
+</tr>
+<tr>
+<td>字/记录</td>
+<td>44</td>
+<td>44</td>
+<td>44</td>
+<td>44</td>
+</tr>
+</tbody>
+</table>
+<p>　　topic类型的交换机: 除了上述规则外,topic类型的交换机还需要rabbit_topic_trie_binding和rabbit_topic_trie_edge两张表来存放匹配信息.绑定会存放在rabbit_topic_trie_binding表中,表中的一条记录大概占用45个字.且topic模式中有多少部分就会有多少条记录插入到rabbit_topic_trie_binding表中.</p>
+<h3 id="Erlang进程计数"><a href="#Erlang进程计数" class="headerlink" title="Erlang进程计数"></a>Erlang进程计数</h3><p>　　这里展示了Erlang进程计数对于RabbitMQ的影响.</p>
+<h4 id="Erlang进程"><a href="#Erlang进程" class="headerlink" title="Erlang进程"></a>Erlang进程</h4><p>　　Erlang的进程是指虚拟机管理的进程,而不是操作系统的重量级进程.这些进程的创建和销毁都非常迅速,且进程之间发送消息非常快速,同一时间可以拥有大量的进程.<br>　　由于进程运行于Erlang虚拟机上,因此进程在所有的操作系统上都具有相同的行为方式.<br>　　Erlang进程不共享任何内存，是完全独立的,各个进程之间唯一的交互方式就是消息传递.</p>
+<h4 id="最大进程数"><a href="#最大进程数" class="headerlink" title="最大进程数"></a>最大进程数</h4><p>　　可以在启动RabbitMQ时指定Erlang节点上能运行的最大进程数(也就是运行rabbitmq-server -detached时指定SERVER_ERL_ARGS的+P选项来增加上限,当然….Flynnon没有进行尝试….).如果不指定的话,RabbitMQ默认的设置就会生效,每个Erlang节点可以有1048576(也就是2^20)个进程(一般来说肯定是够用了).  </p>
+<p>　　当Erlang的进程数超过了设置的最大进程数时,Erlang就会崩溃.进程数消耗如下:</p>
+<table>
+<thead>
+<tr>
+<th>行为</th>
+<th>消耗进程数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>新建连接</td>
+<td>4</td>
+</tr>
+<tr>
+<td>新建信道</td>
+<td>4</td>
+</tr>
+<tr>
+<td>队列声明</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>　　本书还有一些比较高级的内容,如:SSL配置,集群设置等等,但是Flynnon暂时用不太上,因此就不记录了…</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Flynnon
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.flynnon.com/2018/07/11-RabbitMQ_3.html" title="《RabbitMQ实战》笔记(三)">http://www.flynnon.com/2018/07/11-RabbitMQ_3.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习之路/" rel="tag"><i class="fa fa-tag"></i> 学习之路</a>
+          
+            <a href="/tags/RabbitMQ/" rel="tag"><i class="fa fa-tag"></i> RabbitMQ</a>
+          
+            <a href="/tags/消息队列/" rel="tag"><i class="fa fa-tag"></i> 消息队列</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/02-RabbitMQ_2.html" rel="next" title="《RabbitMQ实战》笔记(二)">
+                <i class="fa fa-chevron-left"></i> 《RabbitMQ实战》笔记(二)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjg2Ni8xMzQwMg=="></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Flynnon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Flynnon" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/flynnon.ton" target="_blank" title="Facebook">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                我的朋友
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.tianhao.site/blog/" title="田浩的Blog" target="_blank">田浩的Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://evilinf.github.io/" title="Evilinf的Blog" target="_blank">Evilinf的Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#负载均衡"><span class="nav-number">2.</span> <span class="nav-text">负载均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">2.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码"><span class="nav-number">2.2.</span> <span class="nav-text">编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件"><span class="nav-number">3.</span> <span class="nav-text">插件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作"><span class="nav-number">3.2.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能"><span class="nav-number">4.</span> <span class="nav-text">性能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#消息持久化"><span class="nav-number">4.1.</span> <span class="nav-text">消息持久化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息确认"><span class="nav-number">4.2.</span> <span class="nav-text">消息确认</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消费路由"><span class="nav-number">4.3.</span> <span class="nav-text">消费路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#投递消息"><span class="nav-number">4.4.</span> <span class="nav-text">投递消息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存使用率"><span class="nav-number">4.5.</span> <span class="nav-text">内存使用率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Erlang进程计数"><span class="nav-number">4.6.</span> <span class="nav-text">Erlang进程计数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Erlang进程"><span class="nav-number">4.6.1.</span> <span class="nav-text">Erlang进程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最大进程数"><span class="nav-number">4.6.2.</span> <span class="nav-text">最大进程数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">5.</span> <span class="nav-text">后记</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-@"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Flynnon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人访问
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次访问
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Cjsr55wJkKKtTeREWcAIW2GA-gzGzoHsz", "9mVWvx06y21SX6Ebqm6Ry5wG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/love.min.js"></script>

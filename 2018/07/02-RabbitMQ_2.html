@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" media="all" href="/lib/Han/dist/han.min.css?v=3.3">
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学习之路,RabbitMQ,消息队列," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Flynnon's Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="前言　　这是笔记的第二部分…..">
+<meta name="keywords" content="学习之路,RabbitMQ,消息队列">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《RabbitMQ实战》笔记(二)">
+<meta property="og:url" content="http://www.flynnon.com/2018/07/02-RabbitMQ_2.html">
+<meta property="og:site_name" content="Flynnon&#39;s Blog">
+<meta property="og:description" content="前言　　这是笔记的第二部分…..">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-07-04T00:11:59.239Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《RabbitMQ实战》笔记(二)">
+<meta name="twitter:description" content="前言　　这是笔记的第二部分…..">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.flynnon.com/2018/07/02-RabbitMQ_2.html"/>
+
+
+
+
+
+  <title>《RabbitMQ实战》笔记(二) | Flynnon's Blog</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-111573728-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Flynnon's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">平常的一些记录</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.flynnon.com/2018/07/02-RabbitMQ_2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Flynnon">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Flynnon's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《RabbitMQ实战》笔记(二)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T23:03:39+08:00">
+                2018-07-02 23:03:39
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/07/02-RabbitMQ_2.html" class="leancloud_visitors" data-flag-title="《RabbitMQ实战》笔记(二)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body han-init-context" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　这是笔记的第二部分…..<a id="more"></a></p>
+<h2 id="RabbitMQ与RPC"><a href="#RabbitMQ与RPC" class="headerlink" title="RabbitMQ与RPC"></a>RabbitMQ与RPC</h2><p>　　传统上,为了实现系统间的相互通信,可以使用RPC技术(Remote Procedure Call),而有很多方法可以实现远程过程调用,但是大多数实现都会使得服务端与客户端紧密相连(例如Flynnon公司使用的Django-Json-RPC框架…).<br>　　然而,大多数RPC的实现是点对点的,也就是说客户端需要知道服务端的地址,然后才能进行连接并调用.这种设计在系统规模比较小的时候当然很好用,但是一旦系统规模变大,问题就来了.<br>　　这里的问题主要是指可扩展性,当有多台提供相同服务的RPC服务器存在时,如何选择呢?或者有多台提供的服务不同的RPC服务器存在时,如何定位服务呢?SOAP和某些RPC架构采取了复杂的补充协议和服务目录来做这个事情,但这也带来了额外的复杂性和bug几率,并且传统的RPC是应答式的,请求主动权在客户端,当服务端挂掉的时候,需要客户端进行重连,还得找到能提供相同服务的服务端,这增加了客户端的工作量.<br>　　RabbitMQ提供了一种模式可以实现RPC,可以解决以上的问题.下面进行详细介绍.  </p>
+<h3 id="原理介绍"><a href="#原理介绍" class="headerlink" title="原理介绍"></a>原理介绍</h3><p>　　但是上一篇笔记也有提到,AMQP的消息是单向的,那么,服务端如何将信息返回客户端呢(尤其是,服务端无法得到客户端的信息)?<br>　　RabbitMQ给出的解决方案是:使用消息回发应答.<br>　　具体的流程如下:<br>　　客户端声明一个队列A,在投递消息时将A的名称放置到消息头的reply_to字段中,然后对该队列进行监听.<br>　　服务端检查reply_to字段,在处理完成后将结果投递到该字段所指的队列中(还记得每个队列默认绑定一个队列么…).<br>　　客户端从被监听的队列中得到某个消息时,进行校验(是不是自己要接收的消息),如果是的话,取出消息,解除监听并进行后续处理即可.</p>
+<h3 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h3><p>　　其实这个过程还是慢简单易懂的,但是如何保证消息不串呢?<br>　　可以使用以下方法:<br>　　1. 每次在进行队列声明时都不指定队列名(RabbitMQ自动生成),这样使得各个客户端所使用的队列不同,且设置auto_delete参数为True;<br>　　2. 在进行队列声明时设置exclusive参数为True,确保只有当前消费者可以读取队列上的消息.  </p>
+<p>　　上面使用的方法已经可以用了,但是每次连接都新建一个queue其实是有点费资源的,因此我们可以进行一些优化.由于每一条消息只能被消费一次,因此我们不能在多个客户端之间共享队列,但是对于一个客户端来说,我们可以合并多次相关请求,也就是为每一个客户端建一个queue(因为RPC语义上就是阻塞的,因此每一个客户端使用一个queue即可,因为同一时间不会有多个无关的服务端消息到达).  </p>
+<p>　　这时,我们就必须标识每一次的请求了(消息可能乱序,可能重传,可能丢失…),具体采取的方法是:在发送消息时,放入一个唯一的correlation_id属性,服务端在投递响应消息时,也将该字段置入消息中即可.这样,客户端就可以通过校验这个字段来判断是不是自己所需要的响应了.</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>　　下面给出一个简单的RPC客户端实现(这部分有参考<a href="http://www.rabbitmq.com/tutorials/tutorial-six-python.html">官方教程</a>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RPCCallTimeoutException</span><span class="params">(Exception)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RPCClient</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, connection=None, timeout=<span class="number">2</span>, open_confirm=True)</span>:</span></span><br><span class="line">        <span class="comment"># 初始化连接</span></span><br><span class="line">        self.connection = connection <span class="keyword">or</span> pika.BlockingConnection(pika.ConnectionParameters(host=<span class="string">'rabbitmq'</span>))</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 获取channel</span></span><br><span class="line">        self.channel = self.connection.channel()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 开启消费者确认模式</span></span><br><span class="line">        <span class="keyword">if</span> open_confirm:</span><br><span class="line">            self.channel.confirm_delivery()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 定义私有的,自动删除的队列</span></span><br><span class="line">        result = self.channel.queue_declare(exclusive=<span class="keyword">True</span>, auto_delete=<span class="keyword">True</span>)</span><br><span class="line">        self.callback_queue = result.method.queue</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 定义超时时间</span></span><br><span class="line">        self.timeout = timeout</span><br><span class="line">        <span class="comment"># 响应值</span></span><br><span class="line">        self.response = <span class="keyword">None</span></span><br><span class="line">        <span class="comment"># 唯一标识</span></span><br><span class="line">        self.corr_id = <span class="keyword">None</span></span><br><span class="line">        <span class="comment"># 设置监听</span></span><br><span class="line">        self.channel.basic_consume(self.on_response, no_ack=<span class="keyword">True</span>,</span><br><span class="line">                                   queue=self.callback_queue)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_response</span><span class="params">(self, ch, method, props, body)</span>:</span></span><br><span class="line">        <span class="comment"># 校验消息是否为自己所需要的消息</span></span><br><span class="line">        <span class="keyword">if</span> self.corr_id == props.correlation_id:</span><br><span class="line">            self.response = body</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_timeout</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="comment"># 超时时抛出异常</span></span><br><span class="line">        <span class="keyword">raise</span> RPCCallTimeoutException()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(self, exchange, routing_key, body, time_limit=<span class="number">0</span>)</span>:</span></span><br><span class="line">        <span class="keyword">assert</span> body <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span></span><br><span class="line">        <span class="comment"># 初始化RPC的响应</span></span><br><span class="line">        self.response = <span class="keyword">None</span></span><br><span class="line">        <span class="comment"># 初始化生成唯一标识</span></span><br><span class="line">        self.corr_id = str(uuid.uuid4())</span><br><span class="line">        <span class="comment"># 投递消息(调用RPC)</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.channel.basic_publish(exchange=exchange,</span><br><span class="line">                                   routing_key=routing_key,</span><br><span class="line">                                   properties=pika.BasicProperties(</span><br><span class="line">                                           reply_to=self.callback_queue,</span><br><span class="line">                                           correlation_id=self.corr_id,</span><br><span class="line">                                   ),</span><br><span class="line">                                   body=body):</span><br><span class="line">            <span class="keyword">raise</span> RPCCallTimeoutException()</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置超时触发器</span></span><br><span class="line">        <span class="keyword">if</span> self.timeout <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            self.connection.add_timeout(self.timeout, self.on_timeout)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 轮询结果</span></span><br><span class="line">        <span class="keyword">while</span> self.response <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">            self.connection.process_data_events(time_limit=time_limit)</span><br><span class="line">        <span class="comment"># 返回响应</span></span><br><span class="line">        <span class="keyword">return</span> self.response</span><br><span class="line"></span><br><span class="line">    __call__ = call</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 后续的扫尾工作,这里不关闭connection是因为它可能会被外部复用</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__del__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.channel <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            self.channel.close()</span><br><span class="line"></span><br><span class="line"><span class="comment"># -- 调用 --</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">rpc_client = RPCClient()</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    resp = rpc_client(exchange=<span class="string">'payment'</span>, routing_key=<span class="string">'ordering.create'</span>, body=json.dumps(&#123;<span class="string">'ordering_no'</span>:</span><br><span class="line">                                                                                          <span class="string">'ordering_no'</span>&#125;))</span><br><span class="line">    print(json.loads(resp))</span><br><span class="line"><span class="keyword">except</span> RPCCallTimeoutException:</span><br><span class="line">    <span class="comment"># 超时处理</span></span><br><span class="line">    print(<span class="string">'超时啦，啦啦啦啦'</span>)</span><br></pre></td></tr></table></figure>
+<p>　　下面给出一个简单的RPC服务端实现.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># coding=utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取连接</span></span><br><span class="line">connection = pika.BlockingConnection(pika.ConnectionParameters(host=<span class="string">'rabbitmq'</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取信道</span></span><br><span class="line">channel = connection.channel()</span><br><span class="line"><span class="comment"># 定义队列</span></span><br><span class="line">method_ = channel.queue_declare(queue=<span class="string">'order_queue'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 另一种取queue的name的方法</span></span><br><span class="line">queue_name = method_.method.queue</span><br><span class="line"><span class="comment"># 定义交换机</span></span><br><span class="line">channel.exchange_declare(exchange=<span class="string">'payment'</span>, exchange_type=<span class="string">'topic'</span>, auto_delete=<span class="keyword">False</span>, durable=<span class="keyword">True</span>)</span><br><span class="line"><span class="comment"># 建立绑定</span></span><br><span class="line">channel.queue_bind(queue_name, <span class="string">'payment'</span>, routing_key=<span class="string">'ordering.create'</span>,)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 具体处理逻辑的方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_order</span><span class="params">(ordering_no)</span>:</span></span><br><span class="line">    <span class="comment"># 处理业务逻辑</span></span><br><span class="line">    <span class="keyword">return</span> ordering_no</span><br><span class="line">    <span class="comment"># return do_something(ordering_no)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 接收到消息时的回调</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">on_request</span><span class="params">(ch, method, props, body)</span>:</span></span><br><span class="line">    <span class="comment"># 取出参数</span></span><br><span class="line">    data = json.loads(body)</span><br><span class="line">    ordering_no = data.get(<span class="string">'ordering_no'</span>, <span class="keyword">None</span>)</span><br><span class="line">    <span class="comment"># 对参数进行校验</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> ordering_no:</span><br><span class="line">        <span class="comment"># 发现参数不合法时,</span></span><br><span class="line">        result = <span class="string">'params_wrong'</span></span><br><span class="line">        code = <span class="string">'fail'</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        result = create_order(ordering_no)</span><br><span class="line">        code = <span class="string">'success'</span></span><br><span class="line">    <span class="comment"># 发送响应</span></span><br><span class="line">    <span class="comment"># 这里可以发出响应的原因是,在本函数结束之前,pika库不会再次开始消费,也就是本channel目前是空闲的</span></span><br><span class="line">    ch.basic_publish(exchange=<span class="string">''</span>,</span><br><span class="line">                     routing_key=props.reply_to,</span><br><span class="line">                     <span class="comment"># 注意,这里将消息标识置入响应中</span></span><br><span class="line">                     properties=pika.BasicProperties(correlation_id = props.correlation_id),</span><br><span class="line">                     body=json.dumps(&#123;<span class="string">'result'</span>: result, <span class="string">'code'</span>: code&#125;))</span><br><span class="line">    <span class="comment"># 对RabbitMQ发出确认</span></span><br><span class="line">    ch.basic_ack(delivery_tag=method.delivery_tag)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 限流</span></span><br><span class="line">channel.basic_qos(prefetch_count=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 设置监听的队列</span></span><br><span class="line">channel.basic_consume(on_request, queue=queue_name, no_ack=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始阻塞式监听</span></span><br><span class="line">channel.start_consuming()</span><br></pre></td></tr></table></figure>
+<h3 id="后续脑洞"><a href="#后续脑洞" class="headerlink" title="后续脑洞"></a>后续脑洞</h3><p>　　其实上述的demo没有实现线程安全,但是大概也是够用了..然而感觉还是不够完美,创建的队列还是太多了,感觉可以实现一个队列名称池进一步优化其性能…然而…暂时用不上,再说吧~~~<br>　　上述的RPC服务器就可以很容易的水平扩展了,只要RabbitMQ不崩溃(当然,客户端和服务端需要连接同一个RabbitMQ实例)….  </p>
+<h2 id="集群"><a href="#集群" class="headerlink" title="集群"></a>集群</h2><p>　　我们需要明白,RabbitMQ随时可能挂掉(操作系统异常,断电,RabbitMQ的bug等等原因),如果这时候我们仅仅有一个实例的话,所有处于上游的服务就都会产生问题,从而导致应用雪崩式崩塌….解决这个问题的方法就是使用RabbitMQ的集群.<br>　　首先,吹吹牛逼:RabbitMQ的内建集群简单易用,只需要十分钟就能完成搭建,并且还无需停止服务(当然,你得懂得怎么搭).接下来详细进行介绍.  </p>
+<h3 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h3><p>　　首先,我们要考虑为啥要用集群?<br>　　使用RabbitMQ集群且配置得当的话可以有以下两个好处: 1.生产者和消费者能够在某些节点挂掉的时候继续运行;2.可以通过添加更多的节点来线性的扩展吞吐量,提高性能.</p>
+<h3 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h3><h4 id="存储信息"><a href="#存储信息" class="headerlink" title="存储信息"></a>存储信息</h4><p>　　先来看看,RabbitMQ如何记录其中的各种基础组件并将它们装配成一个消息通信服务.</p>
+<h5 id="单机版"><a href="#单机版" class="headerlink" title="单机版"></a>单机版</h5><p>　　事实上,单机版的RabbitMQ会记录以下四种类型的内部元数据:<br>　　1. 队列,包括:名称以及特殊属性(是否可持久化,是否排他,是否可删除等等);<br>　　2. 交换机,包括:名称,类型和特殊属性(是否可持久化等等);<br>　　3. 绑定,可以认为是一张展示了如何路由消息到队列的信息;<br>　　4. vhost,为vhost内的队列、交换机、绑定提供命名空间和安全属性.</p>
+<p>　　RabbitMQ默认会将这些信息存储于内存中(需要持久化的信息会存储在硬盘上,以供重启时重建).  </p>
+<h5 id="集群版"><a href="#集群版" class="headerlink" title="集群版"></a>集群版</h5><p>　　当RabbitMQ变成集群之后,它需要额外的记录一些新的元数据类型: 集群节点位置、节点与其它类型(上述类型)元数据的关系.<br>　　同样的,可以设置将元数据存在内存中或者磁盘中.</p>
+<p>　　但是具体的存储方法,有了变化:<br>　　<strong>队列</strong>: 在集群模式下,仅仅会在单个节点而不是全部节点上创建完整的队列信息(元数据,状态,内容).也就是说,只有队列的所有者节点知道有关队列的所有信息,其余节点仅仅存储该队列的元数据以及指向该队列的指针(去往该队列的途径).  </p>
+<p>　　这个机制是可以理解的,否则当队列本身也在整个集群中共享(冗余)的话,RabbitMQ会变的异常复杂(需要考虑的事情变多),例如转发消息到某个节点上的队列还是全部队列?消费者监听哪个节点?节点之间要不要分工?<br>　　RabbitMQ默认不将队列和内容复制到所有节点上,这大概是基于以下两方面的考虑:<br>　　1. 存储空间.很容易理解,这样并没有获得额外的空间节省;<br>　　2. 性能.若在消息发布时将消息复制到每一个节点,则对于持久化消息,会触发多次磁盘写入,且新增节点时,网络与负载压力都会变大,性能相比单机版并没有明显提升(甚至会下降).</p>
+<p>　　当某个节点挂掉的时候,会发生什么事情呢?答案是,该节点所有的队列与绑定都暂时消失了(可能会被持久化).监听那些队列的消费者丢失了订阅信息,且匹配到该队列的消息也会丢失(队列不存在了).同时,对于持久化的队列,也不能进行重新声明(会产生一个 404错误,感觉是由于其余节点指向该队列的指针还存在),只能恢复挂掉的节点并使用.这个机制保证了当失败节点重新加入集群时,该节点上的队列信息不丢失.  </p>
+<p>　　<strong>交换机</strong>: 在集群模式下,交换机的元数据是在各个节点之间共享的.这里需要说明的是,交换机仅仅是一个数据结构(包括了名称和一个队列绑定列表),并不会对消息进行任何操作(Flynnon看到这里的时候有点懵逼…).<br>　　实际上,当我们将消息发布到交换机时,是channel来将消息上的路由键同交换机的绑定键进行比较,然后路由消息(也就是说,真正承担交换机职责的是channel).由于交换机仅仅是一张查询表,因此在整个集群中进行复制会简单很多(只需要同步信息即可).因此,当创建新的交换机时,RabbitMQ会将这个查询表添加到集群上的所有节点上(这带来的好处就是当某个节点挂掉之后,只需重新启动,消息就可以被立即转发到对应的节点上).<br>　　在节点挂掉的这段时间内,因为交换机(路由信息)还存在,因此消息生产者的channel可能会继续向目标队列投递消息(这些消息会丢失).为了避免消息丢失所带来的后果,可以使用事务或者发送方确认以获取这个信息并进行补偿.  
+　　</p>
+<h4 id="元数据存储"><a href="#元数据存储" class="headerlink" title="元数据存储"></a>元数据存储</h4><p>　　无论是单机版还是集群版,节点都是内存节点(RAM Node)或者磁盘节点(Disk Node)之一.  </p>
+<h5 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h5><p>　　对于队列、交换机、绑定、用户、权限和vhost的元数据,内存节点会将它们存放在内存中,而磁盘节点会将它们存放在磁盘中.由于内存的易失性(重启后,数据会丢失),因此单节点系统仅能是磁盘节点,而在集群(多节点系统)中,可以将部分节点(最少也得有一个磁盘节点)声明为内存节点以获得更加快速的元数据声明速度(当在集群中进行声明操作的时候,需要等待每个节点都成功提交变更后才返回结果,想一想使用RabbitMQ作为RPC的时候得有多慢….).  </p>
+<h5 id="取舍"><a href="#取舍" class="headerlink" title="取舍"></a>取舍</h5><p>　　内存节点可以获得更好的性能,而磁盘节点可以有效的保存元数据.那么,如何进行权衡呢?  </p>
+<p>　　先来看看,如果集群中只有一个磁盘节点,而它又恰好挂掉了,会发生什么.<br>　　首先,它仍然能正产工作(因为元数据可以在其余节点找到),其次,由于数据无法固化,因此无法再进行新的声明操作了(例如:创建队列、创建交换机、创建绑定、添加用户、修改权限、添加或者删除集群节点等等).<br>　　因此为了避免上述发生上述情况,在集群中至少要存在两个磁盘节点,这样当其中一个挂掉之后,另一个还能进行数据固化以保存元数据变更.<br>　　那,如果内存节点挂掉了,会发生什么…<br>　　实际上,上述表述有问题,内存节点还是会存储一些信息(集群中磁盘节点的位置)在磁盘上,这样当它挂掉并重启之后就可以从磁盘上读取到所有的磁盘节点的信息,并依次尝试进行连接与元数据同步了.很好理解的是,一旦磁盘节点全部挂掉,内存节点之间或者说与集群之间就没有强关系了,也就是说重启后无法正确加入集群.  </p>
+<h3 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h3><p>　　接下来,实际配置一个集群.  </p>
+<h4 id="部署集群"><a href="#部署集群" class="headerlink" title="部署集群"></a>部署集群</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /bin/bash</span></span><br><span class="line"><span class="comment"># 配置一个简单的集群</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 貌似在rabbitmq安装完成后,会默认启动一个实例,可以先关掉(不关掉的话,以下两个端口号都得变)</span></span><br><span class="line"><span class="comment"># 注意,以下两条命令分别在两个不同的服务器上执行(在一台服务器上执行也可以,需配置不同的端口号),在/etc/hosts下需要配置另外一个的host</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动第一个节点, 这个节点的hostname flynnon 在/etc/hosts文件中配置为当前IP</span></span><br><span class="line">RABBITMQ_NODENAME=rabbit@flynnon RABBITMQ_NODE_PORT=5672 sudo rabbitmq-server -detached</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动第二个节点, 这个节点的hostname fly_bwg 在/etc/hosts文件中配置为当前IP</span></span><br><span class="line">RABBITMQ_NODENAME=rabbit@fly_bwg RABBITMQ_NODE_PORT=5672 sudo rabbitmq-server -detached</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止rabbit@flynnon节点(这里使用 -n 指定在哪个节点上执行命令,不指定为默认节点)</span></span><br><span class="line">sudo rabbitmqctl  -n rabbit@fly_bwg stop_app</span><br><span class="line"><span class="comment"># 清空rabbit@flynnon节点中的所有元数据,以避免元数据冲突</span></span><br><span class="line">sudo rabbitmqctl  -n rabbit@fly_bwg reset</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在fly_bwg这个机器上执行以下指令,将 rabbit@fly_bwg 加入集群(后面的参数是指集群中磁盘节点的列表.若将本节点置入,则本节点就成为了一个磁盘节点,否则本节点为内存节点)</span></span><br><span class="line">sudo rabbitmqctl -n rabbit@fly_bwg join_cluster rabbit@flynnon</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看集群状态</span></span><br><span class="line">sudo rabbitmqctl -n rabbit@flynnon  cluster_status</span><br></pre></td></tr></table></figure>
+<p>　　补充:<br>　　在正常执行以上命令时,出现了如下问题..  </p>
+<p>![执行是遇到的问题1-cookie][1]</p>
+<p>　　这个很容易看懂,还记得前一篇提到的Erlang的Cookie机制么?出错的原因就是两个节点的cookie的值不一样,只需要保证所有节点的.erlang.cookie文件(如果我们使用解压缩方式安装部署的rabbitmq，那么这个文件会在${home}目录下，也就是$home/.erlang.cookie;如果我们使用rpm等安装包方式进行安装的，那么这个文件会在/var/lib/rabbitmq目录下)中的内容相同就行了,貌似应该先修改cookie文件再重启(使用rabbitmqctl stop &amp;&amp; rabbitmq-server start).<br>　　注意,如果rabbitmqctl无法连接当前主机上的节点,则需要重启rabbitmq-server(因为,rabbitmqctl的cookie是改完之后的,而rabbitmq-server可能还是原来的配置).</p>
+<h4 id="移除节点"><a href="#移除节点" class="headerlink" title="移除节点"></a>移除节点</h4><p>　　移除节点十分简单,只需要使用如下命令即可.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将某个节点移除出它所在的集群(此时此节点会通知集群自己要离开集群,集群会进行处理而不是认为节点异常)</span></span><br><span class="line">sudo rabbitmqctl -n rabbit@bwg_flynnon stop_app</span><br><span class="line">sudo rabbitmqctl -n rabbit@bwg_flynnon reset</span><br><span class="line">sudo rabbitmqctl -n rabbit@bwg_flynnon start_app</span><br></pre></td></tr></table></figure>
+<p>　　如果不使用以上命令进行移除操作的话,集群会认为节点出了故障,并等待其恢复(例如:要离开的节点是一个磁盘节点,那么这段时间内无法进行新的定义操作).</p>
+<h3 id="镜像队列"><a href="#镜像队列" class="headerlink" title="镜像队列"></a>镜像队列</h3><p>　　前面有提到过,RabbiMQ的队列只能存在于集群中的一个节点上,但是这样其实不能实现高可用.因此在2.6.0版本的时候,RabbitMQ团队开发了内建的双活冗余选项:镜像队列.<br>　　与普通队列类似,镜像队列的主拷贝仅仅存在于某一个节点(master节点)上,然而在其它节点上存在多个从队列(slave)拷贝,一旦主队列出现故障(节点挂掉,网络问题等等原因),最老的(存活时间最久的)从队列即被推举为新的主队列节点.也就是说通过冗余数据(队列)的方式达到了一定程度上的高可用.<br>　　这部分可以参考<a href="https://blog.csdn.net/u013256816/article/details/71097186">朱小厮的博客</a>或者<a href="http://www.rabbitmq.com/ha.html">官方文档</a>,讲的蛮好的.这本书貌似有点过时(以后再改正吧).</p>
+<h4 id="声明"><a href="#声明" class="headerlink" title="声明"></a>声明</h4><p>　　镜像队列的声明方式与普通队列相比,仅仅是多了一个x-ha-policy参数.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"></span><br><span class="line">connection = pika.BlockingConnection(pika.ConnectionParameters(<span class="string">'localhost'</span>))</span><br><span class="line">channel = connection.channel()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 声明镜像队列, arguments参数是一些自定义的参数(Custom key/value arguments for the queue)</span></span><br><span class="line">arguments = &#123;<span class="string">'x-ha-policy'</span>: <span class="string">'all'</span>&#125;</span><br><span class="line">channel.queue_declare(queue=<span class="string">'test_queue'</span>, durable=<span class="keyword">True</span>, exclusive=<span class="keyword">False</span>, auto_delete=<span class="keyword">False</span>, arguments=arguments)</span><br></pre></td></tr></table></figure>
+<p>　　x-ha-policy的值代表的是,从队列拷贝存在的节点位置.<br>　　设置为all,则此队列会在集群的所有节点上产生镜像队列,同时新增节点时,无需人工干预,自动添加拷贝.<br>　　但,一般无需太多拷贝队列存在,因此有时需要能够手动指定在哪些节点上增加镜像.这样当然也可以(RabbitMQ2.7以后),但就需要硬编码了,且在某个声明的节点找不到(挂掉或者被用集群中移除)时,声明会失败.尽量不要这样声明,通用性不强.  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pika</span><br><span class="line"></span><br><span class="line">connection = pika.BlockingConnection(pika.ConnectionParameters(<span class="string">'localhost'</span>))</span><br><span class="line">channel = connection.channel()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 声明镜像队列,指定要建立镜像队列的节点列表</span></span><br><span class="line">arguments = &#123;</span><br><span class="line">    <span class="string">'x-ha-policy'</span>: <span class="string">'nodes'</span>,</span><br><span class="line">    <span class="string">'x-ha-policy-params'</span>: [<span class="string">'rabbit@fly_bwg'</span>, <span class="string">'rabbit@flynnon'</span>],</span><br><span class="line">&#125;</span><br><span class="line">channel.queue_declare(queue=<span class="string">'test_queue'</span>, durable=<span class="keyword">True</span>, exclusive=<span class="keyword">False</span>, auto_delete=<span class="keyword">False</span>,</span><br><span class="line">                        arguments=arguments)</span><br></pre></td></tr></table></figure>
+<h4 id="消息同步"><a href="#消息同步" class="headerlink" title="消息同步"></a>消息同步</h4><p>　　默认情况下,新增的拷贝节点只会包含从其存在之后从镜像队列发来的消息,RabbitMQ(2.7之前)不会将镜像队列中现存的内容与新增的拷贝节点进行同步处理.新增从拷贝自始至终不会知道旧消息的存在,旧消息全部被消费后,新增从拷贝会与现存队列状态相同.<br>　　但是,如果在旧消息被消费之前就将旧的节点移除的话,新的拷贝节点会被推举为新的主节点,这样,旧的消息就会丢失.因此,在删除旧的节点前,需要确保消息已经同步完成.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出所有从节点的pid, 并列出所有同步完成的pid, 当这两个列表完全相同时, 就可以安全移除旧节点了</span></span><br><span class="line">rabbitmqctl list_queues name pid slave_pids synchronised_slave_pids</span><br></pre></td></tr></table></figure>
+<h4 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h4><p>　　某种程度上,可以认为镜像队列拥有一个隐藏的fanout交换机,指示channel将消息分发到所有的队列从拷贝上.<br>　　当我们在镜像队列上使用发送方确认时,只有所有的主从队列都正确(注意是全部队列)收到消息后,才会返回成功.但是如果消息在路由到从拷贝之前,镜像队列的主拷贝发生了故障,那么,某个从拷贝会被推举为新的主拷贝,此时消息永远不会到达,就会返回失败.  </p>
+<p>　　事实上,由于以上机制,某个从节点挂掉的时候,附加在镜像队列上的所有消费者不会感知到(从技术上讲,它们实际上是附加在队列主拷贝上的,不会与从拷贝产生关联).<br>　　但,当托管主拷贝的节点挂掉的话,所有的消费者都需要重新附加并监听新的队列主拷贝.这时消费者有两种情况:<br>　　1. 正好是通过故障节点连接到集群.这种情况就很简单了,因为节点挂了,因此connection(TCP连接)也就没了,在消费者重新附加到集群中的某个节点时,会自动选取新的队列主拷贝;<br>　　2. 通过一个完好的节点连接到集群.这种情况下,RabbitMQ会发送一个消费者取消(consumer cancellation)通知,以告知它们不能再附加到原来的队列主拷贝了(一般AMQP客户端接到这个通知后会抛出一个异常供我们进行捕获),然后,消费者重新附加即可.但是当消费者客户端不支持消费者取消就没什么比较好的方法了(此时最好不要使用镜像队列).  </p>
+<p>　　那些因为主节点挂掉而产生的消费未确认消息,RabbitMQ会将它们重新入队(无法分辨没有确认和确认丢失的情况).</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Flynnon
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://www.flynnon.com/2018/07/02-RabbitMQ_2.html" title="《RabbitMQ实战》笔记(二)">http://www.flynnon.com/2018/07/02-RabbitMQ_2.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/学习之路/" rel="tag"><i class="fa fa-tag"></i> 学习之路</a>
+          
+            <a href="/tags/RabbitMQ/" rel="tag"><i class="fa fa-tag"></i> RabbitMQ</a>
+          
+            <a href="/tags/消息队列/" rel="tag"><i class="fa fa-tag"></i> 消息队列</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/26-RabbitMQ_1.html" rel="next" title="《RabbitMQ实战》笔记(一)">
+                <i class="fa fa-chevron-left"></i> 《RabbitMQ实战》笔记(一)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/11-RabbitMQ_3.html" rel="prev" title="《RabbitMQ实战》笔记(三)">
+                《RabbitMQ实战》笔记(三) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNjg2Ni8xMzQwMg=="></div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Flynnon</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/Flynnon" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.facebook.com/flynnon.ton" target="_blank" title="Facebook">
+                    
+                      <i class="fa fa-fw fa-facebook"></i>Facebook</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-globe"></i>
+                我的朋友
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.tianhao.site/blog/" title="田浩的Blog" target="_blank">田浩的Blog</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://evilinf.github.io/" title="Evilinf的Blog" target="_blank">Evilinf的Blog</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RabbitMQ与RPC"><span class="nav-number">2.</span> <span class="nav-text">RabbitMQ与RPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理介绍"><span class="nav-number">2.1.</span> <span class="nav-text">原理介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化"><span class="nav-number">2.2.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">2.3.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后续脑洞"><span class="nav-number">2.4.</span> <span class="nav-text">后续脑洞</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集群"><span class="nav-number">3.</span> <span class="nav-text">集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#好处"><span class="nav-number">3.1.</span> <span class="nav-text">好处</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#架构"><span class="nav-number">3.2.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#存储信息"><span class="nav-number">3.2.1.</span> <span class="nav-text">存储信息</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单机版"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">单机版</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#集群版"><span class="nav-number">3.2.1.2.</span> <span class="nav-text">集群版</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#元数据存储"><span class="nav-number">3.2.2.</span> <span class="nav-text">元数据存储</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#简介"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#取舍"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">取舍</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实战"><span class="nav-number">3.3.</span> <span class="nav-text">实战</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#部署集群"><span class="nav-number">3.3.1.</span> <span class="nav-text">部署集群</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#移除节点"><span class="nav-number">3.3.2.</span> <span class="nav-text">移除节点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#镜像队列"><span class="nav-number">3.4.</span> <span class="nav-text">镜像队列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#声明"><span class="nav-number">3.4.1.</span> <span class="nav-text">声明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#消息同步"><span class="nav-number">3.4.2.</span> <span class="nav-text">消息同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#工作机制"><span class="nav-number">3.4.3.</span> <span class="nav-text">工作机制</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-@"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Flynnon</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a></div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人访问
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">共有</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次访问
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("Cjsr55wJkKKtTeREWcAIW2GA-gzGzoHsz", "9mVWvx06y21SX6Ebqm6Ry5wG");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/love.min.js"></script>

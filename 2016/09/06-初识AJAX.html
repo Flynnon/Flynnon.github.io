@@ -85,20 +85,20 @@
 
 
 
-<meta name="description" content="这几天一直在看书，大致了解了AJAX技术，在这里做一个小小的总结。 简单了解AJAX　　我觉得维基百科是比较准确的一个信息源，因此，我们先来看维基百科中对于AJAX的定义。  在维基百科上我们可以看到：AJAX即“Asynchronous JavaScript and XML”（异步的JavaScript与XML技术），指的是一套综合了多项技术的浏览器端网页开发技术。　　那么，现在我们对AJAX有">
+<meta name="description" content="这几天一直在看书，大致了解了AJAX技术，在这里做一个小小的总结。 简单了解AJAX　　我觉得维基百科是比较准确的一个信息源，因此，我们先来看维基百科中对于AJAX的定义。  在维基百科上我们可以看到：AJAX即“Asynchronous JavaScript and XML”（异步的JavaScript与XML技术），指的是一套综合了多项技术的浏览器端网页开发技术。  　　那么，现在我们对AJA">
 <meta name="keywords" content="学习之路">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初识AJAX">
 <meta property="og:url" content="http://www.flynnon.com/2016/09/06-初识AJAX.html">
 <meta property="og:site_name" content="Flynnon&#39;s Blog">
-<meta property="og:description" content="这几天一直在看书，大致了解了AJAX技术，在这里做一个小小的总结。 简单了解AJAX　　我觉得维基百科是比较准确的一个信息源，因此，我们先来看维基百科中对于AJAX的定义。  在维基百科上我们可以看到：AJAX即“Asynchronous JavaScript and XML”（异步的JavaScript与XML技术），指的是一套综合了多项技术的浏览器端网页开发技术。　　那么，现在我们对AJAX有">
+<meta property="og:description" content="这几天一直在看书，大致了解了AJAX技术，在这里做一个小小的总结。 简单了解AJAX　　我觉得维基百科是比较准确的一个信息源，因此，我们先来看维基百科中对于AJAX的定义。  在维基百科上我们可以看到：AJAX即“Asynchronous JavaScript and XML”（异步的JavaScript与XML技术），指的是一套综合了多项技术的浏览器端网页开发技术。  　　那么，现在我们对AJA">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://img.blog.csdn.net/20160902211634032">
 <meta property="og:image" content="http://img.blog.csdn.net/20160902211400044">
-<meta property="og:updated_time" content="2018-05-12T09:48:26.941Z">
+<meta property="og:updated_time" content="2018-06-21T13:50:41.738Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初识AJAX">
-<meta name="twitter:description" content="这几天一直在看书，大致了解了AJAX技术，在这里做一个小小的总结。 简单了解AJAX　　我觉得维基百科是比较准确的一个信息源，因此，我们先来看维基百科中对于AJAX的定义。  在维基百科上我们可以看到：AJAX即“Asynchronous JavaScript and XML”（异步的JavaScript与XML技术），指的是一套综合了多项技术的浏览器端网页开发技术。　　那么，现在我们对AJAX有">
+<meta name="twitter:description" content="这几天一直在看书，大致了解了AJAX技术，在这里做一个小小的总结。 简单了解AJAX　　我觉得维基百科是比较准确的一个信息源，因此，我们先来看维基百科中对于AJAX的定义。  在维基百科上我们可以看到：AJAX即“Asynchronous JavaScript and XML”（异步的JavaScript与XML技术），指的是一套综合了多项技术的浏览器端网页开发技术。  　　那么，现在我们对AJA">
 <meta name="twitter:image" content="http://img.blog.csdn.net/20160902211634032">
 
 
@@ -374,9 +374,10 @@
         <p>这几天一直在看书，大致了解了AJAX技术，在这里做一个小小的总结。</p>
 <h3 id="简单了解AJAX"><a href="#简单了解AJAX" class="headerlink" title="简单了解AJAX"></a>简单了解AJAX</h3><p>　　我觉得维基百科是比较准确的一个信息源，因此，我们先来看维基百科中对于AJAX的定义。</p>
 <blockquote>
-<p>在维基百科上我们可以看到：<br>AJAX即“Asynchronous JavaScript and XML”（异步的JavaScript与XML技术），指的是一套综合了多项技术的浏览器端网页开发技术。<br>　　那么，现在我们对AJAX有一个大致的印象：AJAX=JavaScript+XML。而js和xml我们至少都应该听说过。<br><a id="more"></a></p>
-<h3 id="AJAX为什么会出现"><a href="#AJAX为什么会出现" class="headerlink" title="AJAX为什么会出现"></a>AJAX为什么会出现</h3></blockquote>
-<p>　　回顾我们的开发旅程，在使用Servlet+JSP+JavaBean开发基于B/S架构的应用的过程中，交互是如何实现的？用户在网页端填写并提交表单（Form），然后点击提交按钮向网页服务器发送请求（Request）。服务器接收请求并处理传来的表单，返回响应(Response)，浏览器取得响应信息后，通过解析将页面展示在浏览器上。<br>　　然而，这种模式存在很多问题。现在看这样一个例子：浏览器端展示了用户登陆界面，当用户输入用户名、密码及验证码后，数据被发送到了服务器，假定我们在Servlet中处理请求后发现用户名及密码不匹配，接下来的处理流程是什么样的？<br>　　我们会将包含页面及错误信息的响应返回给浏览器端，浏览器在解析响应后对这些信息进行展示。使用这样的开发流程，无论后台业务逻辑实现的多么完美都会存在一些固有的问题：<br>　　首先，十分<strong>浪费带宽。</strong>在前后两个页面中除了展示错误信息的部分外其它元素全都是相同的，完全没有必要再次传输，在设计者的预想中，只需要对第一次的界面信息进行复用就可以了。<br>　　其次，<strong>用户体验差。</strong>在传统的开发模式下，假设我们是用户，一旦在登陆页面的表单中不小心输入了错误的密码(因为密码框是密文，所以无法得知具体的输入)，在提交表单后就会出现下列情况：等待一段时间后页面才被刷新、界面提示用户名错误、原来的输入都被清空。这样我们又得重新输入一遍用户名及密码，体验极不友好。在我们的的网速比较慢的情况下，体验还会更差。这对于产品经理及网站的用户来说都是不可忍受的。<br>　　那么有没有什么方法可以解决这种问题呢？也就是说，能不能在用户刚输入密码时就得到服务器端的反馈呢？</p>
+<p>在维基百科上我们可以看到：<br>AJAX即“Asynchronous JavaScript and XML”（异步的JavaScript与XML技术），指的是一套综合了多项技术的浏览器端网页开发技术。</p>
+</blockquote>
+<p>　　那么，现在我们对AJAX有一个大致的印象：AJAX=JavaScript+XML。而js和xml我们至少都应该听说过。<br><a id="more"></a></p>
+<h3 id="AJAX为什么会出现"><a href="#AJAX为什么会出现" class="headerlink" title="AJAX为什么会出现"></a>AJAX为什么会出现</h3><p>　　回顾我们的开发旅程，在使用Servlet+JSP+JavaBean开发基于B/S架构的应用的过程中，交互是如何实现的？用户在网页端填写并提交表单（Form），然后点击提交按钮向网页服务器发送请求（Request）。服务器接收请求并处理传来的表单，返回响应(Response)，浏览器取得响应信息后，通过解析将页面展示在浏览器上。<br>　　然而，这种模式存在很多问题。现在看这样一个例子：浏览器端展示了用户登陆界面，当用户输入用户名、密码及验证码后，数据被发送到了服务器，假定我们在Servlet中处理请求后发现用户名及密码不匹配，接下来的处理流程是什么样的？<br>　　我们会将包含页面及错误信息的响应返回给浏览器端，浏览器在解析响应后对这些信息进行展示。使用这样的开发流程，无论后台业务逻辑实现的多么完美都会存在一些固有的问题：<br>　　首先，十分<strong>浪费带宽。</strong>在前后两个页面中除了展示错误信息的部分外其它元素全都是相同的，完全没有必要再次传输，在设计者的预想中，只需要对第一次的界面信息进行复用就可以了。<br>　　其次，<strong>用户体验差。</strong>在传统的开发模式下，假设我们是用户，一旦在登陆页面的表单中不小心输入了错误的密码(因为密码框是密文，所以无法得知具体的输入)，在提交表单后就会出现下列情况：等待一段时间后页面才被刷新、界面提示用户名错误、原来的输入都被清空。这样我们又得重新输入一遍用户名及密码，体验极不友好。在我们的的网速比较慢的情况下，体验还会更差。这对于产品经理及网站的用户来说都是不可忍受的。<br>　　那么有没有什么方法可以解决这种问题呢？也就是说，能不能在用户刚输入密码时就得到服务器端的反馈呢？</p>
 <h3 id="AJAX解决上述问题的思路"><a href="#AJAX解决上述问题的思路" class="headerlink" title="AJAX解决上述问题的思路"></a>AJAX解决上述问题的思路</h3><p>　　技术的更新总是一环套一环的，在js的XMLHttpRequest对象出现之前这个问题是没有优雅的解决办法的，只能使用一些丑陋的方法并且效果还不是特别好。但是在XMLHttpRequest对象出现之后，前辈们立刻就想到了一种比较好的解决方法，即：使用XMLHttpRequest对象作为Agent来将请求发送给服务器，并用它来接收服务器返回的数据，这样就可以不跳转页面完成数据的交互，而且只需要传输少量必要的数据，因此对网速的要求也变低了。<br>　　但是，还有两个问题没有解决：<br>　　1.如何根据服务器端返回的数据动态更改页面，以达到与用户交互的作用？<br>　　2.如何规定服务器发送回来的数据格式？<br>　　下面来看前辈们选择的解决方法：<br>　　对于1：前辈们选择了使用JavaScript。个人认为这样做的原因有两个，第一，JavaScript足够流行，几乎所有的主流浏览器都对JavaScript提供了支持；第二，JavaScript可以通过DOM编程的方式来动态的改变网页的内容。<br>　　对于2：前辈们选择了XML，我想可能是因为它语法足够严格、语义明确而且更加通用吧。但是我认为传输的数据格式对使用AJAX并没有影响。例如，我们可以选择传输Json来使传输的数据更加少，甚至可以只是传输一段有意义的字符串，只要服务器端开发者与浏览器端开发者对字符串格式进行了约定即可。</p>
 <h3 id="AJAX的准确定义"><a href="#AJAX的准确定义" class="headerlink" title="AJAX的准确定义"></a>AJAX的准确定义</h3><p>　　在了解了上面的内容后，我们就可以对AJAX进行一个准确的定义了：<strong>AJAX 是一种用于创建快速动态网页的技术。通过在后台与服务器进行少量数据交换，AJAX 可以使网页实现异步更新。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。</strong><br>　　下面我们来看一下，如何利用AJAX技术进行开发。</p>
 <h3 id="使用AJAX开发的步骤-概述"><a href="#使用AJAX开发的步骤-概述" class="headerlink" title="使用AJAX开发的步骤-概述"></a>使用AJAX开发的步骤-概述</h3><p>　　关于AJAX更详细的介绍，可以查看<a href="http://www.w3school.com.cn/ajax/index.asp">W3School中对于AJAX的介绍</a><br>　　下面是我简单总结的AJAX实现步骤：<br>　　1. 我们需要一个XMLHttpRequest对象。（我们都知道IE低版本浏览器的标准很很多都与主流标准不兼容。很不幸，对于XMLHttpRequest对象也是一样的….）<br>　　因此，一个XMLHttpRequest对象的获取过程可以是这样的：</p>
@@ -384,7 +385,7 @@
 <p>　　2.我们需要为这个XMLHttpRequest对象注册它要进行的操作（通过回调），并根据返回的请求状态与HTTP状态码来查看消息的状态，并确定在何种情况下我们要进行何种操作。<br>　　这个过程是这样的：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//为XMLHttpRequest对象的onreadystatechange属性注册</span></span><br><span class="line">httpXml.onreadystatechange=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//  在回调函数中根据请求状态与返回的HTTP状态码来选择相应的操作处理数据</span></span><br><span class="line">    <span class="keyword">if</span>(httpXml.readyState==<span class="number">4</span>&amp;&amp;httpXml.status==<span class="number">200</span>)&#123;</span><br><span class="line">        <span class="comment">//这里只是简单的显示接收到的文本信息</span></span><br><span class="line">        alert(httpXml.responseText);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p><img src="http://img.blog.csdn.net/20160902211634032" alt="XMLHttpRequest的重要属性"><br>　　3.我们需要进行请求发送的参数设置。<br>　　这个过程是这样的：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//函数原型：open(method,url,async,username,password)</span></span><br><span class="line"><span class="comment">//method            ---&gt;请求方式:GET,POST或HEAD</span></span><br><span class="line"><span class="comment">//url               ---&gt;请求的地址  GET提交方式可以在后面加上参数</span></span><br><span class="line"><span class="comment">//async             ---&gt;请求是否异步执行，true---异步，false---同步   默认为true</span></span><br><span class="line"><span class="comment">//username,password ---&gt;可选，为url所需的授权提供认证资格。如果不为空，会覆盖掉url中指定的资格</span></span><br><span class="line">httpXml.open(<span class="string">"GET"</span>,<span class="string">"http://localhost:8080/aaa/MyServlet"</span>,<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//函数原型：open(method,url,async,username,password)</span></span><br><span class="line"><span class="comment">//method            ---&gt;请求方式:GET,POST或HEAD</span></span><br><span class="line"><span class="comment">//url               ---&gt;请求的地址  GET提交方式可以在后面加上参数</span></span><br><span class="line"><span class="comment">//async             ---&gt;请求是否异步执行，true---异步，false---同步   默认为true</span></span><br><span class="line"><span class="comment">//username,password ---&gt;可选，为url所需的授权提供认证资格。如果不为空，会覆盖掉url中指定的资格</span></span><br><span class="line">httpXml.open(<span class="string">"GET"</span>,<span class="string">"http://localhost:8080/aaa/MyServlet"</span>, <span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
 <p> 　　4.要真正的发送请求啦！  </p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  参数为请求参数,POST提交内容格式为---&gt;"username=taffy&amp;password=666",GET为-----&gt;空</span></span><br><span class="line"><span class="comment">//  注意：若为POST请求方式，还需设置一个http请求头(应该位于open之后,send之前)</span></span><br><span class="line"><span class="comment">// 即 setRequestHeader("CONTENT-TYPE","application/x-www-form-urlencoded");    标志form表单的enctype属性</span></span><br><span class="line">    httpXml.send(<span class="literal">null</span>);</span><br></pre></td></tr></table></figure>
 <p><img src="http://img.blog.csdn.net/20160902211400044" alt="open及send方法介绍"><br>　　这样，一个简单的AJAX过程就完成了。<br>　　一些没有介绍的小知识点：</p>
@@ -537,7 +538,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -559,7 +560,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -957,4 +958,4 @@
 
 </body>
 </html>
-<script type="text/javascript" src="/js/src/love.js"></script>
+<script type="text/javascript" src="/js/src/love.min.js"></script>
