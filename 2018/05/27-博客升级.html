@@ -85,20 +85,18 @@
 
 
 
-<meta name="description" content="前言在-努力工作-混了一段时间后, 某天突然发现我服务器的IP被墙了, 于是更换了一下服务器, 并顺带升级了一下HTTPS.&amp;lt;!-- more --&amp;gt; HTTPS证书获取　　这一步是很简单的,直接从阿里云(万网)购买了心仪的域名 www.flynnon.com. 配置域名解析　　因为是从阿里云购买的域名,因此顺理成章的配置了域名解析(免费版),这里很简单的配置了一下,大概就是将域名本身">
+<meta name="description" content="前言　　在努力工作混了一段时间后, 某天突然发现我服务器的IP被墙了, 于是更换了一下服务器, 并顺带升级了一下HTTPS.">
 <meta name="keywords" content="杂记, HTTPS">
 <meta property="og:type" content="article">
 <meta property="og:title" content="博客升级">
 <meta property="og:url" content="http://www.flynnon.com/2018/05/27-博客升级.html">
 <meta property="og:site_name" content="Flynnon&#39;s Blog">
-<meta property="og:description" content="前言在-努力工作-混了一段时间后, 某天突然发现我服务器的IP被墙了, 于是更换了一下服务器, 并顺带升级了一下HTTPS.&amp;lt;!-- more --&amp;gt; HTTPS证书获取　　这一步是很简单的,直接从阿里云(万网)购买了心仪的域名 www.flynnon.com. 配置域名解析　　因为是从阿里云购买的域名,因此顺理成章的配置了域名解析(免费版),这里很简单的配置了一下,大概就是将域名本身">
+<meta property="og:description" content="前言　　在努力工作混了一段时间后, 某天突然发现我服务器的IP被墙了, 于是更换了一下服务器, 并顺带升级了一下HTTPS.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf03fdbdc357.png">
-<meta property="og:updated_time" content="2019-12-15T15:25:12.606Z">
+<meta property="og:updated_time" content="2019-12-15T15:48:13.366Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="博客升级">
-<meta name="twitter:description" content="前言在-努力工作-混了一段时间后, 某天突然发现我服务器的IP被墙了, 于是更换了一下服务器, 并顺带升级了一下HTTPS.&amp;lt;!-- more --&amp;gt; HTTPS证书获取　　这一步是很简单的,直接从阿里云(万网)购买了心仪的域名 www.flynnon.com. 配置域名解析　　因为是从阿里云购买的域名,因此顺理成章的配置了域名解析(免费版),这里很简单的配置了一下,大概就是将域名本身">
-<meta name="twitter:image" content="https://i.loli.net/2018/11/18/5bf03fdbdc357.png">
+<meta name="twitter:description" content="前言　　在努力工作混了一段时间后, 某天突然发现我服务器的IP被墙了, 于是更换了一下服务器, 并顺带升级了一下HTTPS.">
 
 
 
@@ -348,10 +346,9 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><pre><code>在-努力工作-混了一段时间后, 某天突然发现我服务器的IP被墙了, 于是更换了一下服务器, 并顺带升级了一下HTTPS.&lt;!-- more --&gt;
-</code></pre><h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><h3 id="证书获取"><a href="#证书获取" class="headerlink" title="证书获取"></a>证书获取</h3><p>　　这一步是很简单的,直接从<a href="https://wanwang.aliyun.com">阿里云(万网)</a>购买了心仪的域名 <a href="http://www.flynnon.com">www.flynnon.com</a>.</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　在<del>努力工作</del>混了一段时间后, 某天突然发现我服务器的IP被墙了, 于是更换了一下服务器, 并顺带升级了一下HTTPS. <a id="more"></a></p>
+<h2 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h2><h3 id="证书获取"><a href="#证书获取" class="headerlink" title="证书获取"></a>证书获取</h3><p>　　这一步是很简单的,直接从<a href="https://wanwang.aliyun.com">阿里云(万网)</a>购买了心仪的域名 <a href="http://www.flynnon.com">www.flynnon.com</a>.</p>
 <h3 id="配置域名解析"><a href="#配置域名解析" class="headerlink" title="配置域名解析"></a>配置域名解析</h3><p>　　因为是从阿里云购买的域名,因此顺理成章的配置了域名解析(免费版),这里很简单的配置了一下,大概就是将域名本身指向我购买的服务器的IP地址.  </p>
-<p><img src="https://i.loli.net/2018/11/18/5bf03fdbdc357.png" alt="域名解析简单配置"></p>
 <p>　　由于Flynnon的主机是从<a href="https://bwh1.net/">搬瓦工</a>购买的,因此无法备案(当然也不需要备案).但是没有备案总感觉不保险,因此专门配置了CNAME类型的解析规则将blog.flynnon.com这个域名指向我的Github Page的地址了….<br>　　注意: 这一步的时候,需要在source文件夹下创建一个CNAME文件,并将你配置的域名写入其中(比如我就写了blog.flynnon.com),否则Github Page会认为从该URL来的访问不合法.</p>
 <h2 id="折腾"><a href="#折腾" class="headerlink" title="折腾"></a>折腾</h2><p>　　在进行完上面几步后,就可以通过blog.flynnon.com来访问Flynnon的博客了,但Flynnon还想用自己购买的云主机来发布博客.因此又在这个基础上进行了一些折腾.</p>
 <h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><p>　　首先,需要一个服务器软件,这里Flynnon选择了Nginx.原因是它既是一个Web服务器(作为启动博客的服务器程序),也可以做反向代理(Flynnon想用它来为其余的服务分配一个好记的URL).当然,更重要的是,Flynnon想学习一下Nginx的使用….<br>　　Nginx使用apt包管理工具进行安装十分方便.</p>

@@ -8,7 +8,7 @@
 
     <url>
         <loc>http://www.flynnon.com/2018/05/27-%E5%8D%9A%E5%AE%A2%E5%8D%87%E7%BA%A7.html</loc>
-        <lastmod>2019-12-15T15:25:12.606Z</lastmod>
+        <lastmod>2019-12-15T15:48:13.366Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -143,14 +143,6 @@
     </url>
 
     <url>
-        <loc>http://www.flynnon.com/2018/04/23-C%E8%AF%AD%E8%A8%80%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0(6).html</loc>
-        <lastmod>2018-10-29T13:23:44.404Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
         <loc>http://www.flynnon.com/2018/04/25-C%E8%AF%AD%E8%A8%80%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0(7).html</loc>
         <lastmod>2018-10-29T13:23:44.404Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -160,6 +152,14 @@
 
     <url>
         <loc>http://www.flynnon.com/2018/04/10-C%E8%AF%AD%E8%A8%80%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0(5).html</loc>
+        <lastmod>2018-10-29T13:23:44.404Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://www.flynnon.com/2018/04/23-C%E8%AF%AD%E8%A8%80%E5%A4%8D%E4%B9%A0%E7%AC%94%E8%AE%B0(6).html</loc>
         <lastmod>2018-10-29T13:23:44.404Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
