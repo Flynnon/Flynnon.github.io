@@ -93,15 +93,15 @@
 <meta property="og:site_name" content="Flynnon&#39;s Blog">
 <meta property="og:description" content="前言　　这是笔记的第三部分…..　　由于Flynnon并不是专业运维人员,因此很多细节就略过不表了(例如:负载均衡具体实现,主备机制等等),真到了用到的时候,再百度/Google吧…">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/hard_coded.png">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_proxy.png">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_message_delivery.png">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_queue_declare.png">
-<meta property="og:updated_time" content="2018-07-13T00:33:14.505Z">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf04300bfc8d.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf0436b2017f.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf043b6bb0cb.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf043b6bb0cb.png">
+<meta property="og:updated_time" content="2019-12-15T15:24:33.108Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《RabbitMQ实战》笔记(三)">
 <meta name="twitter:description" content="前言　　这是笔记的第三部分…..　　由于Flynnon并不是专业运维人员,因此很多细节就略过不表了(例如:负载均衡具体实现,主备机制等等),真到了用到的时候,再百度/Google吧…">
-<meta name="twitter:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/hard_coded.png">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/18/5bf04300bfc8d.png">
 
 
 
@@ -354,9 +354,9 @@
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　这是笔记的第三部分…..<br>　　由于Flynnon并不是专业运维人员,因此很多细节就略过不表了(例如:负载均衡具体实现,主备机制等等),真到了用到的时候,再百度/Google吧…<br><a id="more"></a></p>
 <h2 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h2><p>　　这里简单了解一下负载均衡技术和RabbitMQ集群的协作方法,也就是使用为什么使用负载均衡,使用之后代码需要变化多少.<br>　　这部分的操作本质上是对负载均衡软件/硬件的配置,使得它可以对请求进行转发与均衡.</p>
 <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>　　上一篇提到的集群实现在使用的过程中还有很多可以优化的地方,其中一个就是在访问集群中的节点的时候需要指定IP,这样就会造成硬编码,且节点变更的时候不好维护.客户端必须对集群中的每一个节点IP做手动配置(也就是得有一个可用IP列表),并处理集群节点的选择和故障服务器的检测.由于节点的选择是由各个客户端自行进行选择的,因此负载也不会平均.  </p>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/hard_coded.png" alt="硬编码模式图示"></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf04300bfc8d.png" alt="硬编码模式图示"></p>
 <p>　　对于这种不太好的实践,可以使用负载均衡(感觉也有反向代理思路)技术来进行处理,即:使用一个单独的负载均衡器(代理)来接收所有请求,然后将请求转发到集群中的某一个节点.而这些对于客户端都是透明的,客户端只需要硬编码代理节点的IP地址(可以使用域名进一步进行配置解耦)即可.<br>　　代理节点还可以实现一些定制化功能,例如:故障节点检测(根据不同的算法对后端节点进行检测,剔除挂掉的节点),负载均衡(根据不同的算法进行转发,使得各个后端节点的负载相近),请求分析等等.</p>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_proxy.png" alt="负载均衡模式图示"></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf0436b2017f.png" alt="负载均衡模式图示"></p>
 <p>　　由于RabbitMQ与客户端通信使用的是TCP,因此负载均衡软件需要能够做到<a href="http://network.51cto.com/art/201211/364614.htm">四层负载均衡</a>.本书使用的是HAProxy.</p>
 <h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p>　　接下来看看,我们的编码会产生什么样的变化.<br>　　对于生产者来说,本书的意思是无需特殊处理(消费者每次都会建立新的连接).但我并不是很认同….pika库的channel对象有一个add_on_cancel_callback方法,应该是为了处理这种情况的,但是还没有找到示例…先放着吧…  </p>
 <p>　　对于消费者来说,由于需要处理连接异常(所连接的节点故障或者实际监听的队列所在的节点故障)的情况.因此需要做异常处理与重试.本书给出的处理方式也是很简单粗暴(不断的重建连接).下面的示例中所做的假设为当出现故障时(无论是上述哪一个),都会引发异常.  </p>
@@ -370,11 +370,11 @@
 <p>　　因此,一个比较好的实践是,对于可以容忍部分丢失的消息,消费者可以开启自动应答以加快处理速度.</p>
 <h3 id="消费路由"><a href="#消费路由" class="headerlink" title="消费路由"></a>消费路由</h3><p>　　这部分主要是回顾了下fanout,direct和topic三种交换机的特性,并简单介绍了交换机及绑定的存储方式.<br>　　主要介绍了功能最强大的topic交换机的一些细节.例如:使用Trie树(字典树)来存储绑定路由键模式,以支持快速查询.并给出了RabbitMQ官网的<a href="https://www.rabbitmq.com/blog/2010/09/14/very-fast-and-scalable-topic-routing-part-1/">博客一</a>和<a href="https://www.rabbitmq.com/blog/2011/03/28/very-fast-and-scalable-topic-routing-part-2/">博客二</a>两篇参考资料.<br>　　通常情况下,topic模式相比其余两种,会慢一些,并且内存占用会多一些.</p>
 <h3 id="投递消息"><a href="#投递消息" class="headerlink" title="投递消息"></a>投递消息</h3><p>　　本书给出了一个RabbitMQ中消息投递的流程图.</p>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_message_delivery.png" alt="消息投递流程图"></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf043b6bb0cb.png" alt="消息投递流程图"></p>
 <p>　　这个过程有如下需要注意的地方:<br>　　1. 从客户端的角度来看,异步投递会比同步投递快一些;<br>　　2. 如果队列是空的,且消费者准备好接受消息,那么,消息不会被放到队列中,而是被直接投递给消费者,这会极大的提升消息处理速度(当然,开启消息投递,且消费者没有及时返回确认时,还需要进行其它处理逻辑);<br>　　3. 在持久化消息到达持久化队列时,会被写入磁盘(持久存储),同时内存中也会存储一份以提升消息投递速度.否则,消息会被写入瞬态存储.在RabbitMQ服务器内存不足的情况下,一部分消息会被刷到磁盘上(瞬态存储);<br>　　4. 当RabbitMQ需要重启并恢复持久化队列时,只会查看持久存储中的内容,瞬态存储会被清空;<br>　　5. 为了保证投递速率,应该尽可能保证队列为空.</p>
 <h3 id="内存使用率"><a href="#内存使用率" class="headerlink" title="内存使用率"></a>内存使用率</h3><p>　　关于内存占用,官方文档为: <a href="https://www.rabbitmq.com/memory-use.html">memory-use</a>.当然…Flynnon没有看…  </p>
 <p>　　队列声明: 当声明队列时,如果队列的durable属性设置为true的话,会在rabbit_queue和rabbit_durable_queue两个表中增加记录,否则只会在rabbit_queue表中增加记录.以上每一条记录大约占用29个字的大小(这里的字是Erlang中的概念,与操作系统相关,32位系统中,字长为4字节,64位系统中,字长为8字节).并且,依据AMQP规范,队列会被绑定到匿名交换机上.综上,大致流程如下:</p>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/rabbitmq_queue_declare.png" alt="队列声明处理步骤"></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf043b6bb0cb.png" alt="队列声明处理步骤"></p>
 <p>　　交换机声明: 当声明交换机时,RabbitMQ会在rabbit_exchange表创建一条大约29字的记录.若交换机进行了持久化声明,也会在rabbit_durable_exchange上创建一条记录.图示如下:</p>
 <table>
 <thead>
@@ -479,6 +479,7 @@
 </tbody>
 </table>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>　　本书还有一些比较高级的内容,如:SSL配置,集群设置等等,但是Flynnon暂时用不太上,因此就不记录了…</p>
+<!-- hard_coded.png, rabbitmq_proxy.png, rabbitmq_message_delivery.png, rabbitmq_queue_declare.png -->
 
       
     </div>
@@ -618,7 +619,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -640,7 +641,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -734,7 +735,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-@"></i>
   </span>

@@ -93,15 +93,15 @@
 <meta property="og:site_name" content="Flynnon&#39;s Blog">
 <meta property="og:description" content="前言　　公司的一些异步任务是通过Django+RabbitMQ+Celery实现的,编写的时候感觉真的蛮简单的,刚开始了解它只是简单的看了下RabbitMQ的入门教程并实现了这些demo,通过这些我明白了如何使用RabbitMQ,但是一些细节并没有弄的很清楚,于是这段时间就看了下《RabbitMQ实战  高效部署分布式消息队列》这本书.　　为了避免忘记….记一下笔记…..">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/producter_and_consumer.png">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_exchanges_demo.png">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_bindings_demo.png">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_queues_demo.png">
-<meta property="og:updated_time" content="2018-07-01T12:56:02.921Z">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf04464a6003.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf044876de32.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf044a48ae56.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf044bf3b619.png">
+<meta property="og:updated_time" content="2019-12-15T15:24:33.107Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="《RabbitMQ实战》笔记(一)">
 <meta name="twitter:description" content="前言　　公司的一些异步任务是通过Django+RabbitMQ+Celery实现的,编写的时候感觉真的蛮简单的,刚开始了解它只是简单的看了下RabbitMQ的入门教程并实现了这些demo,通过这些我明白了如何使用RabbitMQ,但是一些细节并没有弄的很清楚,于是这段时间就看了下《RabbitMQ实战  高效部署分布式消息队列》这本书.　　为了避免忘记….记一下笔记…..">
-<meta name="twitter:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/producter_and_consumer.png">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/18/5bf04464a6003.png">
 
 
 
@@ -360,7 +360,7 @@
 <h4 id="角色划分"><a href="#角色划分" class="headerlink" title="角色划分"></a>角色划分</h4><p>　　使用RabbitMQ(消息队列)时,有三种角色需要区分:<br>　　代理: 在使用消息队列的场景中,消息队列服务器可以看做代理.<br>　　生产者: 而生产者是产生消息并将消息发送到代理服务器的角色(A program that sends messages is a producer.).<br>　　消费者: 连接到代理服务器,并订阅相应的队列,在有新的消息到达时,接收并处理的角色(A consumer is a program that mostly waits to receive messages).  </p>
 <h4 id="消息"><a href="#消息" class="headerlink" title="消息"></a>消息</h4><p>　　在RabbitMQ中传输的是消息,消息包含有效负载(payload)与标签(label)两部分.其中有效荷载是指实际要传递的数据(可以是任意支持的格式),而标签则描述了有效荷载,RabbitMQ会根据标签来对消息进行分发.  </p>
 <p>　　消息路由过程中实际分发的只是payload.也就是说,消费者接收到的只是payload部分,这样可以实现一定程度上的解耦,即生产者和消费者互相并不知道彼此的存在,尤其是消费者并不知道消息是如何来的(如果发送者的信息很重要的话,将它放到payload部分也是可以的).  </p>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/producter_and_consumer.png" alt="RabbitMQ模型中的定位"></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf04464a6003.png" alt="RabbitMQ模型中的定位"></p>
 <h4 id="通信"><a href="#通信" class="headerlink" title="通信"></a>通信</h4><p>　　实际上,对于生产者与消费者都是通过Connection与Channel与RabbitMQ服务器进行通信的.<br>　　Connection实际上是一个TCP连接.<br>　　而Channel则是建立在真实的TCP连接(Connection)中的虚拟连接.所有AMQP命令都是通过Channel发送出去的.  </p>
 <p>　　为什么使用Channel?<br>　　对于操作系统来说,由于建立和关闭Connection(TCP连接)是有一定代价的.在生产者为多个线程时,如果只有Connection,那么为了发送消息就需要频繁的创建销毁Connection,这会极大的浪费系统资源,并且操作系统每秒能创建的TCP连接数是有上限的,这就会导致性能瓶颈.<br>　　但是RabbitMQ又得基于TCP,因此在TCP的基础上抽象出了Channel的概念,Channel可以认为是轻量级的连接,一个Connection可以创建多个Channel,并且各个Channel间互相隔离.在Connection上创建和销毁Channel的代价很低,也不会对操作系统造成太大影响(不是没影响).<br>　　对于Connection与Channel的关系,本书中有一个形象的比喻:Connection好比电缆,而Channel好比光纤束,一条电缆可以有多条光纤束,且各个光纤束可以独立的传输数据.<br>　　建议客户端线程之间不要共用Channel,至少要保证共用Channel的线程发送消息必须是串行的,但是建议尽量共用Connection.</p>
 <h4 id="消息存储"><a href="#消息存储" class="headerlink" title="消息存储"></a>消息存储</h4><p>　　生产者将消息投递给RabbitMQ后,RabbitMQ还没有将消息发送给消费者时,消息被存放在Queue中(A queue is the name for a post box which lives inside RabbitMQ. Although messages flow through RabbitMQ and your applications, they can only be stored inside a queue. A queue is only bound by the host’s memory &amp; disk limits, it’s essentially a large message buffer.).</p>
@@ -552,15 +552,16 @@ table th:first-of-type {
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 为用户分配权限</span></span><br><span class="line"><span class="comment"># 需要更改某用户的权限时,直接重新分配即可(也只能重新分配..)</span></span><br><span class="line"><span class="comment"># 最后面的三个权限模式是三个正则表达式. 例:".*" 代表所有权限, "" 代表无权限, "xx.*"代表以xx开头的队列或者交换机上有权限</span></span><br><span class="line">rabbitmqctl set_permissions -p &#123;vhost_name&#125; username &#123;conf_permission&#125; &#123;write_permission&#125; &#123;read_permission&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看权限分配情况</span></span><br><span class="line"><span class="comment"># 查看某vhost上的权限分配</span></span><br><span class="line">rabbitmqctl list_permissions  -p  &#123;vhost_name&#125;</span><br><span class="line"><span class="comment"># 查看某用户在所有vhost上的权限</span></span><br><span class="line">rabbitmqctl list_user_permissions &#123;username&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 清除某用户在某vhost上的所有权限</span></span><br><span class="line">rabbitmqctl clear_permissions -p &#123;vhost_name&#125; &#123;username&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="状态检查"><a href="#状态检查" class="headerlink" title="状态检查"></a>状态检查</h4><p>　　我们该如何查看RabbitMQ的运行状态呢?</p>
 <h5 id="查看基本信息"><a href="#查看基本信息" class="headerlink" title="查看基本信息"></a>查看基本信息</h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出某vhost上的queue的信息</span></span><br><span class="line"><span class="comment"># 中间的状态貌似是指queue在集群中的信息</span></span><br><span class="line"><span class="comment"># 这里的 queueinfoitem 表示想展示的项目列表,有效值包括name, druable, auto_delete等等,用到时现查即可.缺省状态下,此命令展示 队列名及其上的消息数</span></span><br><span class="line">list_queues [-p &lt;vhost&gt;] [--offline|--online|--<span class="built_in">local</span>] [&lt;queueinfoitem&gt; ...]</span><br></pre></td></tr></table></figure>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_exchanges_demo.png" alt="查看队列信息示例"></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf044876de32.png" alt="查看队列信息示例"></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出某vhost上的exchange的信息</span></span><br><span class="line"><span class="comment"># 这里的 exchangeinfoitem 含义同上,有效值包括 name, type, durable, auto_delete, internal, arguments, policy</span></span><br><span class="line">rabbitmqctl list_exchanges [-p &lt;vhost&gt;] [&lt;exchangeinfoitem&gt; ...]</span><br></pre></td></tr></table></figure>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_bindings_demo.png" alt="查看交换机信息示例"></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf044a48ae56.png" alt="查看交换机信息示例"></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出某vhost上的绑定信息</span></span><br><span class="line"><span class="comment"># 这里的 bindinginfoitem 含义同上,有效值包括 source_name, source_kind, destination_name, destination_kind, routing_key, arguments</span></span><br><span class="line">rabbitmqctl list_bindings [-p &lt;vhost&gt;] [&lt;bindinginfoitem&gt; ...]</span><br></pre></td></tr></table></figure>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/png/rabbitmq_in_action/list_queues_demo.png" alt="查看绑定信息示例"></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf044bf3b619.png" alt="查看绑定信息示例"></p>
 <h5 id="日志信息"><a href="#日志信息" class="headerlink" title="日志信息"></a>日志信息</h5><p>　　RabbitMQ的日志文件有如下两个:<br>　　RABBITMQ_NODENAME.log         RabbitMQ运行相关日志. 可以通过它得到RabitMQ的运行信息.<br>　　RABBITMQ_NODENAME-sasl.log    Erlang相关日志.       可以通过它查看Erlang的崩溃报告.  </p>
 <p>　　另外,RabbitMQ会将运行相关日志信息发布到 amq.rabbitmq.log这个交换机上,并以日志等级作为路由键(error, warning, info),因此我们自己定义好队列与绑定后,就可以通过消费者监听RabbitMQ的运行信息了.</p>
 <h5 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h5><h6 id="rabbitmqctl"><a href="#rabbitmqctl" class="headerlink" title="rabbitmqctl"></a>rabbitmqctl</h6><p>　　有时,RabbitMQ运行的好好的,但是我们在使用rabbitmqctl命令的时候就是会出现badrpc或者nodedown问题.这是为什么?<br>　　先来看看rabbitmqctl的工作原理.rabbitmqctl会启动一个Erlang节点,并使用Erlang的分布式系统尝试连接RabbitMQ节点.达成这个步骤需要两个条件:合适的Erlang Cookie和合适的节点名称.<br>　　首先来看看Erlang Coolie:<br>　　　　为了能使用rabbitmqctl连接RabbitMQ节点,需要共享相同的cookie.因此,碰到上述问题时,看看当前用户的Erlang Cookie与RabbitMQ的Erlang Cookie是否相同.<br>　　　　Erlang节点之间通过交换作为秘钥的Erlang Cookie来进行认证(由于连接到某节点时就可以执行命令,因此需要确保连接者可信).而Erlang将令牌存储在用户主目录下的.erlang.cookie文件中.<br>　　再来看看节点名:<br>　　　　在启动Erlang节点时,可以指定一个节点名称(name或者sname之一).<br>　　　　如果两边的节点名不同,那么rabbitmqctl也无法正常连接到RabbitMQ服务器.  </p>
 <h6 id="Mnesia"><a href="#Mnesia" class="headerlink" title="Mnesia"></a>Mnesia</h6><p>　　有时,Mnesia启动老是失败,这是什么原因?<br>　　常见的原因如下两个:<br>　　1. RabbitMQ没有MNESIA_BASE(这是个环境变量)文件夹的写权限;<br>　　2. 主机名更改了或者服务器运行在集群模式下且启动时无法连接到其它节点.<br>　　　　Mnesia会基于Erlang节点名与当前机器的主机名创建数据库schema,如果主机名更改了,它就无法加载旧的schema.同理,使用Erlang sname更改节点名,也会产生这个问题.<br>　　　　如果我们更改了Mnesia建立的文件夹的名称,Mnesia会重新创建新的schema文件夹并加载.</p>
+<!-- producter_and_consumer.png, list_exchanges_demo.png, list_bindings_demo.png, list_queues_demo.png -->
 
       
     </div>
@@ -704,7 +705,7 @@ table th:first-of-type {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -726,7 +727,7 @@ table th:first-of-type {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -820,7 +821,7 @@ table th:first-of-type {
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-@"></i>
   </span>

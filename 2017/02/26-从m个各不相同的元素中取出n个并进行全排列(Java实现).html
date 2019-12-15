@@ -93,13 +93,13 @@
 <meta property="og:site_name" content="Flynnon&#39;s Blog">
 <meta property="og:description" content="最近在看面试题的时候发现，一些基础的算法都记不住了，只是能大概说出个原理….为了加深记忆，这里对一些简单的算法题进行一个归纳。   　　下面的代码主要解决的问题是：从m个各不相同的元素中取出n个，进行全排列，得到所有可能的结果。　　即：输入为字符数组（数组内每个字符均不相同）和个数n，返回由这些字符组成的所有长度为n的字符串。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/ListChars/ListChars_result_1.png">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/ListChars/ListChars_result_0.png">
-<meta property="og:updated_time" content="2018-05-12T09:48:26.941Z">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf03f2086ef3.png">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf03f3b5abb6.png">
+<meta property="og:updated_time" content="2019-12-15T15:24:33.110Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从m个各不相同的元素中取出n个并进行全排列(Java实现)">
 <meta name="twitter:description" content="最近在看面试题的时候发现，一些基础的算法都记不住了，只是能大概说出个原理….为了加深记忆，这里对一些简单的算法题进行一个归纳。   　　下面的代码主要解决的问题是：从m个各不相同的元素中取出n个，进行全排列，得到所有可能的结果。　　即：输入为字符数组（数组内每个字符均不相同）和个数n，返回由这些字符组成的所有长度为n的字符串。">
-<meta name="twitter:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/ListChars/ListChars_result_1.png">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/18/5bf03f2086ef3.png">
 
 
 
@@ -375,9 +375,11 @@
 <p>　　下面的代码主要解决的问题是：从m个各不相同的元素中取出n个，进行全排列，得到所有可能的结果。<br>　　即：输入为字符数组（数组内每个字符均不相同）和个数n，返回由这些字符组成的所有长度为n的字符串。<br><a id="more"></a><br>测试用例样例：<br>　　输入为{‘a’,’b’,’c’}和个数1，返回值为{“a”,”b”,”c”}<br>　　输入为{‘a’,’b’,’c’,’d’}和个数2，返回值为{“ab”,”ac”,”ad”,”ba”,”bc”,”bd”,”ca”,”cb”,”cd”,”da”,”db”,”dc”}</p>
 <p>下面是Java实现：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by Flynnon on 17-2-26.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListChars</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> chars 总的字符序列（数组）</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> n     要取出的字符的个数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">doit</span><span class="params">(<span class="keyword">char</span>[] chars, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n &lt;= <span class="number">0</span> || chars == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        List&lt;Character&gt; charList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="comment">//通过这一步初始化序列的长度</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;</span><br><span class="line">            charList.add(<span class="string">'#'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        listAll(charList, chars, n);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 从m个元素中任取n个并对结果进行全排列</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> list   用于承载可能的排列情况的List</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> chars  总的字符数组，长度为m</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> n      从中取得字符个数</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">listAll</span><span class="params">(List&lt;Character&gt; list, <span class="keyword">char</span>[] chars, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (n == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">//这里偷懒，直接打印了....</span></span><br><span class="line">            System.out.println(list);                   <span class="comment">// 输出一种可能的排列</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">char</span> aChar : chars) &#123;                      <span class="comment">// 暴力尝试</span></span><br><span class="line">            <span class="keyword">if</span> (!list.contains(aChar)) &#123;                <span class="comment">// 若List中不包含这一位元素</span></span><br><span class="line">                list.set(list.size() - n, aChar);       <span class="comment">// 将当前元素加入</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;                                    <span class="comment">// 否则跳到下一位</span></span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            listAll(list, chars, n - <span class="number">1</span>);                <span class="comment">// 下一位</span></span><br><span class="line">            list.set(list.size() - n, <span class="string">'#'</span>);             <span class="comment">// 还原</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//  以字符数组承载总的字符集合</span></span><br><span class="line">        <span class="keyword">char</span>[] chars = &#123;<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>&#125;;</span><br><span class="line">        ListChars.doit(chars, <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>　　下面是测试用例及结果，与预期结果一致。<br><img src="http://oj3b5sw5k.bkt.clouddn.com/image/ListChars/ListChars_result_1.png" alt="测试用例一"></p>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/ListChars/ListChars_result_0.png" alt="测试用例二"></p>
-<p><center><small><strong>由于本人水平有限，本文难免存在谬误，欢迎批评指正！</strong></small></center></p>
+<p>　　下面是测试用例及结果，与预期结果一致。<br><img src="https://i.loli.net/2018/11/18/5bf03f2086ef3.png" alt="测试用例一"></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf03f3b5abb6.png" alt="测试用例二"></p>
+<center><small><strong>由于本人水平有限，本文难免存在谬误，欢迎批评指正！</strong></small></center>
+
+<!-- ListChars_result_0.png and ListChars_result_1.png -->
 
       
     </div>
@@ -436,8 +438,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/02/27-带行号遍历二叉树(Java实现).html" rel="prev" title="带行号遍历二叉树(Java实现)">
-                带行号遍历二叉树(Java实现) <i class="fa fa-chevron-right"></i>
+              <a href="/2017/02/27-遍历二叉树并使用二维数组保存(Java实现).html" rel="prev" title="遍历二叉树并用二维数组保存(Java实现)">
+                遍历二叉树并用二维数组保存(Java实现) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -508,7 +510,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -530,7 +532,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -608,7 +610,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-@"></i>
   </span>

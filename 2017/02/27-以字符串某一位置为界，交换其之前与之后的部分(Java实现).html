@@ -93,12 +93,12 @@
 <meta property="og:site_name" content="Flynnon&#39;s Blog">
 <meta property="og:description" content="最近在看面试题的时候发现，一些基础的算法都记不住了，只是能大概说出个原理….为了加深记忆，这里对一些简单的算法题进行一个归纳。 　　下面的代码主要解决的问题是：给定一个字符串str和一个整数i，i代表字符串中某一个元素的下标，将str[0..i-1]移到这个元素的右侧，将str[i+1..len(str)-1]移到这个元素的左侧。(要求：时间复杂度为Ｏ(N),空间复杂度为Ｏ(1)).">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/string/ReplaceBeginAndEnd_result_1.png">
-<meta property="og:updated_time" content="2018-05-12T09:48:26.941Z">
+<meta property="og:image" content="https://i.loli.net/2018/11/18/5bf040d2a9c19.png">
+<meta property="og:updated_time" content="2019-12-15T15:24:33.112Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java控制访问权限的方法">
 <meta name="twitter:description" content="最近在看面试题的时候发现，一些基础的算法都记不住了，只是能大概说出个原理….为了加深记忆，这里对一些简单的算法题进行一个归纳。 　　下面的代码主要解决的问题是：给定一个字符串str和一个整数i，i代表字符串中某一个元素的下标，将str[0..i-1]移到这个元素的右侧，将str[i+1..len(str)-1]移到这个元素的左侧。(要求：时间复杂度为Ｏ(N),空间复杂度为Ｏ(1)).">
-<meta name="twitter:image" content="http://oj3b5sw5k.bkt.clouddn.com/image/string/ReplaceBeginAndEnd_result_1.png">
+<meta name="twitter:image" content="https://i.loli.net/2018/11/18/5bf040d2a9c19.png">
 
 
 
@@ -375,8 +375,10 @@
 <p>　　下面是Java实现：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by Flynnon on 17-2-27.</span></span><br><span class="line"><span class="comment"> * 问题：给定一个字符串str和一个整数i，i代表字符串中某一个元素的下标，将str[0..i-1]移到这个元素的右侧，将str[i+1..len(str)-1]移到这个元素的左侧。</span></span><br><span class="line"><span class="comment"> * 要求：时间复杂度为Ｏ(N),空间复杂度为Ｏ(1)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 将一个数组以某一元素分界，将这个元素之前的部分与之后的部分互换位置</span></span><br><span class="line"><span class="comment">     * 主要思路:  将之前的部分与之后的部分分别逆序，再将整体逆序即可</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> str 要进行操作的字符串</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> i   作为分界线的元素的下标</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span>    转化之后生成的字符串</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">replaceBeginAndEnd</span><span class="params">(String str, <span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (str == <span class="keyword">null</span> || i &lt; <span class="number">0</span> || str.length() &lt;= i) &#123;</span><br><span class="line">            <span class="keyword">return</span> str;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">char</span>[] chars = str.toCharArray();</span><br><span class="line">        reverseCharArray(chars, <span class="number">0</span>, i - <span class="number">1</span>);</span><br><span class="line">        reverseCharArray(chars, i + <span class="number">1</span>, chars.length - <span class="number">1</span>);</span><br><span class="line">        reverseCharArray(chars, <span class="number">0</span>, chars.length - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String(chars);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 用来翻转一个数组的某一部分</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> charArray  要进行操作的数组</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> begin      要翻转的部分第一个元素的下标</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> end        要翻转的部分最后一个元素的下标</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">reverseCharArray</span><span class="params">(<span class="keyword">char</span>[] charArray, <span class="keyword">int</span> begin, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span> tmp;</span><br><span class="line">        <span class="keyword">while</span> (begin &lt; end) &#123;</span><br><span class="line">            tmp = charArray[begin];</span><br><span class="line">            charArray[begin] = charArray[end];</span><br><span class="line">            charArray[end] = tmp;</span><br><span class="line">            begin++;</span><br><span class="line">            end--;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String str = <span class="string">"abcde"</span>;</span><br><span class="line">        System.out.println(replaceBeginAndEnd(str, <span class="number">2</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>下面是测试用例及结果，与预期结果一致。</p>
-<p><img src="http://oj3b5sw5k.bkt.clouddn.com/image/string/ReplaceBeginAndEnd_result_1.png" alt="测试结果"></p>
-<p><center><small><strong>由于本人水平有限，本文难免存在谬误，欢迎批评指正！</strong></small></center></p>
+<p><img src="https://i.loli.net/2018/11/18/5bf040d2a9c19.png" alt="测试结果"></p>
+<center><small><strong>由于本人水平有限，本文难免存在谬误，欢迎批评指正！</strong></small></center>
+
+<!-- ReplaceBeginAndEnd_result_1.png -->
 
       
     </div>
@@ -425,8 +427,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/02/27-遍历二叉树并使用二维数组保存(Java实现).html" rel="next" title="遍历二叉树并用二维数组保存(Java实现)">
-                <i class="fa fa-chevron-left"></i> 遍历二叉树并用二维数组保存(Java实现)
+              <a href="/2017/02/27-带行号遍历二叉树(Java实现).html" rel="next" title="带行号遍历二叉树(Java实现)">
+                <i class="fa fa-chevron-left"></i> 带行号遍历二叉树(Java实现)
               </a>
             
           </div>
@@ -507,7 +509,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -529,7 +531,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -607,7 +609,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-@"></i>
   </span>

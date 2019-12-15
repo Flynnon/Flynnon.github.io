@@ -93,7 +93,7 @@
 <meta property="og:site_name" content="Flynnon&#39;s Blog">
 <meta property="og:description" content="前言　　以下记录了第七章的一些知识点. 输入输出　　标准库实现了简单的文本输入/输出模式.在这个模式中,文本流由一系列行组成,每一行的结尾是一个换行符.如果系统没有遵循这种模式,则标准库将通过一些措施使得该系统适应这种模式.例如,标准库可以在输入端将回车符和换行符都转换为换行符,而在输出端进行反向转换.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-25T16:03:31.084Z">
+<meta property="og:updated_time" content="2018-10-29T13:23:44.404Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="C语言复习笔记(5)">
 <meta name="twitter:description" content="前言　　以下记录了第七章的一些知识点. 输入输出　　标准库实现了简单的文本输入/输出模式.在这个模式中,文本流由一系列行组成,每一行的结尾是一个换行符.如果系统没有遵循这种模式,则标准库将通过一些措施使得该系统适应这种模式.例如,标准库可以在输入端将回车符和换行符都转换为换行符,而在输出端进行反向转换.">
@@ -347,9 +347,9 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>　　以下记录了第七章的一些知识点.</p>
-<h2 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h2><p>　　标准库实现了简单的文本输入/输出模式.在这个模式中,文本流由一系列行组成,每一行的结尾是一个换行符.如果系统没有遵循这种模式,则标准库将通过一些措施使得该系统适应这种模式.例如,标准库可以在输入端将回车符和换行符都转换为换行符,而在输出端进行反向转换.<a id="more"></a><br>　　一般输入输出相关的标准函数均定义在<stdio.h>头文件中.</stdio.h></p>
+<h2 id="输入输出"><a href="#输入输出" class="headerlink" title="输入输出"></a>输入输出</h2><p>　　标准库实现了简单的文本输入/输出模式.在这个模式中,文本流由一系列行组成,每一行的结尾是一个换行符.如果系统没有遵循这种模式,则标准库将通过一些措施使得该系统适应这种模式.例如,标准库可以在输入端将回车符和换行符都转换为换行符,而在输出端进行反向转换.<a id="more"></a><br>　　一般输入输出相关的标准函数均定义在&lt;stdio.h&gt;头文件中.</p>
 <h3 id="标准输入输出"><a href="#标准输入输出" class="headerlink" title="标准输入输出"></a>标准输入输出</h3><h4 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// getchar 与 putchar </span></span><br><span class="line"><span class="comment">// getchar从标准输入进行字符读取.函数在每次被调用时返回下一个输入字符.若遇到文件结尾,则返回EOF.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getchar</span><span class="params">(<span class="keyword">void</span>)</span></span>;</span><br><span class="line"><span class="comment">// putchar将字符输送至标准输出上.如果没有发生错误,则函数putchar返同输出的字符;如果发生了错误,则返回EOF.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">putchar</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>　　符号常量EOF(END OF FILE)在头文件<stdio.h>中定义,其值一般为-1,但程序中应该使用EOF本身来测试文件是否结束,这样才能保证程序同EOF的特定值无关.<br>　　事实上,getchar与putchar都是宏定义而不是函数.</stdio.h></p>
+<p>　　符号常量EOF(END OF FILE)在头文件&lt;stdio.h&gt;中定义,其值一般为-1,但程序中应该使用EOF本身来测试文件是否结束,这样才能保证程序同EOF的特定值无关.<br>　　事实上,getchar与putchar都是宏定义而不是函数.</p>
 <h3 id="格式化输出"><a href="#格式化输出" class="headerlink" title="格式化输出"></a>格式化输出</h3><p>　　格式化输出是更高层次上的一种输出方法,通过它可以设定输出格式.</p>
 <h4 id="函数-1"><a href="#函数-1" class="headerlink" title="函数"></a>函数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// printf的函数原型</span></span><br><span class="line"><span class="comment">// printf在输出格式format的控制下,将其参数进行转换与格式化,并输出到标准输出.它的返回值为打印的字符数.</span></span><br><span class="line"><span class="comment">// 后面三个小数点代表变长参数表(不定长参数),具体请见下方扩展</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">printf</span><span class="params">(<span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// sprintf的函数原型</span></span><br><span class="line"><span class="comment">// printf在输出格式format的控制下,将其参数进行转换与格式化,并将结果存放到string中.它的返回值为打印的字符数.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sprintf</span><span class="params">(<span class="keyword">char</span> *<span class="built_in">string</span>, <span class="keyword">char</span> *format, ...)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 注意:上述函数使用第一个参数判断后面参数的个数及类型.如果参数的个数不够或者类型错误,则将得到错误的结果.</span></span><br></pre></td></tr></table></figure>
 <h4 id="格式字符串"><a href="#格式字符串" class="headerlink" title="格式字符串"></a>格式字符串</h4><p>　　格式字符串即printf函数与sprint函数的函数定义中的format参数.<br>　　格式字符串包含两种类型的对象:普通字符和转换说明.在输出时,普通字符(不包括%)将原样不动地复制到输出流中,而转换说明则是用于控制上述函数中其余参数(即最后不定长参数表)的转换和打印.<br>　　每个转换说明都由一个百分号字符(即%)开始,并以一个转换字符结束.合法的转换字符列表如下:</p>
@@ -572,9 +572,9 @@
 </table>
 <h4 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> int_v;</span><br><span class="line"><span class="keyword">char</span> char_v[<span class="number">20</span>];</span><br><span class="line"><span class="keyword">float</span> f_v;</span><br><span class="line"><span class="built_in">scanf</span>(<span class="string">"%d %s %*d %f"</span>, &amp;int_v, char_v, &amp;f_v);</span><br><span class="line"><span class="comment">// 运行上述程序片段时,可在标准输入输入 10 lalala 3 2.8, 之后, int_v的值为10, char_v数组的前七个字符为 l a l a l a \0, f_v的值为 2.8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// scanf函数忽略格式串中的空格和制表符.此外,在读取输入值时,它将跳过空白符(空格符、横向制表符、换行符、回车符、纵向制表符以及换页符).如果要读取格式不固定的输入,最好每次读入一行,然后再用sscanf将合适的格式分离出来读入.</span></span><br><span class="line"><span class="comment">// scanf函数可以与其它输入函数混合使用,无论使用哪个输入函数,调用下一个输入函数时将从scanf没有读取的第一个字符处开始读取数据.即:每次使用scanf它的读取都会被消费,而读取失败的会被略过.</span></span><br><span class="line"><span class="comment">// 场景: 在从标准输入读取日期时,支持多种输入格式.</span></span><br><span class="line"><span class="keyword">while</span> (getline(line, <span class="keyword">sizeof</span>(line)) &gt; <span class="number">0</span>) &#123;                    <span class="comment">// 需要保存输入,再一一判断格式</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">sscanf</span>(line, <span class="string">"%d %s %d"</span>, &amp;day, monthname, &amp;year) == <span class="number">3</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"valid: %s\n"</span>, line);                         <span class="comment">// dd mm yy 格式</span></span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">sscanf</span>(line, <span class="string">"%d/%d/%d"</span>, &amp;month, &amp;day, &amp;year) == <span class="number">3</span>)</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"valid: %s\n"</span>, line);                         <span class="comment">// mm/dd/yy格式</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"invalid: %s\n"</span>, line);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h2><p>　　文件也可以看成是一种特殊的输入输出设备.事实上,在Linux系统中一切都被抽象成文件.</p>
-<h3 id="文件的打开"><a href="#文件的打开" class="headerlink" title="文件的打开"></a>文件的打开</h3><p>　　在操作文件之前,我们需要先打开一个文件.这个操作是通过<stdio.h>头文件中的fopen函数实现的.它的介绍如下:</stdio.h></p>
+<h3 id="文件的打开"><a href="#文件的打开" class="headerlink" title="文件的打开"></a>文件的打开</h3><p>　　在操作文件之前,我们需要先打开一个文件.这个操作是通过&lt;stdio.h&gt;头文件中的fopen函数实现的.它的介绍如下:</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// fopen函数的函数签名</span></span><br><span class="line"><span class="comment">// 第一个参数name是一个字符串,它包含了文件名(包括绝对路径).</span></span><br><span class="line"><span class="comment">// 第二个参数mode也是一个字符串，它代表了文件的使用模式,用于指定文件的使用方式.这个参数的详细介绍在后面一点.</span></span><br><span class="line"><span class="comment">// 它的返回值是一个可以用于文件读写操作的指针,被成为文件指针.关于文件指针,后面在详细介绍.</span></span><br><span class="line"><span class="function">FILE *<span class="title">fopen</span><span class="params">(<span class="keyword">char</span> *name, <span class="keyword">char</span> *mode)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fopen函数的使用</span></span><br><span class="line"><span class="comment">// 以写模式打开一个文件</span></span><br><span class="line">FILE *fp = fopen(<span class="string">"/home/flynnon/a.txt"</span>, <span class="string">"w"</span>);</span><br></pre></td></tr></table></figure>
-<p>　　fopen函数返回的文件指针实际上指向的是一个包含文件信息的结构.这些所指的信息包括:缓冲区的位置、缓冲区中当前字符的位置、文件的读或写状态、是否出错或是否已经到达文件结尾等等状态.如果发生错误,fopen将返回 NULL.<br>　　幸运的是,我们并不需要直接与这些具体的细节打交道.这些信息已经被<stdio.h>头文件中的FILE封装好了.这里要注意的是FILE像int一样是一个类型名,而不是一个结构标记(它是通过typedef定义的).<br>　　使用fopen打开一个文件有多种模式,见下表:</stdio.h></p>
+<p>　　fopen函数返回的文件指针实际上指向的是一个包含文件信息的结构.这些所指的信息包括:缓冲区的位置、缓冲区中当前字符的位置、文件的读或写状态、是否出错或是否已经到达文件结尾等等状态.如果发生错误,fopen将返回 NULL.<br>　　幸运的是,我们并不需要直接与这些具体的细节打交道.这些信息已经被&lt;stdio.h&gt;头文件中的FILE封装好了.这里要注意的是FILE像int一样是一个类型名,而不是一个结构标记(它是通过typedef定义的).<br>　　使用fopen打开一个文件有多种模式,见下表:</p>
 <table>
 <thead>
 <tr>
@@ -622,7 +622,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 输出函数fputs将一个字符串(不需要包含换行符,此函数自己根据平台添加)写入到一个文件中.发生错误时,该函数将返回EOF,否则返回一个非负值.</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">fputs</span><span class="params">(<span class="keyword">char</span> *line, FILE *fp)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// fgets函数从fp指向的文件中读取下一个输入行(包括换行符),并将它存放在字符数组line中,它最多可读取maxline-1个字符.</span></span><br><span class="line"><span class="comment">// fgets读取的行将以'\0'结尾保存到数组中.</span></span><br><span class="line"><span class="comment">// 通常情况下,fgets返回line,但如果遇到了文件结尾或发生了错误,则返回 NULL.</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">fgets</span><span class="params">(<span class="keyword">char</span> *line, <span class="keyword">int</span> maxline, FILE *fp)</span></span>;</span><br></pre></td></tr></table></figure>
 <p>　　同printf与fprintf,scanf与pscanf一样,对于标准输入输出也有一对类似的函数fget与fput.<br>　　puts函数在写入字符串时会在结尾添加一个换行符;而gets函数在读取字符串时会自动删除结尾的换行符(‘\n’).</p>
 <h2 id="常用函数"><a href="#常用函数" class="headerlink" title="常用函数"></a>常用函数</h2><p>　　在C标准库中提供了很多常用的函数.</p>
-<h3 id="字符串操作相关"><a href="#字符串操作相关" class="headerlink" title="字符串操作相关"></a>字符串操作相关</h3><p>　　与字符串操作相关的函数主要定义在<string.h>头文件中,下面是介绍.</string.h></p>
+<h3 id="字符串操作相关"><a href="#字符串操作相关" class="headerlink" title="字符串操作相关"></a>字符串操作相关</h3><p>　　与字符串操作相关的函数主要定义在&lt;string.h&gt;头文件中,下面是介绍.</p>
 <table>
 <thead>
 <tr>
@@ -679,7 +679,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="字符串类别测试与转化函数"><a href="#字符串类别测试与转化函数" class="headerlink" title="字符串类别测试与转化函数"></a>字符串类别测试与转化函数</h3><p>　　头文件<ctype.h>中定义了一些用于字符测试和转换的函数.下面是介绍.</ctype.h></p>
+<h3 id="字符串类别测试与转化函数"><a href="#字符串类别测试与转化函数" class="headerlink" title="字符串类别测试与转化函数"></a>字符串类别测试与转化函数</h3><p>　　头文件&lt;ctype.h&gt;中定义了一些用于字符测试和转换的函数.下面是介绍.</p>
 <table>
 <thead>
 <tr>
@@ -733,8 +733,8 @@
 <h3 id="命令执行函数"><a href="#命令执行函数" class="headerlink" title="命令执行函数"></a>命令执行函数</h3><p>　　函数system(char* s)执行包含在字符申s中的命令,然后继续执行当前程序.<br>　　system函数返回一个整型的状态值,其值来自于执行的命令,并同具体系统有关.</p>
 <h3 id="存储管理函数"><a href="#存储管理函数" class="headerlink" title="存储管理函数"></a>存储管理函数</h3><p>　　函数malloc和calloc用于动态地分配存储块.介绍如下.</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// malloc的函数签名</span></span><br><span class="line"><span class="comment">// 当分配成功时,它返回一个指针,设指针指向n字节长度的未初始化的存储空间,否则返回NULL.</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">malloc</span><span class="params">(<span class="keyword">size_t</span> NumBytes)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// calloc的函数签名</span></span><br><span class="line"><span class="comment">// 当分配成功时,它返回一个指针,该指针指向的空闲空间足以容纳由n个指定长度的对象组成的数组,否则返回NULL.该存储空间被初始化为0.</span></span><br><span class="line"><span class="comment">// numElements: 对象个数, sizeOfElement: 每个对象的大小</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">calloc</span><span class="params">(<span class="keyword">size_t</span> numElements,<span class="keyword">size_t</span> sizeOfElement)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 释放p指向的存储空间.其中,p是此前通过调用malloc或calloc函数得到的指针</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">free</span><span class="params">(<span class="keyword">void</span> *FirstByte)</span></span>;</span><br></pre></td></tr></table></figure>
-<h3 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h3><p>　　头文件<math.h>中声明了20多个数学函数,感觉用到的时候查就可以了…</math.h></p>
-<h3 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h3><p>　　函数rand()生成介于0和RAND_MAX之间的伪随机整数序列(RAND_MAX是在头文件<stdlib.h>中定义的符号常量).<br>　　函数srand(unsigned)设置rand函数生成的序列的种子.</stdlib.h></p>
+<h3 id="数学函数"><a href="#数学函数" class="headerlink" title="数学函数"></a>数学函数</h3><p>　　头文件&lt;math.h&gt;中声明了20多个数学函数,感觉用到的时候查就可以了…</p>
+<h3 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h3><p>　　函数rand()生成介于0和RAND_MAX之间的伪随机整数序列(RAND_MAX是在头文件&lt;stdlib.h&gt;中定义的符号常量).<br>　　函数srand(unsigned)设置rand函数生成的序列的种子.</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成0-1之间的随机数的宏定义</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> frand() ((double) rand() / (RAND_MAX+1.0))</span></span><br></pre></td></tr></table></figure>
       
     </div>
@@ -876,7 +876,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -898,7 +898,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -992,7 +992,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2018</span>
+        <div class="copyright">&copy; 2016 &mdash; <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-@"></i>
   </span>
